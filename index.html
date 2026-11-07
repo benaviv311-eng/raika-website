@@ -63,14 +63,14 @@
 
 /* Rai family: one unframed portrait at the far left, preserving the approved portraits. */
 .family-carousel{
-  width:min(420px,100vw);
-  margin:35px 0 0 calc(-24px - max(0px, 50vw - 550px));
+  width:min(480px,100%);
+  margin:35px auto 0;
   padding:0;
   border:0;
   background:transparent;
   box-shadow:none;
 }
-.family-carousel-shell{position:relative;width:100%;max-width:100%;padding:0}
+.family-carousel-shell{position:relative;width:100%;max-width:100%;padding:0 68px}
 .family-carousel .family-slides{display:block;margin:0;min-width:0;background:transparent}
 .family-carousel .family-slides .character{
   display:flex;
@@ -94,10 +94,10 @@
 @keyframes family-reveal{from{opacity:.55}to{opacity:1}}
 .family-carousel .character-media{
   height:405px;
-  justify-content:flex-start;
+  justify-content:center;
   align-items:flex-end;
   overflow:visible;
-  background:radial-gradient(ellipse at 48% 51%,rgba(201,133,65,.25) 0%,rgba(123,76,43,.12) 39%,transparent 74%);
+  background:radial-gradient(ellipse at 50% 48%,rgba(216,158,88,.35) 0%,rgba(144,89,47,.17) 36%,transparent 72%);
 }
 .family-carousel .character-media img{
   display:block;
@@ -105,7 +105,8 @@
   height:390px;
   max-width:100%;
   object-fit:contain;
-  object-position:left bottom;
+  object-position:center bottom;
+  mix-blend-mode:screen;
   -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%);
   mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%);
 }
@@ -115,6 +116,10 @@
   justify-self:stretch;
 }
 .family-carousel .character--hikari .character-media img{height:376px}
+.family-carousel .character--raigo .character-media img,
+.family-carousel .character--raiko .character-media img{height:250px}
+.profile-art img[src="raigo-character-rai-bg-2026.webp"],
+.profile-art img[src="raiko-character-rai-bg-2026.webp"]{transform:scale(.67);transform-origin:center bottom}
 .family-carousel .character-body{
   padding:14px 10px 10px;
   background:transparent;
@@ -141,18 +146,21 @@
 }
 .family-arrow:hover{background:transparent;color:#fff1cc}
 .family-arrow:focus-visible{outline:2px solid #e7c58f;outline-offset:2px}
-.family-arrow-prev{left:0}
-.family-arrow-next{right:0}
+.family-arrow-prev{left:4px}
+.family-arrow-next{right:4px}
 .family-visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:640px){
-  .family-carousel{width:100vw}
+  .family-carousel{width:min(370px,100%)}
+  .family-carousel-shell{padding:0 0 58px}
   .family-carousel .character-media{height:365px}
   .family-carousel .character-media img{height:348px}
   .family-carousel .character--hikari .character-media img{height:336px}
+  .family-carousel .character--raigo .character-media img,
+  .family-carousel .character--raiko .character-media img{height:220px}
   .family-carousel .character-body{padding:14px 22px 10px}
-  .family-arrow{top:50%;width:37px;height:48px;font-size:39px}
-  .family-arrow-prev{left:2px}
-  .family-arrow-next{right:2px}
+  .family-arrow{top:auto;bottom:0;transform:none;width:42px;height:45px;font-size:36px}
+  .family-arrow-prev{left:calc(50% - 65px)}
+  .family-arrow-next{right:calc(50% - 65px)}
 }
 @media(prefers-reduced-motion:reduce){.family-carousel .family-slides .character:not([hidden]){animation:none}.family-arrow{transition:none}}
 
@@ -174,11 +182,11 @@
 </article>
 <article class="character character--raigo" hidden>
   <div class="character-media"><img loading="lazy" src="raigo-character-rai-bg-2026.webp" width="1024" height="1536" alt="Raigo, young rabbit warrior in white training clothes with green trim"></div>
-  <div class="character-body"><div class="character-role">Young Warrior · Brother</div><h3>Raigo</h3><p>Strong-willed and determined, Raigo carries a quiet intensity. Beneath his calm presence lies a fierce spirit ready to protect those he loves.</p><button type="button" class="profile-trigger" data-character="raigo" aria-label="Explore Raigo's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
+  <div class="character-body"><div class="character-role">Age 5 · Younger Brother</div><h3>Raigo</h3><p>Strong-willed and determined, Raigo carries a quiet intensity. Beneath his calm presence lies a fierce spirit ready to protect those he loves.</p><button type="button" class="profile-trigger" data-character="raigo" aria-label="Explore Raigo's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
 <article class="character character--raiko" hidden>
   <div class="character-media"><img loading="lazy" src="raiko-character-rai-bg-2026.webp" width="1024" height="1536" alt="Raiko, young rabbit warrior in white training clothes with green trim"></div>
-  <div class="character-body"><div class="character-role">Young Warrior · Sister</div><h3>Raiko</h3><p>Bright, spirited, and full of heart, Raiko brings youthful energy and courage. Her path is shaped by curiosity, loyalty, and the will to grow stronger.</p><button type="button" class="profile-trigger" data-character="raiko" aria-label="Explore Raiko's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
+  <div class="character-body"><div class="character-role">Age 5 · Younger Sister</div><h3>Raiko</h3><p>Bright, spirited, and full of heart, Raiko brings youthful energy and courage. Her path is shaped by curiosity, loyalty, and the will to grow stronger.</p><button type="button" class="profile-trigger" data-character="raiko" aria-label="Explore Raiko's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
 </div>
 <button class="family-arrow family-arrow-next" type="button" id="family-next" aria-label="Next family member" title="Next family member">›</button>
@@ -226,7 +234,7 @@
       alt: "Hikari, rabbit guard captain in dark samurai armor"
     }    ,
     raigo: {
-      title: "Raigo", role: "Young Warrior · Brother",
+      title: "Raigo", role: "Age 5 · Younger Brother",
       quote: "Strength means standing firm when others need you most.",
       description: "Raigo is steady, focused, and deeply protective. He may speak less than others, but his presence carries weight. Beneath his composed exterior is a young warrior shaped by loyalty, discipline, and the instinct to stand between danger and the people he cares about.",
       traits: "Loyalty · Resolve · Protection",
@@ -234,7 +242,7 @@
       alt: "Raigo, young rabbit warrior in white training clothes with green trim"
     },
     raiko: {
-      title: "Raiko", role: "Young Warrior · Sister",
+      title: "Raiko", role: "Age 5 · Younger Sister",
       quote: "A brave heart keeps moving, even when the road is uncertain.",
       description: "Raiko is spirited, warm, and full of potential. She faces the world with curiosity and heart, carrying both kindness and inner fire. As she grows, her journey is defined by courage, compassion, and the desire to become stronger without losing who she is.",
       traits: "Courage · Heart · Growth",
