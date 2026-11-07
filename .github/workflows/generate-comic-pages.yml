@@ -41,7 +41,7 @@ jobs:
       - name: Download the approved comic PDF
         if: steps.existing.outputs.ready != 'true'
         run: |
-          gdown --fuzzy "https://drive.google.com/file/d/1P5WU3eBgS8wy1W-t47UcNedQyRoGCSBA/view" -O /tmp/raika-comic.pdf
+          gdown "https://drive.google.com/uc?id=1P5WU3eBgS8wy1W-t47UcNedQyRoGCSBA" -O /tmp/raika-comic.pdf
           test "$(head -c 4 /tmp/raika-comic.pdf)" = "%PDF"
           pages="$(pdfinfo /tmp/raika-comic.pdf | awk '/^Pages:/ {print $2}')"
           test "$pages" = "6"
