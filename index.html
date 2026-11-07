@@ -33,9 +33,10 @@
 .comic-reader-head{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 22px;border-bottom:1px solid #ffffff20}
 .comic-reader-title{font:700 19px Cinzel,Georgia,serif;color:#f4f0e7;margin-top:5px}
 .reader-page-label{color:#d8ad65;font-size:11px;font-weight:700;letter-spacing:.13em;white-space:nowrap}
-.comic-reader-stage{height:min(82vh,1050px);min-height:620px;background:#050807;overflow:hidden}
-.comic-reader-stage iframe{display:block;width:100%;height:100%;border:0;background:#101713}
-.comic-reader-stage{position:relative}
+.comic-reader-stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;height:auto;padding:20px 84px;background:#050807;overflow:hidden}
+.comic-page-image{display:block;width:auto;height:auto;max-width:calc(100% * var(--comic-zoom,1));max-height:calc(82vh * var(--comic-zoom,1));object-fit:contain;transform-origin:center center;transition:opacity .15s ease}
+.comic-reader-stage:fullscreen{width:100vw;height:100vh;min-height:0;padding:20px 84px;box-sizing:border-box}
+.comic-reader-stage:fullscreen .comic-page-image{max-height:calc(92vh * var(--comic-zoom,1))}
 .comic-arrow{position:absolute;z-index:5;top:50%;transform:translateY(-50%);width:58px;height:76px;display:grid;place-items:center;border:1px solid #d8ad65b8;border-radius:5px;background:rgba(9,15,12,.86);color:#f1d49b;font:400 56px/1 Georgia,serif;cursor:pointer;box-shadow:0 8px 24px #0008;transition:background .2s,opacity .2s,border-color .2s}
 .comic-arrow:hover{background:rgba(216,173,101,.96);color:#101713;border-color:#f1d49b}
 .comic-arrow:disabled{opacity:.22;cursor:not-allowed}
@@ -53,11 +54,11 @@
 .reader-page-btn[aria-current="page"]{background:#d8ad65;color:#101713;border-color:#d8ad65}
 .reader-btn:focus-visible,.reader-page-btn:focus-visible{outline:2px solid #f2d39c;outline-offset:3px}
 .comic-reader-stage:fullscreen{height:100vh;min-height:0;width:100vw;background:#050807}
-.comic-reader-stage:fullscreen iframe{height:100vh}
+.comic-reader-stage:fullscreen .comic-page-image{max-height:calc(92vh * var(--comic-zoom,1))}
 .comic-download{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:17px 2px 0;color:#aeb7ae;font-size:12px}
 .comic-download a{color:#d8ad65;font-weight:700}
 .comic-download a:hover{color:#f5d9a7}
-@media(max-width:700px){.comic-arrow{width:42px;height:58px;font-size:42px}.comic-arrow-prev{left:7px}.comic-arrow-next{right:7px}.comic-reader-head{padding:15px;align-items:flex-start}.comic-reader-title{font-size:16px}.comic-reader-stage{height:72vh;min-height:500px}.comic-reader-controls{justify-content:center;gap:12px;padding:13px 10px}.reader-navigation,.reader-tools{gap:6px}.reader-btn{padding:10px 11px;font-size:10px}.reader-pages{gap:5px}.reader-page-btn{padding:9px 9px;font-size:10px}.comic-download{padding:15px 0}}
+@media(max-width:700px){.comic-arrow{width:42px;height:58px;font-size:42px}.comic-arrow-prev{left:7px}.comic-arrow-next{right:7px}.comic-reader-head{padding:15px;align-items:flex-start}.comic-reader-title{font-size:16px}.comic-reader-stage{padding:14px 52px}.comic-page-image{max-height:calc(72vh * var(--comic-zoom,1))}.comic-reader-controls{justify-content:center;gap:12px;padding:13px 10px}.reader-navigation,.reader-tools{gap:6px}.reader-btn{padding:10px 11px;font-size:10px}.reader-pages{gap:5px}.reader-page-btn{padding:9px 9px;font-size:10px}.comic-download{padding:15px 0}}
 @media(max-width:390px){.reader-navigation,.reader-tools{width:100%;justify-content:center}.comic-reader-controls{gap:10px}}
 </style></head><body><header><div class="wrap nav"><a class="brand" href="#top">RAI<span>K</span>A</a><nav><a href="#story">The Story</a><a href="#characters">Characters</a><a href="#comic">Read</a><a href="#support">Support</a><a href="https://www.instagram.com/raika.samurairabbit/" target="_blank" rel="noopener">Instagram ↗</a></nav></div></header><main><section class="hero" id="top"><img class="hero-art" src="raika-hero-blue-2026.svg" alt="Raika, white rabbit samurai in blue training robes with golden lightning emblem"><div class="wrap"><div class="hero-inner"><div class="eyebrow">An original samurai fantasy</div><h1>RAIKA<small>The Legacy of Reishin</small></h1><p>Strength to fight. Wisdom to protect. Enter a world of ancient traditions, impossible choices, and a young warrior finding her path.</p><div class="buttons"><a class="btn primary" href="#comic">Read the free comic</a><a class="btn" href="#support">Support the journey</a></div></div></div></section><section class="section" id="story"><div class="wrap"><div class="eyebrow">The world of Raika</div><h2>A legend begins with a choice.</h2><p>Beyond the mountain paths, clans and warriors carry stories of honor, loyalty, and sacrifice. Raika's journey is only beginning.</p><div class="cards"><div class="card"><strong>01</strong><h3>The Warrior</h3><p>Meet Raika: a young rabbit samurai learning that courage is more than strength.</p></div><div class="card"><strong>02</strong><h3>The Legacy</h3><p>Training, family, and ancient teachings shape the path ahead.</p></div><div class="card"><strong>03</strong><h3>The Journey</h3><p>Discover an original fantasy universe through illustrated comic storytelling.</p></div></div></div></section><section class="section" id="characters"><div class="wrap"><div class="eyebrow">The people behind the legend</div><h2>Meet the Characters</h2><p>Discover the warriors and family at the heart of RAIKA.</p><div class="character-gallery">
 <article class="character character--raika">
@@ -94,7 +95,7 @@
       <div class="profile-traits" id="profile-traits">Strength · Wisdom · Compassion</div>
     </div>
   </div>
-</dialog><section class="section feature" id="comic"><div class="wrap"><div class="eyebrow">Read the free preview</div><h2>Enter the story.</h2><p>Read RAIKA — The Legacy of Reishin right here on the website. Turn through all six pages, jump to any page, and use the viewer controls to zoom or expand your reading space. No payment required.</p><div class="comic-reader" id="comic-reader"><div class="comic-reader-head"><div><div class="eyebrow">The Legacy of Reishin</div><div class="comic-reader-title">Free Comic Preview</div></div><span class="reader-page-label" id="comic-page-label" aria-live="polite">PAGE 1 OF 6</span></div><div class="comic-reader-stage" id="comic-reader-stage" tabindex="0" aria-label="Comic reader. Use the arrows to turn pages."><iframe id="comic-frame" title="RAIKA — The Legacy of Reishin, free comic preview" src="https://drive.google.com/file/d/1P5WU3eBgS8wy1W-t47UcNedQyRoGCSBA/preview#page=1&zoom=page-fit" loading="lazy" allow="autoplay"></iframe><button class="comic-arrow comic-arrow-prev" type="button" id="comic-arrow-prev" aria-label="Previous comic page" title="Previous page">‹</button><button class="comic-arrow comic-arrow-next" type="button" id="comic-arrow-next" aria-label="Next comic page" title="Next page">›</button></div><div class="comic-reader-controls"><div class="reader-navigation"><button class="reader-btn" type="button" id="comic-prev" aria-label="Previous page">← Previous</button><button class="reader-btn primary" type="button" id="comic-next" aria-label="Next page">Next →</button></div><div class="reader-pages" role="group" aria-label="Choose comic page"><button class="reader-page-btn" type="button" data-comic-page="1" aria-current="page">01</button><button class="reader-page-btn" type="button" data-comic-page="2">02</button><button class="reader-page-btn" type="button" data-comic-page="3">03</button><button class="reader-page-btn" type="button" data-comic-page="4">04</button><button class="reader-page-btn" type="button" data-comic-page="5">05</button><button class="reader-page-btn" type="button" data-comic-page="6">06</button></div><div class="reader-tools"><button class="reader-btn" type="button" id="comic-zoom-out" aria-label="Zoom out">−</button><button class="reader-btn" type="button" id="comic-zoom-in" aria-label="Zoom in">+</button><button class="reader-btn" type="button" id="comic-fullscreen">Fullscreen ⛶</button></div></div></div><div class="comic-download"><span>Prefer to keep a copy?</span><a href="https://drive.google.com/uc?export=download&id=1P5WU3eBgS8wy1W-t47UcNedQyRoGCSBA" target="_blank" rel="noopener">Download the original PDF ↗</a></div></div></section><section class="section support" id="support"><div class="wrap"><div class="eyebrow">Help write the next chapter</div><h2>Become part of the legend.</h2><p>RAIKA is an independent creative project. Your support helps bring new comic chapters, illustrations, and stories to life.</p><a class="btn primary" href="https://ko-fi.com/raikathelegacyofreishin" target="_blank" rel="noopener">Support on Ko-fi ↗</a></div></section></main><footer class="footer"><div class="wrap"><span>© 2026 RAIKA — The Legacy of Reishin.</span><a href="https://www.instagram.com/raika.samurairabbit/">Instagram</a></div></footer><script>
+</dialog><section class="section feature" id="comic"><div class="wrap"><div class="eyebrow">Read the free preview</div><h2>Enter the story.</h2><p>Read RAIKA — The Legacy of Reishin right here on the website. Turn through all six pages, jump to any page, and use the viewer controls to zoom or expand your reading space. No payment required.</p><div class="comic-reader" id="comic-reader"><div class="comic-reader-head"><div><div class="eyebrow">The Legacy of Reishin</div><div class="comic-reader-title">Free Comic Preview</div></div><span class="reader-page-label" id="comic-page-label" aria-live="polite">PAGE 1 OF 6</span></div><div class="comic-reader-stage" id="comic-reader-stage" tabindex="0" aria-label="Comic reader. Use the arrows to turn pages."><img id="comic-page-image" class="comic-page-image" src="comic-pages/page-1.webp" alt="RAIKA comic page 1 of 6" fetchpriority="high" decoding="async"><button class="comic-arrow comic-arrow-prev" type="button" id="comic-arrow-prev" aria-label="Previous comic page" title="Previous page">‹</button><button class="comic-arrow comic-arrow-next" type="button" id="comic-arrow-next" aria-label="Next comic page" title="Next page">›</button></div><div class="comic-reader-controls"><div class="reader-navigation"><button class="reader-btn" type="button" id="comic-prev" aria-label="Previous page">← Previous</button><button class="reader-btn primary" type="button" id="comic-next" aria-label="Next page">Next →</button></div><div class="reader-pages" role="group" aria-label="Choose comic page"><button class="reader-page-btn" type="button" data-comic-page="1" aria-current="page">01</button><button class="reader-page-btn" type="button" data-comic-page="2">02</button><button class="reader-page-btn" type="button" data-comic-page="3">03</button><button class="reader-page-btn" type="button" data-comic-page="4">04</button><button class="reader-page-btn" type="button" data-comic-page="5">05</button><button class="reader-page-btn" type="button" data-comic-page="6">06</button></div><div class="reader-tools"><button class="reader-btn" type="button" id="comic-zoom-out" aria-label="Zoom out">−</button><button class="reader-btn" type="button" id="comic-zoom-in" aria-label="Zoom in">+</button><button class="reader-btn" type="button" id="comic-fullscreen">Fullscreen ⛶</button></div></div></div><div class="comic-download"><span>Prefer to keep a copy?</span><a href="https://drive.google.com/uc?export=download&id=1P5WU3eBgS8wy1W-t47UcNedQyRoGCSBA" target="_blank" rel="noopener">Download the original PDF ↗</a></div></div></section><section class="section support" id="support"><div class="wrap"><div class="eyebrow">Help write the next chapter</div><h2>Become part of the legend.</h2><p>RAIKA is an independent creative project. Your support helps bring new comic chapters, illustrations, and stories to life.</p><a class="btn primary" href="https://ko-fi.com/raikathelegacyofreishin" target="_blank" rel="noopener">Support on Ko-fi ↗</a></div></section></main><footer class="footer"><div class="wrap"><span>© 2026 RAIKA — The Legacy of Reishin.</span><a href="https://www.instagram.com/raika.samurairabbit/">Instagram</a></div></footer><script>
 (function(){
   const data = {
     raika: {
@@ -162,16 +163,23 @@
   closeButton.addEventListener("click", function(){dialog.close();});
   dialog.addEventListener("click", function(event){if(event.target === dialog) dialog.close();});
   dialog.addEventListener("close", function(){if(lastTrigger) lastTrigger.focus();});
-  const comicFrame = document.getElementById("comic-frame");
+  const comicPageImage = document.getElementById("comic-page-image");
   const comicStage = document.getElementById("comic-reader-stage");
   const comicLabel = document.getElementById("comic-page-label");
-  const comicBase = "https://drive.google.com/file/d/1P5WU3eBgS8wy1W-t47UcNedQyRoGCSBA/preview";
   const comicTotal = 6;
   let comicPage = 1;
-  let comicZoom = "page-fit";
+  let comicZoom = 100;
+  function setComicZoom(value){
+    comicZoom = Math.max(80, Math.min(160, value));
+    comicPageImage.style.setProperty("--comic-zoom", String(comicZoom / 100));
+    comicStage.style.overflow = comicZoom > 100 ? "auto" : "hidden";
+  }
   function showComicPage(page){
     comicPage = Math.max(1, Math.min(comicTotal, page));
-    comicFrame.src = comicBase + "#page=" + comicPage + "&zoom=" + comicZoom;
+    comicPageImage.style.opacity = "0.35";
+    comicPageImage.src = "comic-pages/page-" + comicPage + ".webp";
+    comicPageImage.alt = "RAIKA comic page " + comicPage + " of " + comicTotal;
+    comicPageImage.onload = function(){comicPageImage.style.opacity = "1";};
     comicLabel.textContent = "PAGE " + comicPage + " OF " + comicTotal;
     document.querySelectorAll(".reader-page-btn").forEach(function(button){
       if(Number(button.dataset.comicPage) === comicPage) button.setAttribute("aria-current","page");
@@ -179,6 +187,12 @@
     });
     document.getElementById("comic-prev").disabled = comicPage === 1;
     document.getElementById("comic-next").disabled = comicPage === comicTotal;
+    document.getElementById("comic-arrow-prev").disabled = comicPage === 1;
+    document.getElementById("comic-arrow-next").disabled = comicPage === comicTotal;
+    [comicPage-1, comicPage+1].filter(function(n){return n>=1 && n<=comicTotal;}).forEach(function(n){
+      const preload = new Image();
+      preload.src = "comic-pages/page-" + n + ".webp";
+    });
   }
   document.getElementById("comic-prev").addEventListener("click", function(){showComicPage(comicPage-1);});
   document.getElementById("comic-next").addEventListener("click", function(){showComicPage(comicPage+1);});
@@ -187,8 +201,8 @@
   document.querySelectorAll(".reader-page-btn").forEach(function(button){
     button.addEventListener("click", function(){showComicPage(Number(button.dataset.comicPage));});
   });
-  document.getElementById("comic-zoom-in").addEventListener("click", function(){comicZoom = comicZoom === "page-fit" ? 100 : Math.min(200,comicZoom+20);showComicPage(comicPage);});
-  document.getElementById("comic-zoom-out").addEventListener("click", function(){comicZoom = comicZoom === "page-fit" ? 80 : Math.max(60,comicZoom-20);showComicPage(comicPage);});
+  document.getElementById("comic-zoom-in").addEventListener("click", function(){setComicZoom(comicZoom+20);});
+  document.getElementById("comic-zoom-out").addEventListener("click", function(){setComicZoom(comicZoom-20);});
   document.getElementById("comic-fullscreen").addEventListener("click", function(){
     if(document.fullscreenElement){document.exitFullscreen();}
     else if(comicStage.requestFullscreen){comicStage.requestFullscreen();}
@@ -197,6 +211,7 @@
     if(event.key === "ArrowRight"){event.preventDefault();showComicPage(comicPage+1);}
     if(event.key === "ArrowLeft"){event.preventDefault();showComicPage(comicPage-1);}
   });
+  setComicZoom(100);
   showComicPage(1);
 
 })();
