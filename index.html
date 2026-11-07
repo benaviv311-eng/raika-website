@@ -63,29 +63,40 @@
 
 /* Rai family: one unframed portrait at the far left, preserving the approved portraits. */
 .family-carousel{
-  width:min(480px,100%);
+  width:min(540px,100%);
   margin:35px auto 0;
   padding:0;
   border:0;
   background:transparent;
   box-shadow:none;
+  overflow:visible;
 }
-.family-carousel-shell{position:relative;width:100%;max-width:100%;padding:0 68px}
-.family-carousel .family-slides{display:block;margin:0;min-width:0;background:transparent}
+.family-carousel-shell{position:relative;width:100%;padding:0;overflow:visible}
+.family-carousel .family-slides{
+  display:block;
+  width:100%;
+  min-width:0;
+  margin:0;
+  overflow:visible;
+  background:none;
+}
 .family-carousel .family-slides .character{
   display:flex;
   flex-direction:column;
   width:100%;
   min-height:0;
-  background:transparent;
-  border:0;
-  box-shadow:none;
   overflow:visible;
+  background:none;
+  border:0;
+  border-radius:0;
+  outline:0;
+  box-shadow:none;
+  clip-path:none;
 }
 .family-carousel .family-slides .character:hover,
 .family-carousel .family-slides .character:focus-within{
   transform:none;
-  background:transparent;
+  background:none;
   border:0;
   box-shadow:none;
 }
@@ -93,50 +104,74 @@
 .family-carousel .family-slides .character:not([hidden]){animation:family-reveal .32s ease-out}
 @keyframes family-reveal{from{opacity:.55}to{opacity:1}}
 .family-carousel .character-media{
-  height:405px;
+  position:relative;
+  height:470px;
+  display:flex;
   justify-content:center;
   align-items:flex-end;
   overflow:visible;
-  background:radial-gradient(ellipse at 50% 48%,rgba(225,165,84,.36) 0%,rgba(139,84,39,.14) 45%,transparent 77%);
+  background:none;
+  border:0;
+  isolation:isolate;
+}
+.family-carousel .character-media::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  left:50%;
+  top:46%;
+  width:clamp(370px,80vw,690px);
+  height:clamp(340px,63vw,580px);
+  transform:translate(-50%,-50%);
+  background:radial-gradient(ellipse at center,rgba(214,153,75,.36) 0%,rgba(124,75,43,.15) 40%,rgba(124,75,43,.06) 56%,transparent 75%);
+  filter:blur(28px);
+  pointer-events:none;
 }
 .family-carousel .character-media img{
+  position:relative;
+  z-index:1;
   display:block;
-  width:100%;
-  height:390px;
-  max-width:100%;
+  width:auto;
+  height:515px;
+  max-width:none;
+  max-height:none;
+  flex:none;
   object-fit:contain;
   object-position:center bottom;
   mix-blend-mode:normal;
   -webkit-mask-image:none;
   mask-image:none;
+  clip-path:none;
 }
-.family-carousel .character--hikari{
-  width:100%;
-  grid-column:auto;
-  justify-self:stretch;
-}
-.family-carousel .character--hikari .character-media img{height:376px}
-.family-carousel .character--raigo .character-media img,
-.family-carousel .character--raiko .character-media img{height:250px}
+.family-carousel .character--hikari{width:100%;grid-column:auto;justify-self:stretch}
+.family-carousel .character--hikari .character-media img{height:492px}
+.family-carousel .character--raigo .character-media img{height:325px}
+.family-carousel .character--raiko .character-media img{height:307px}
 .profile-art img[src="family-cutouts/raigo.webp"],
 .profile-art img[src="family-cutouts/raiko.webp"]{transform:scale(.67);transform-origin:center bottom}
 .family-carousel .character-body{
-  padding:14px 10px 10px;
-  background:transparent;
+  padding:18px 16px 10px;
+  position:relative;
+  background:none;
+  border:0;
+  box-shadow:none;
+  align-items:center;
+  text-align:center;
 }
+.family-carousel .character-body p{margin:0 auto}
 .family-carousel .profile-trigger{margin-top:12px}
 .family-arrow{
   position:absolute;
-  top:48%;
+  top:47%;
   transform:translateY(-50%);
-  z-index:2;
+  z-index:3;
   border:0;
   border-radius:0;
-  background:transparent;
+  background:none;
   color:#e7c58f;
-  width:40px;
-  height:52px;
-  font:400 43px/1 Georgia,serif;
+  width:46px;
+  height:60px;
+  font:400 45px/1 Georgia,serif;
   cursor:pointer;
   display:grid;
   place-items:center;
@@ -144,25 +179,27 @@
   text-shadow:0 2px 12px #000;
   transition:color .2s ease;
 }
-.family-arrow:hover{background:transparent;color:#fff1cc}
+.family-arrow:hover{background:none;color:#fff1cc}
 .family-arrow:focus-visible{outline:2px solid #e7c58f;outline-offset:2px}
-.family-arrow-prev{left:4px}
-.family-arrow-next{right:4px}
+.family-arrow-prev{left:-50px}
+.family-arrow-next{right:-50px}
 .family-visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:640px){
-  .family-carousel{width:min(370px,100%)}
+@media(max-width:700px){
+  .family-carousel{width:min(100%,440px);margin-top:35px}
   .family-carousel-shell{padding:0 0 58px}
-  .family-carousel .character-media{height:365px}
-  .family-carousel .character-media img{height:348px}
-  .family-carousel .character--hikari .character-media img{height:336px}
-  .family-carousel .character--raigo .character-media img,
-  .family-carousel .character--raiko .character-media img{height:220px}
-  .family-carousel .character-body{padding:14px 22px 10px}
+  .family-carousel .character-media{height:370px}
+  .family-carousel .character-media::before{width:min(100vw,480px);height:410px;filter:blur(18px)}
+  .family-carousel .character-media img{height:410px}
+  .family-carousel .character--hikari .character-media img{height:390px}
+  .family-carousel .character--raigo .character-media img{height:262px}
+  .family-carousel .character--raiko .character-media img{height:248px}
+  .family-carousel .character-body{padding:14px 12px 10px}
   .family-arrow{top:auto;bottom:0;transform:none;width:42px;height:45px;font-size:36px}
-  .family-arrow-prev{left:calc(50% - 65px)}
-  .family-arrow-next{right:calc(50% - 65px)}
+  .family-arrow-prev{left:calc(50% - 68px)}
+  .family-arrow-next{right:calc(50% - 68px)}
 }
 @media(prefers-reduced-motion:reduce){.family-carousel .family-slides .character:not([hidden]){animation:none}.family-arrow{transition:none}}
+
 
 </style></head><body><header><div class="wrap nav"><a class="brand" href="#top">RAI<span>K</span>A</a><nav><a href="#story">The Story</a><a href="#characters">Characters</a><a href="#comic">Read</a><a href="#support">Support</a><a href="https://www.instagram.com/raika.samurairabbit/" target="_blank" rel="noopener">Instagram ↗</a></nav></div></header><main><section class="hero" id="top"><img class="hero-art" src="raika-hero-blue-2026.svg" alt="Raika, white rabbit samurai in blue training robes with golden lightning emblem"><div class="wrap"><div class="hero-inner"><div class="eyebrow">An original samurai fantasy</div><h1>RAIKA<small>The Legacy of Reishin</small></h1><p>Strength to fight. Wisdom to protect. Enter a world of ancient traditions, impossible choices, and a young warrior finding her path.</p><div class="buttons"><a class="btn primary" href="#comic">Read the free comic</a><a class="btn" href="#support">Support the journey</a></div></div></div></section><section class="section" id="story"><div class="wrap"><div class="eyebrow">The world of Raika</div><h2>A legend begins with a choice.</h2><p>Beyond the mountain paths, clans and warriors carry stories of honor, loyalty, and sacrifice. Raika's journey is only beginning.</p><div class="cards"><div class="card"><strong>01</strong><h3>The Warrior</h3><p>Meet Raika: a young rabbit samurai learning that courage is more than strength.</p></div><div class="card"><strong>02</strong><h3>The Legacy</h3><p>Training, family, and ancient teachings shape the path ahead.</p></div><div class="card"><strong>03</strong><h3>The Journey</h3><p>Discover an original fantasy universe through illustrated comic storytelling.</p></div></div></div></section><section class="section" id="characters"><div class="wrap"><div class="eyebrow">The people behind the legend</div><h2>Meet the Characters</h2><p>Discover the warriors and family at the heart of RAIKA.</p><div class="family-carousel" id="family-carousel" role="region" aria-roledescription="carousel" aria-label="Rai's family">
 <div class="family-carousel-shell">
