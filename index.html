@@ -15,9 +15,9 @@
 .profile-dialog{position:fixed;width:min(940px,calc(100vw - 28px));max-height:90vh;padding:0;border:1px solid #d8ad6570;border-radius:12px;background:#111a17;color:#f4f0e7;box-shadow:0 25px 90px #000b;overflow:auto}
 .profile-dialog::backdrop{background:#030908dc;backdrop-filter:blur(6px)}
 .profile-layout{display:grid;grid-template-columns:minmax(0,44%) minmax(0,1fr);align-items:stretch}
-.profile-art{display:grid;place-items:center;min-height:515px;padding:16px;background:radial-gradient(ellipse at 50% 45%,rgba(207,140,75,.22),transparent 73%);overflow:hidden}
-.profile-art img{display:block;max-width:100%;width:100%;max-height:505px;object-fit:contain}
-.profile-art img[src="family-cutouts/hikari.webp"]{transform:scale(.95)}
+.profile-art{display:grid;place-items:center;min-height:515px;padding:16px;background:transparent;overflow:hidden}
+.profile-art img{display:block;max-width:100%;width:100%;max-height:505px;object-fit:contain;filter:drop-shadow(0 0 18px rgba(237,199,129,.22))}
+.profile-art img[src="family-cutouts-v2/hikari.png"]{transform:scale(.95)}
 .profile-copy{display:flex;flex-direction:column;justify-content:center;padding:46px 42px 40px}
 .profile-copy h2{margin:10px 0 6px;font-size:clamp(30px,4vw,47px)}
 .profile-role{color:#d8ad65;font-size:12px;letter-spacing:.05em}
@@ -114,19 +114,7 @@
   border:0;
   isolation:isolate;
 }
-.family-carousel .character-media::before{
-  content:"";
-  position:absolute;
-  z-index:0;
-  left:50%;
-  top:46%;
-  width:clamp(370px,80vw,690px);
-  height:clamp(340px,63vw,580px);
-  transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse at center,rgba(214,153,75,.36) 0%,rgba(124,75,43,.15) 40%,rgba(124,75,43,.06) 56%,transparent 75%);
-  filter:blur(28px);
-  pointer-events:none;
-}
+.family-carousel .character-media::before{display:none;content:none;}
 .family-carousel .character-media img{
   position:relative;
   z-index:1;
@@ -142,13 +130,14 @@
   -webkit-mask-image:none;
   mask-image:none;
   clip-path:none;
+  filter:drop-shadow(0 0 14px rgba(240,205,144,.24)) drop-shadow(0 0 27px rgba(231,184,107,.12));
 }
 .family-carousel .character--hikari{width:100%;grid-column:auto;justify-self:stretch}
 .family-carousel .character--hikari .character-media img{height:492px}
 .family-carousel .character--raigo .character-media img{height:325px}
 .family-carousel .character--raiko .character-media img{height:307px}
-.profile-art img[src="family-cutouts/raigo.webp"],
-.profile-art img[src="family-cutouts/raiko.webp"]{transform:scale(.67);transform-origin:center bottom}
+.profile-art img[src="family-cutouts-v2/raigo.png"],
+.profile-art img[src="family-cutouts-v2/raiko.png"]{transform:scale(.67);transform-origin:center bottom}
 .family-carousel .character-body{
   padding:18px 16px 10px;
   position:relative;
@@ -206,23 +195,23 @@
 <button class="family-arrow family-arrow-prev" type="button" id="family-prev" aria-label="Previous family member" title="Previous family member">‹</button>
 <div class="character-gallery family-slides" id="family-slides">
 <article class="character character--raika">
-  <div class="character-media"><img loading="lazy" src="family-cutouts/raika.webp" alt="Raika, young white rabbit samurai wearing green armor"></div>
+  <div class="character-media"><img loading="lazy" src="family-cutouts-v2/raika.png" alt="Raika, young white rabbit samurai wearing green armor"></div>
   <div class="character-body"><div class="character-role">Young Samurai</div><h3>Raika</h3><p>A young samurai learning to balance strength, courage, and compassion.</p><button type="button" class="profile-trigger" data-character="raika" aria-label="Explore Raika's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
 <article class="character character--rai" hidden>
-  <div class="character-media"><img loading="lazy" src="family-cutouts/rai.webp" alt="Sensei Rai, rabbit samurai master in dark armor with a golden lightning emblem"></div>
+  <div class="character-media"><img loading="lazy" src="family-cutouts-v2/rai.png" alt="Sensei Rai, rabbit samurai master in dark armor with a golden lightning emblem"></div>
   <div class="character-body"><div class="character-role">Samurai Mentor · Father</div><h3>Sensei Rai</h3><p>Raika’s father and samurai mentor. He teaches that a warrior must be strong enough to fight and wise enough to protect.</p><button type="button" class="profile-trigger" data-character="rai" aria-label="Explore Sensei Rai's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
 <article class="character character--hikari" hidden>
-  <div class="character-media"><img loading="lazy" src="family-cutouts/hikari.webp" alt="Hikari, white rabbit guard captain in dark samurai armor with a golden lightning emblem"></div>
+  <div class="character-media"><img loading="lazy" src="family-cutouts-v2/hikari.png" alt="Hikari, white rabbit guard captain in dark samurai armor with a golden lightning emblem"></div>
   <div class="character-body"><div class="character-role">Captain of the Guard · Mother</div><h3>Hikari</h3><p>She carries the weight of two worlds — one as a commander, the other as a mother. To protect those she loves and those she leads, she has sacrificed more of herself than anyone will ever know.</p><button type="button" class="profile-trigger" data-character="hikari" aria-label="Explore Hikari's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
 <article class="character character--raigo" hidden>
-  <div class="character-media"><img loading="lazy" src="family-cutouts/raigo.webp" width="1024" height="1536" alt="Raigo, young rabbit warrior in white training clothes with green trim"></div>
+  <div class="character-media"><img loading="lazy" src="family-cutouts-v2/raigo.png" width="1024" height="1536" alt="Raigo, young rabbit warrior in white training clothes with green trim"></div>
   <div class="character-body"><div class="character-role">Age 5 · Younger Brother</div><h3>Raigo</h3><p>Strong-willed and determined, Raigo carries a quiet intensity. Beneath his calm presence lies a fierce spirit ready to protect those he loves.</p><button type="button" class="profile-trigger" data-character="raigo" aria-label="Explore Raigo's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
 <article class="character character--raiko" hidden>
-  <div class="character-media"><img loading="lazy" src="family-cutouts/raiko.webp" width="1024" height="1536" alt="Raiko, young rabbit warrior in white training clothes with green trim"></div>
+  <div class="character-media"><img loading="lazy" src="family-cutouts-v2/raiko.png" width="1024" height="1536" alt="Raiko, young rabbit warrior in white training clothes with green trim"></div>
   <div class="character-body"><div class="character-role">Age 5 · Younger Sister</div><h3>Raiko</h3><p>Bright, spirited, and full of heart, Raiko brings youthful energy and courage. Her path is shaped by curiosity, loyalty, and the will to grow stronger.</p><button type="button" class="profile-trigger" data-character="raiko" aria-label="Explore Raiko's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
 </div>
@@ -233,7 +222,7 @@
 <dialog class="profile-dialog" id="character-profile" aria-labelledby="profile-heading" aria-describedby="profile-description">
   <button class="profile-close" type="button" aria-label="Close character profile">×</button>
   <div class="profile-layout">
-    <div class="profile-art"><img id="profile-image" src="family-cutouts/rai.webp" alt="Sensei Rai portrait"></div>
+    <div class="profile-art"><img id="profile-image" src="family-cutouts-v2/rai.png" alt="Sensei Rai portrait"></div>
     <div class="profile-copy">
       <div class="eyebrow">The Legacy of Reishin / Character Profile</div>
       <h2 id="profile-heading">Sensei Rai</h2>
@@ -251,7 +240,7 @@
       quote: "Courage is more than strength.",
       description: "A young rabbit samurai learning to balance her family's teachings with her own choices. Her journey begins with courage, compassion, and the challenge of finding her own path.",
       traits: "Courage · Growth · Compassion",
-      image: "family-cutouts/raika.webp",
+      image: "family-cutouts-v2/raika.png",
       alt: "Raika, young rabbit samurai in green armor"
     },
     rai: {
@@ -259,7 +248,7 @@
       quote: "To fight you need strength; to protect you need wisdom.",
       description: "A seasoned warrior, teacher, and father. Rai believes a samurai's greatest strength is not merely the ability to fight, but the wisdom to protect.",
       traits: "Strength · Wisdom · Compassion",
-      image: "family-cutouts/rai.webp",
+      image: "family-cutouts-v2/rai.png",
       alt: "Sensei Rai, rabbit samurai master"
     },
     hikari: {
@@ -267,7 +256,7 @@
       quote: "She carries the weight of two worlds.",
       description: "She carries the weight of two worlds — one as a commander, the other as a mother. To protect those she loves and those she leads, she has sacrificed more of herself than anyone will ever know.",
       traits: "Duty · Courage · Sacrifice",
-      image: "family-cutouts/hikari.webp",
+      image: "family-cutouts-v2/hikari.png",
       alt: "Hikari, rabbit guard captain in dark samurai armor"
     }    ,
     raigo: {
@@ -275,7 +264,7 @@
       quote: "Strength means standing firm when others need you most.",
       description: "Raigo is steady, focused, and deeply protective. He may speak less than others, but his presence carries weight. Beneath his composed exterior is a young warrior shaped by loyalty, discipline, and the instinct to stand between danger and the people he cares about.",
       traits: "Loyalty · Resolve · Protection",
-      image: "family-cutouts/raigo.webp",
+      image: "family-cutouts-v2/raigo.png",
       alt: "Raigo, young rabbit warrior in white training clothes with green trim"
     },
     raiko: {
@@ -283,7 +272,7 @@
       quote: "A brave heart keeps moving, even when the road is uncertain.",
       description: "Raiko is spirited, warm, and full of potential. She faces the world with curiosity and heart, carrying both kindness and inner fire. As she grows, her journey is defined by courage, compassion, and the desire to become stronger without losing who she is.",
       traits: "Courage · Heart · Growth",
-      image: "family-cutouts/raiko.webp",
+      image: "family-cutouts-v2/raiko.png",
       alt: "Raiko, young rabbit warrior in white training clothes with green trim"
     }
   };
