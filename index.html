@@ -15,8 +15,22 @@
 .profile-dialog{position:fixed;width:min(940px,calc(100vw - 28px));max-height:90vh;padding:0;border:1px solid #d8ad6570;border-radius:12px;background:#111a17;color:#f4f0e7;box-shadow:0 25px 90px #000b;overflow:auto}
 .profile-dialog::backdrop{background:#030908dc;backdrop-filter:blur(6px)}
 .profile-layout{display:grid;grid-template-columns:minmax(0,44%) minmax(0,1fr);align-items:stretch}
-.profile-art{display:grid;place-items:center;min-height:515px;padding:16px;background:transparent;overflow:hidden}
+.profile-art{position:relative;display:grid;place-items:center;min-height:515px;padding:16px;background:transparent;overflow:hidden}
 .profile-art img{display:block;max-width:100%;width:100%;max-height:505px;object-fit:contain;filter:drop-shadow(0 0 18px rgba(245,205,146,.21)) drop-shadow(0 0 42px rgba(219,145,79,.08))}
+.profile-visual{display:flex;flex-direction:column;min-width:0}
+.profile-gallery[hidden],.profile-variant-arrow[hidden]{display:none}
+.profile-variant-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:1;width:36px;height:48px;border:1px solid #d8ad657b;border-radius:5px;background:#0c1715e6;color:#eac483;font:32px/1 Georgia,serif;cursor:pointer}
+.profile-variant-arrow:hover{background:#d8ad65;color:#111a17}
+.profile-variant-arrow.prev{left:8px}
+.profile-variant-arrow.next{right:8px}
+.profile-gallery{padding:0 17px 22px}
+.profile-gallery-header{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px;color:#d8ad65;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.profile-gallery-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.profile-gallery-option{min-width:0;padding:6px 3px 8px;border:1px solid #ffffff38;border-radius:5px;background:#1b2822;color:#c7cbc3;cursor:pointer;font:600 10px/1.25 'DM Sans',sans-serif;display:flex;flex-direction:column;gap:5px;align-items:center}
+.profile-gallery-option img{display:block;width:100%;height:66px;object-fit:contain}
+.profile-gallery-option[aria-pressed="true"]{background:#3d3425;border-color:#d8ad65;color:#f1d49b}
+.profile-gallery-option:hover{border-color:#d8ad65}
+.profile-gallery-option:focus-visible,.profile-variant-arrow:focus-visible{outline:2px solid #f1d49b;outline-offset:2px}
 .profile-art img[src="hikari-transparent-gold-20261107.webp"]{transform:scale(.94);transform-origin:center bottom}
 .profile-copy{display:flex;flex-direction:column;justify-content:center;padding:46px 42px 40px}
 .profile-copy h2{margin:10px 0 6px;font-size:clamp(30px,4vw,47px)}
@@ -26,7 +40,7 @@
 .profile-traits{font-size:11px;color:#d8ad65;text-transform:uppercase;letter-spacing:.14em;margin-top:20px}
 .profile-close{position:absolute;top:12px;right:14px;width:38px;height:38px;border:1px solid #d8ad6580;border-radius:50%;color:#f4f0e7;background:#101a17e8;cursor:pointer;font-size:26px;line-height:1;z-index:2}
 @media(max-width:950px){.character-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.character--hikari{grid-column:1/-1;width:calc((100% - 20px)/2);justify-self:center}}
-@media(max-width:640px){.character-gallery{grid-template-columns:1fr}.character--hikari{width:100%;grid-column:auto}.character-media{height:365px}.character-media img{height:348px}.character--hikari .character-media img{height:336px}.profile-layout{grid-template-columns:1fr}.profile-art{min-height:0;height:295px}.profile-art img{max-height:275px}.profile-copy{padding:24px 24px 32px}.profile-dialog{max-height:92vh}.profile-quote{font-size:17px;margin-top:18px}}
+@media(max-width:640px){.character-gallery{grid-template-columns:1fr}.character--hikari{width:100%;grid-column:auto}.character-media{height:365px}.character-media img{height:348px}.character--hikari .character-media img{height:336px}.profile-layout{grid-template-columns:1fr}.profile-art{min-height:0;height:295px}.profile-art img{max-height:275px}.profile-dialog[data-character="raika"] .profile-art{height:315px}.profile-gallery{padding:0 14px 12px}.profile-gallery-option img{height:60px}.profile-copy{padding:24px 24px 32px}.profile-dialog{max-height:92vh}.profile-quote{font-size:17px;margin-top:18px}}
 @media(prefers-reduced-motion:reduce){.character{transition:none}.character:hover,.character:focus-within{transform:none}}
 
 .comic-reader{margin-top:34px;background:#0a110e;border:1px solid #d8ad6555;box-shadow:0 20px 60px #0006}
@@ -230,7 +244,17 @@
 <dialog class="profile-dialog" id="character-profile" aria-labelledby="profile-heading" aria-describedby="profile-description">
   <button class="profile-close" type="button" aria-label="Close character profile">×</button>
   <div class="profile-layout">
-    <div class="profile-art"><img id="profile-image" src="rai-from-reference-transparent-gold-20261107.webp" alt="Sensei Rai portrait"></div>
+    <div class="profile-visual">
+      <div class="profile-art">
+        <img id="profile-image" src="rai-from-reference-transparent-gold-20261107.webp" alt="Sensei Rai portrait">
+        <button class="profile-variant-arrow prev" id="profile-variant-prev" type="button" aria-label="Previous character variant" hidden>‹</button>
+        <button class="profile-variant-arrow next" id="profile-variant-next" type="button" aria-label="Next character variant" hidden>›</button>
+      </div>
+      <div class="profile-gallery" id="profile-gallery" hidden>
+        <div class="profile-gallery-header"><span>Combat Variants</span><span id="profile-variant-counter" aria-live="polite"></span></div>
+        <div class="profile-gallery-options" id="profile-gallery-options" role="group" aria-label="Select character variant"></div>
+      </div>
+    </div>
     <div class="profile-copy">
       <div class="eyebrow">The Legacy of Reishin / Character Profile</div>
       <h2 id="profile-heading">Sensei Rai</h2>
@@ -249,7 +273,13 @@
       description: "A young rabbit samurai learning to balance her family's teachings with her own choices. Her journey begins with courage, compassion, and the challenge of finding her own path.",
       traits: "Courage · Growth · Compassion",
       image: "raika-canonical-user-20261107.png",
-      alt: "Raika, young rabbit samurai in green armor"
+      alt: "Raika, young rabbit samurai in green armor",
+      variants: [
+        {label: "Dual Blades", image: "character-variants/raika-dual-blades.webp", alt: "Raika attacking with two samurai swords"},
+        {label: "Bō Staff", image: "character-variants/raika-bo-staff.webp", alt: "Raika attacking with a long wooden bō staff"},
+        {label: "Spinning Kick", image: "character-variants/raika-spinning-kick.webp", alt: "Raika performing an airborne spinning kick"},
+        {label: "Nunchaku", image: "character-variants/raika-nunchaku.webp", alt: "Raika striking with a two-handle nunchaku"}
+      ]
     },
     rai: {
       title: "Sensei Rai", role: "Samurai Mentor · Father · Guardian",
@@ -286,7 +316,61 @@
   };
   const dialog = document.getElementById("character-profile");
   const closeButton = dialog.querySelector(".profile-close");
+  const portrait = document.getElementById("profile-image");
+  const gallery = document.getElementById("profile-gallery");
+  const galleryOptions = document.getElementById("profile-gallery-options");
+  const galleryCounter = document.getElementById("profile-variant-counter");
+  const variantPrev = document.getElementById("profile-variant-prev");
+  const variantNext = document.getElementById("profile-variant-next");
+  let activeVariants = [];
+  let activeVariantIndex = 0;
   let lastTrigger = null;
+  function showProfileVariant(index){
+    if(!activeVariants.length) return;
+    activeVariantIndex = (index + activeVariants.length) % activeVariants.length;
+    const variant = activeVariants[activeVariantIndex];
+    portrait.src = variant.image;
+    portrait.alt = variant.alt;
+    galleryCounter.textContent = (activeVariantIndex + 1) + " / " + activeVariants.length;
+    galleryOptions.querySelectorAll("button").forEach(function(option, i){
+      option.setAttribute("aria-pressed", String(i === activeVariantIndex));
+    });
+  }
+  function showProfileGallery(info){
+    activeVariants = info.variants || [];
+    gallery.hidden = activeVariants.length === 0;
+    variantPrev.hidden = activeVariants.length < 2;
+    variantNext.hidden = activeVariants.length < 2;
+    galleryOptions.replaceChildren();
+    if(!activeVariants.length){
+      portrait.src = info.image;
+      portrait.alt = info.alt;
+      return;
+    }
+    activeVariants.forEach(function(variant, index){
+      const option = document.createElement("button");
+      option.type = "button";
+      option.className = "profile-gallery-option";
+      option.setAttribute("aria-label", "Show " + variant.label + " variant");
+      const thumb = document.createElement("img");
+      thumb.src = variant.image;
+      thumb.alt = "";
+      thumb.loading = "lazy";
+      const caption = document.createElement("span");
+      caption.textContent = variant.label;
+      option.append(thumb, caption);
+      option.addEventListener("click", function(){showProfileVariant(index);});
+      galleryOptions.append(option);
+    });
+    showProfileVariant(0);
+  }
+  variantPrev.addEventListener("click", function(){showProfileVariant(activeVariantIndex - 1);});
+  variantNext.addEventListener("click", function(){showProfileVariant(activeVariantIndex + 1);});
+  dialog.addEventListener("keydown", function(event){
+    if(!activeVariants.length) return;
+    if(event.key === "ArrowLeft"){event.preventDefault();showProfileVariant(activeVariantIndex - 1);}
+    if(event.key === "ArrowRight"){event.preventDefault();showProfileVariant(activeVariantIndex + 1);}
+  });
   document.querySelectorAll(".profile-trigger").forEach(function(button){
     button.addEventListener("click", function(){
       const info = data[button.dataset.character];
@@ -297,10 +381,8 @@
       document.getElementById("profile-quote").textContent = "“" + info.quote + "”";
       document.getElementById("profile-description").textContent = info.description;
       document.getElementById("profile-traits").textContent = info.traits;
-      const portrait = document.getElementById("profile-image");
       dialog.dataset.character = button.dataset.character;
-      portrait.src = info.image;
-      portrait.alt = info.alt;
+      showProfileGallery(info);
       if (typeof dialog.showModal === "function") dialog.showModal();
       else dialog.setAttribute("open", "");
       closeButton.focus();
