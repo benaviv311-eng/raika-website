@@ -1,0 +1,56 @@
+name: Verify cutout alpha and export safe PNGs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-cutout-png.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify stored transparent assets and create PNG alternatives
+        run: |
+          python -m pip install Pillow numpy
+          python - <<'PY'
+          from PIL import Image, ImageDraw
+          from pathlib import Path
+          import base64, io, numpy as np
+          names=['raika','rai','hikari','raigo','raiko']
+          out=Path('family-clean/png')
+          out.mkdir(parents=True, exist_ok=True)
+          sheet=Image.new('RGB',(180*5,330),(23,32,29))
+          dr=ImageDraw.Draw(sheet)
+          for i,name in enumerate(names):
+              infile=Path('family-clean/isnet-general-use')/(name+'.webp')
+              im=Image.open(infile).convert('RGBA')
+              alpha=np.asarray(im.getchannel('A'))
+              print(name,'size',im.size,'A top-left',int(alpha[20,20]),'A sample 900,200',int(alpha[200,900]),'A sample 900,500',int(alpha[500,900]),'A sample 800,1000',int(alpha[1000,800]),'transparent ratio',float((alpha<20).mean()))
+              save_path=out/(name+'.png')
+              im.save(save_path,'PNG',optimize=True)
+              test=Image.open(save_path).convert('RGBA')
+              assert np.array_equal(alpha,np.asarray(test.getchannel('A')))
+              small=test.copy()
+              small.thumbnail((174,298),Image.Resampling.LANCZOS)
+              bg=Image.new('RGB',small.size,(23,32,29))
+              bg.paste(small,(0,0),small.getchannel('A'))
+              sheet.paste(bg,(i*180+(180-small.width)//2,8+(298-small.height)))
+              dr.text((i*180+8,311),name,fill='white')
+          buff=io.BytesIO()
+          sheet.save(buff,format='JPEG',quality=83,optimize=True)
+          Path('family-clean/png-qa.jpg.base64.txt').write_text(base64.b64encode(buff.getvalue()).decode('ascii'))
+          print('QA jpeg bytes',len(buff.getvalue()))
+          PY
+      - name: Commit verified PNG portraits
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add family-clean/png family-clean/png-qa.jpg.base64.txt
+          git commit -m "Export lossless transparent PNG portraits and verify alpha"
+          git push origin main
