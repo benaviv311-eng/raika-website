@@ -1,4 +1,4 @@
-name: Verify cutout alpha and export safe PNGs
+name: Publish clean-alpha character cutouts
 
 on:
   push:
@@ -11,46 +11,57 @@ permissions:
   contents: write
 
 jobs:
-  verify:
+  clean-transparent-png:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify stored transparent assets and create PNG alternatives
+      - name: Strip leaked background RGB and verify transparent PNG
         run: |
           python -m pip install Pillow numpy
           python - <<'PY'
-          from PIL import Image, ImageDraw
+          from PIL import Image,ImageDraw
+          import numpy as np
           from pathlib import Path
-          import base64, io, numpy as np
-          names=['raika','rai','hikari','raigo','raiko']
-          out=Path('family-clean/png')
-          out.mkdir(parents=True, exist_ok=True)
-          sheet=Image.new('RGB',(180*5,330),(23,32,29))
-          dr=ImageDraw.Draw(sheet)
+          import io,base64
+          names=('raika','rai','hikari','raigo','raiko')
+          out=Path('family-cutouts-v2')
+          out.mkdir(exist_ok=True)
+          contact=Image.new('RGB',(5*200,350),(16,25,23))
+          drawer=ImageDraw.Draw(contact)
           for i,name in enumerate(names):
-              infile=Path('family-clean/isnet-general-use')/(name+'.webp')
-              im=Image.open(infile).convert('RGBA')
-              alpha=np.asarray(im.getchannel('A'))
-              print(name,'size',im.size,'A top-left',int(alpha[20,20]),'A sample 900,200',int(alpha[200,900]),'A sample 900,500',int(alpha[500,900]),'A sample 800,1000',int(alpha[1000,800]),'transparent ratio',float((alpha<20).mean()))
-              save_path=out/(name+'.png')
-              im.save(save_path,'PNG',optimize=True)
-              test=Image.open(save_path).convert('RGBA')
-              assert np.array_equal(alpha,np.asarray(test.getchannel('A')))
-              small=test.copy()
-              small.thumbnail((174,298),Image.Resampling.LANCZOS)
-              bg=Image.new('RGB',small.size,(23,32,29))
-              bg.paste(small,(0,0),small.getchannel('A'))
-              sheet.paste(bg,(i*180+(180-small.width)//2,8+(298-small.height)))
-              dr.text((i*180+8,311),name,fill='white')
-          buff=io.BytesIO()
-          sheet.save(buff,format='JPEG',quality=83,optimize=True)
-          Path('family-clean/png-qa.jpg.base64.txt').write_text(base64.b64encode(buff.getvalue()).decode('ascii'))
-          print('QA jpeg bytes',len(buff.getvalue()))
+              source=Image.open(Path('family-clean/isnet-general-use')/(name+'.webp')).convert('RGBA')
+              array=np.array(source)
+              alpha=array[:,:,3].copy()
+              # Keep hair/fur edge softness; only remove leftover translucent background.
+              alpha[alpha<48]=0
+              alpha[alpha>246]=255
+              array[:,:,3]=alpha
+              # Transparent pixels MUST NOT carry stray orange/purple studio RGB.
+              array[alpha==0,0:3]=0
+              png=Image.fromarray(array,'RGBA')
+              target=out/(name+'.png')
+              png.save(target,'PNG',optimize=True)
+              check=Image.open(target).convert('RGBA')
+              c=np.asarray(check)
+              assert np.array_equal(c,array)
+              assert (c[c[:,:,3]==0,:3]==0).all()
+              assert (c[:,:,3]==0).mean()>.6
+              assert c[200,900,3]==0 and c[500,900,3]==0
+              print(name, 'PNG bytes',target.stat().st_size,'transparent',round((alpha==0).mean(),3),'nonzero RGB on 0-alpha',int(np.count_nonzero(c[alpha==0,:3])))
+              thumb=check.copy()
+              thumb.thumbnail((190,315),Image.Resampling.LANCZOS)
+              px=i*200+(200-thumb.width)//2
+              py=8+315-thumb.height
+              contact.paste(thumb,(px,py),thumb.getchannel('A'))
+              drawer.text((i*200+10,328),name,fill=(239,219,185))
+          output=io.BytesIO()
+          contact.save(output,'JPEG',quality=86,optimize=True)
+          (out/'contact-sheet.jpg.base64.txt').write_text(base64.b64encode(output.getvalue()).decode('ascii'))
           PY
-      - name: Commit verified PNG portraits
+      - name: Commit verified assets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add family-clean/png family-clean/png-qa.jpg.base64.txt
-          git commit -m "Export lossless transparent PNG portraits and verify alpha"
+          git add family-cutouts-v2
+          git commit -m "Add cleaned transparent family portraits with zeroed background RGB"
           git push origin main
