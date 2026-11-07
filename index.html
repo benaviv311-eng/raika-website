@@ -60,27 +60,77 @@
 .comic-download a:hover{color:#f5d9a7}
 @media(max-width:700px){.comic-arrow{width:42px;height:58px;font-size:42px}.comic-arrow-prev{left:7px}.comic-arrow-next{right:7px}.comic-reader-head{padding:15px;align-items:flex-start}.comic-reader-title{font-size:16px}.comic-reader-stage{padding:14px 52px}.comic-page-image{max-height:calc(72vh * var(--comic-zoom,1))}.comic-reader-controls{justify-content:center;gap:12px;padding:13px 10px}.reader-navigation,.reader-tools{gap:6px}.reader-btn{padding:10px 11px;font-size:10px}.reader-pages{gap:5px}.reader-page-btn{padding:9px 9px;font-size:10px}.comic-download{padding:15px 0}}
 @media(max-width:390px){.reader-navigation,.reader-tools{width:100%;justify-content:center}.comic-reader-controls{gap:10px}}
-</style></head><body><header><div class="wrap nav"><a class="brand" href="#top">RAI<span>K</span>A</a><nav><a href="#story">The Story</a><a href="#characters">Characters</a><a href="#comic">Read</a><a href="#support">Support</a><a href="https://www.instagram.com/raika.samurairabbit/" target="_blank" rel="noopener">Instagram ↗</a></nav></div></header><main><section class="hero" id="top"><img class="hero-art" src="raika-hero-blue-2026.svg" alt="Raika, white rabbit samurai in blue training robes with golden lightning emblem"><div class="wrap"><div class="hero-inner"><div class="eyebrow">An original samurai fantasy</div><h1>RAIKA<small>The Legacy of Reishin</small></h1><p>Strength to fight. Wisdom to protect. Enter a world of ancient traditions, impossible choices, and a young warrior finding her path.</p><div class="buttons"><a class="btn primary" href="#comic">Read the free comic</a><a class="btn" href="#support">Support the journey</a></div></div></div></section><section class="section" id="story"><div class="wrap"><div class="eyebrow">The world of Raika</div><h2>A legend begins with a choice.</h2><p>Beyond the mountain paths, clans and warriors carry stories of honor, loyalty, and sacrifice. Raika's journey is only beginning.</p><div class="cards"><div class="card"><strong>01</strong><h3>The Warrior</h3><p>Meet Raika: a young rabbit samurai learning that courage is more than strength.</p></div><div class="card"><strong>02</strong><h3>The Legacy</h3><p>Training, family, and ancient teachings shape the path ahead.</p></div><div class="card"><strong>03</strong><h3>The Journey</h3><p>Discover an original fantasy universe through illustrated comic storytelling.</p></div></div></div></section><section class="section" id="characters"><div class="wrap"><div class="eyebrow">The people behind the legend</div><h2>Meet the Characters</h2><p>Discover the warriors and family at the heart of RAIKA.</p><div class="character-gallery">
+
+/* Rai family: one illustrated character at a time, with both automatic and manual navigation. */
+.family-carousel{margin-top:32px;border:1px solid #d8ad6550;background:linear-gradient(150deg,#121f1a,#0a1310);padding:20px}
+.family-carousel-top,.family-carousel-bottom{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.family-carousel-top{font:700 11px 'DM Sans',sans-serif;letter-spacing:.2em;color:#d8ad65;margin-bottom:16px}
+.family-carousel-shell{position:relative;padding:0 72px}
+.family-carousel .family-slides{display:block;margin:0;min-width:0}
+.family-carousel .family-slides .character{width:100%;display:grid;grid-template-columns:minmax(0,48%) minmax(0,52%);min-height:440px;transform:none;box-shadow:none}
+.family-carousel .family-slides .character[hidden]{display:none!important}
+.family-carousel .family-slides .character:hover,.family-carousel .family-slides .character:focus-within{transform:none;box-shadow:none}
+.family-carousel .character-media{height:440px}
+.family-carousel .character-media img{height:422px;max-width:100%}
+.family-carousel .character--hikari .character-media img{height:406px}
+.family-carousel .character--hikari{width:100%;grid-column:auto;justify-self:stretch}
+.family-carousel .character-body{justify-content:center;padding:clamp(24px,4vw,52px);gap:15px}
+.family-carousel .character-body h3{font-size:clamp(29px,4vw,48px)}
+.family-carousel .character-body p{font-size:15px;line-height:1.75}
+.family-carousel .profile-trigger{margin-top:20px}
+.family-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2;border:1px solid #d8ad6580;border-radius:8px;background:#1b2c24;color:#e7c58f;width:54px;height:76px;font:400 56px/1 Georgia,serif;cursor:pointer;display:grid;place-items:center;transition:background .2s,color .2s}
+.family-arrow:hover{background:#d8ad65;color:#111a17}
+.family-arrow:focus-visible,.family-dot:focus-visible{outline:3px solid #f2d39c;outline-offset:3px}
+.family-arrow-prev{left:4px}
+.family-arrow-next{right:4px}
+.family-carousel-bottom{margin-top:18px}
+.family-dots{display:flex;align-items:center;gap:10px}
+.family-dot{width:10px;height:10px;border-radius:50%;background:#647166;border:1px solid #a58b60;cursor:pointer;padding:0}
+.family-dot[aria-current="true"]{width:26px;border-radius:20px;background:#d8ad65;border-color:#d8ad65}
+.family-carousel-hint{font-size:11px;color:#a7b0a8}
+.family-visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:760px){.family-carousel{padding:12px}.family-carousel-shell{padding:0 0 62px}.family-carousel .family-slides .character{grid-template-columns:1fr;min-height:0}.family-carousel .character-media{height:360px}.family-carousel .character-media img{height:345px}.family-carousel .character--hikari .character-media img{height:331px}.family-carousel .character-body{padding:24px 22px}.family-carousel .character-body h3{font-size:30px}.family-carousel .character-body p{font-size:13px}.family-arrow{width:45px;height:48px;font-size:38px;top:auto;bottom:4px;transform:none}.family-arrow-prev{left:calc(50% - 105px)}.family-arrow-next{right:calc(50% - 105px)}.family-carousel-top{margin-bottom:12px}.family-carousel-bottom{justify-content:center;text-align:center;gap:10px}.family-carousel-hint{width:100%}}
+@media(prefers-reduced-motion:reduce){.family-arrow{transition:none}}
+
+</style></head><body><header><div class="wrap nav"><a class="brand" href="#top">RAI<span>K</span>A</a><nav><a href="#story">The Story</a><a href="#characters">Characters</a><a href="#comic">Read</a><a href="#support">Support</a><a href="https://www.instagram.com/raika.samurairabbit/" target="_blank" rel="noopener">Instagram ↗</a></nav></div></header><main><section class="hero" id="top"><img class="hero-art" src="raika-hero-blue-2026.svg" alt="Raika, white rabbit samurai in blue training robes with golden lightning emblem"><div class="wrap"><div class="hero-inner"><div class="eyebrow">An original samurai fantasy</div><h1>RAIKA<small>The Legacy of Reishin</small></h1><p>Strength to fight. Wisdom to protect. Enter a world of ancient traditions, impossible choices, and a young warrior finding her path.</p><div class="buttons"><a class="btn primary" href="#comic">Read the free comic</a><a class="btn" href="#support">Support the journey</a></div></div></div></section><section class="section" id="story"><div class="wrap"><div class="eyebrow">The world of Raika</div><h2>A legend begins with a choice.</h2><p>Beyond the mountain paths, clans and warriors carry stories of honor, loyalty, and sacrifice. Raika's journey is only beginning.</p><div class="cards"><div class="card"><strong>01</strong><h3>The Warrior</h3><p>Meet Raika: a young rabbit samurai learning that courage is more than strength.</p></div><div class="card"><strong>02</strong><h3>The Legacy</h3><p>Training, family, and ancient teachings shape the path ahead.</p></div><div class="card"><strong>03</strong><h3>The Journey</h3><p>Discover an original fantasy universe through illustrated comic storytelling.</p></div></div></div></section><section class="section" id="characters"><div class="wrap"><div class="eyebrow">The people behind the legend</div><h2>Meet the Characters</h2><p>Discover the warriors and family at the heart of RAIKA.</p><div class="family-carousel" id="family-carousel" role="region" aria-roledescription="carousel" aria-label="Rai's family">
+<div class="family-carousel-top"><span>THE RAI FAMILY</span><span id="family-count">01 / 05</span></div>
+<div class="family-carousel-shell">
+<button class="family-arrow family-arrow-prev" type="button" id="family-prev" aria-label="Previous family member" title="Previous family member">‹</button>
+<div class="character-gallery family-slides" id="family-slides">
 <article class="character character--raika">
   <div class="character-media"><img loading="lazy" src="raika-character-rai-bg-2026.webp" alt="Raika, young white rabbit samurai wearing green armor"></div>
   <div class="character-body"><div class="character-role">Young Samurai</div><h3>Raika</h3><p>A young samurai learning to balance strength, courage, and compassion.</p><button type="button" class="profile-trigger" data-character="raika" aria-label="Explore Raika's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
-<article class="character character--rai">
+<article class="character character--rai" hidden>
   <div class="character-media"><img loading="lazy" src="rai-character-rai-bg-2026.webp" alt="Sensei Rai, rabbit samurai master in dark armor with a golden lightning emblem"></div>
   <div class="character-body"><div class="character-role">Samurai Mentor · Father</div><h3>Sensei Rai</h3><p>Raika’s father and samurai mentor. He teaches that a warrior must be strong enough to fight and wise enough to protect.</p><button type="button" class="profile-trigger" data-character="rai" aria-label="Explore Sensei Rai's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
-<article class="character character--hikari">
+<article class="character character--hikari" hidden>
   <div class="character-media"><img loading="lazy" src="hikari-character-rai-bg-2026.webp" alt="Hikari, white rabbit guard captain in dark samurai armor with a golden lightning emblem"></div>
   <div class="character-body"><div class="character-role">Captain of the Guard · Mother</div><h3>Hikari</h3><p>She carries the weight of two worlds — one as a commander, the other as a mother. To protect those she loves and those she leads, she has sacrificed more of herself than anyone will ever know.</p><button type="button" class="profile-trigger" data-character="hikari" aria-label="Explore Hikari's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
-<article class="character character--raigo">
+<article class="character character--raigo" hidden>
   <div class="character-media"><img loading="lazy" src="raigo-character-rai-bg-2026.webp" width="1024" height="1536" alt="Raigo, young rabbit warrior in white training clothes with green trim"></div>
   <div class="character-body"><div class="character-role">Young Warrior · Brother</div><h3>Raigo</h3><p>Strong-willed and determined, Raigo carries a quiet intensity. Beneath his calm presence lies a fierce spirit ready to protect those he loves.</p><button type="button" class="profile-trigger" data-character="raigo" aria-label="Explore Raigo's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
-<article class="character character--raiko">
+<article class="character character--raiko" hidden>
   <div class="character-media"><img loading="lazy" src="raiko-character-rai-bg-2026.webp" width="1024" height="1536" alt="Raiko, young rabbit warrior in white training clothes with green trim"></div>
   <div class="character-body"><div class="character-role">Young Warrior · Sister</div><h3>Raiko</h3><p>Bright, spirited, and full of heart, Raiko brings youthful energy and courage. Her path is shaped by curiosity, loyalty, and the will to grow stronger.</p><button type="button" class="profile-trigger" data-character="raiko" aria-label="Explore Raiko's character profile">Explore character <span aria-hidden="true">↗</span></button></div>
 </article>
+</div>
+<button class="family-arrow family-arrow-next" type="button" id="family-next" aria-label="Next family member" title="Next family member">›</button>
+</div>
+<div class="family-carousel-bottom">
+<div class="family-dots" role="group" aria-label="Choose a family member">
+<button class="family-dot" type="button" data-family-index="0" aria-label="Show Raika" aria-current="true"></button>
+<button class="family-dot" type="button" data-family-index="1" aria-label="Show Sensei Rai"></button>
+<button class="family-dot" type="button" data-family-index="2" aria-label="Show Hikari"></button>
+<button class="family-dot" type="button" data-family-index="3" aria-label="Show Raigo"></button>
+<button class="family-dot" type="button" data-family-index="4" aria-label="Show Raiko"></button>
+</div>
+<span class="family-carousel-hint">Auto-rotates every 6 seconds · Use the arrows to browse</span>
+</div>
+<span class="family-visually-hidden" id="family-announcement" aria-live="polite" aria-atomic="true"></span>
 </div></div></section>
 <dialog class="profile-dialog" id="character-profile" aria-labelledby="profile-heading" aria-describedby="profile-description">
   <button class="profile-close" type="button" aria-label="Close character profile">×</button>
@@ -163,6 +213,85 @@
   closeButton.addEventListener("click", function(){dialog.close();});
   dialog.addEventListener("click", function(event){if(event.target === dialog) dialog.close();});
   dialog.addEventListener("close", function(){if(lastTrigger) lastTrigger.focus();});
+
+  /* Rai family carousel. The five existing profiles and their images are unchanged. */
+  const familyCarousel = document.getElementById("family-carousel");
+  const familyCards = Array.from(document.querySelectorAll("#family-slides > .character"));
+  const familyDots = Array.from(familyCarousel.querySelectorAll(".family-dot"));
+  const familyCount = document.getElementById("family-count");
+  const familyAnnouncement = document.getElementById("family-announcement");
+  const familyPrev = document.getElementById("family-prev");
+  const familyNext = document.getElementById("family-next");
+  const prefersLessMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let familyIndex = 0;
+  let familyInterval = null;
+  let familyTouchStartX = null;
+  const familyDelay = 6000;
+  function showFamilyCard(index, announce) {
+    familyIndex = (index + familyCards.length) % familyCards.length;
+    familyCards.forEach(function(card, i){ card.hidden = i !== familyIndex; });
+    familyDots.forEach(function(dot,i){
+      if(i===familyIndex) dot.setAttribute("aria-current","true");
+      else dot.removeAttribute("aria-current");
+    });
+    familyCount.textContent = String(familyIndex+1).padStart(2,"0") + " / " + String(familyCards.length).padStart(2,"0");
+    if(announce){
+      const name = familyCards[familyIndex].querySelector("h3").textContent;
+      familyAnnouncement.textContent = name + ", " + (familyIndex+1) + " of " + familyCards.length;
+    }
+  }
+  function stopFamilyRotation() {
+    if(familyInterval!==null){ window.clearInterval(familyInterval); familyInterval = null; }
+  }
+  function familyCanRotate() {
+    return !document.hidden && !prefersLessMotion.matches && !dialog.open &&
+      !familyCarousel.matches(":hover") && !familyCarousel.contains(document.activeElement);
+  }
+  function startFamilyRotation() {
+    stopFamilyRotation();
+    if(!familyCanRotate()) return;
+    familyInterval = window.setInterval(function(){
+      if(!familyCanRotate()){stopFamilyRotation();return;}
+      showFamilyCard(familyIndex+1,false);
+    },familyDelay);
+  }
+  function navigateFamily(offset) {
+    showFamilyCard(familyIndex+offset,true);
+    startFamilyRotation();
+  }
+  familyPrev.addEventListener("click",function(){navigateFamily(-1);});
+  familyNext.addEventListener("click",function(){navigateFamily(1);});
+  familyDots.forEach(function(dot){
+    dot.addEventListener("click",function(){
+      showFamilyCard(Number(dot.dataset.familyIndex),true);
+      startFamilyRotation();
+    });
+  });
+  familyCarousel.addEventListener("mouseenter",stopFamilyRotation);
+  familyCarousel.addEventListener("mouseleave",startFamilyRotation);
+  familyCarousel.addEventListener("focusin",stopFamilyRotation);
+  familyCarousel.addEventListener("focusout",function(e){if(!familyCarousel.contains(e.relatedTarget)) startFamilyRotation();});
+  familyCarousel.addEventListener("touchstart",function(e){
+    stopFamilyRotation();
+    if(e.touches.length===1) familyTouchStartX=e.touches[0].clientX;
+  },{passive:true});
+  familyCarousel.addEventListener("touchend",function(e){
+    if(familyTouchStartX!==null && e.changedTouches.length){
+      const delta=e.changedTouches[0].clientX-familyTouchStartX;
+      if(Math.abs(delta)>45) navigateFamily(delta<0?1:-1);
+    }
+    familyTouchStartX=null;
+    startFamilyRotation();
+  },{passive:true});
+  document.addEventListener("visibilitychange",startFamilyRotation);
+  dialog.addEventListener("close",startFamilyRotation);
+  document.querySelectorAll(".profile-trigger").forEach(function(button){
+    button.addEventListener("click",stopFamilyRotation);
+  });
+  if(prefersLessMotion.addEventListener) prefersLessMotion.addEventListener("change",startFamilyRotation);
+  showFamilyCard(0,false);
+  startFamilyRotation();
+
   const comicPageImage = document.getElementById("comic-page-image");
   const comicStage = document.getElementById("comic-reader-stage");
   const comicLabel = document.getElementById("comic-page-label");
