@@ -16,7 +16,7 @@
 .profile-dialog::backdrop{background:#030908dc;backdrop-filter:blur(6px)}
 .profile-layout{display:grid;grid-template-columns:minmax(0,44%) minmax(0,1fr);align-items:stretch}
 .profile-art{display:grid;place-items:center;min-height:515px;padding:16px;background:transparent;overflow:hidden}
-.profile-art img{display:block;max-width:100%;width:100%;max-height:505px;object-fit:contain;filter:drop-shadow(0 0 18px rgba(237,199,129,.22))}
+.profile-art img{display:block;max-width:100%;width:100%;max-height:505px;object-fit:contain;filter:none}
 .profile-art img[src="family-cutouts-v2/hikari.png"]{transform:scale(.95)}
 .profile-copy{display:flex;flex-direction:column;justify-content:center;padding:46px 42px 40px}
 .profile-copy h2{margin:10px 0 6px;font-size:clamp(30px,4vw,47px)}
@@ -130,8 +130,9 @@
   -webkit-mask-image:none;
   mask-image:none;
   clip-path:none;
-  filter:drop-shadow(0 0 14px rgba(240,205,144,.24)) drop-shadow(0 0 27px rgba(231,184,107,.12));
+  filter:drop-shadow(0 0 6px rgba(255,245,230,.08));
 }
+.family-carousel .character--rai .character-media img{filter:none}
 .family-carousel .character--hikari{width:100%;grid-column:auto;justify-self:stretch}
 .family-carousel .character--hikari .character-media img{height:492px}
 .family-carousel .character--raigo .character-media img{height:325px}
