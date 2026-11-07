@@ -62,11 +62,11 @@ body{background:radial-gradient(circle at 85% 0%,#40303c 0%,transparent 33%),rad
 <div class="field full" data-multi="characters"><label for="characters">דמויות <span class="hint">בחירה מרובה</span></label><div class="tags" aria-live="polite"></div><div class="multiwrap"><input id="characters" class="multi-input" autocomplete="off" placeholder="הקלד דמות, או לחץ להצעות" aria-expanded="false"/><div class="menu" role="listbox" hidden></div></div></div>
 <div class="field full" data-combo="location"><label for="location">מיקום בתוך סאגת כפר סאקורה</label><div class="combobox"><div class="cb-row"><input id="location" class="cb-input" autocomplete="off" placeholder="חפש או הקלד מיקום" aria-expanded="false"/><button type="button" class="chevron" aria-label="פתח מיקומים">⌄</button></div><div class="menu" role="listbox" hidden></div></div></div>
 <div class="field full" data-multi="moods"><label for="moods">רגש ואווירה <span class="hint">אפשר לשלב כמה</span></label><div class="tags" aria-live="polite"></div><div class="multiwrap"><input id="moods" class="multi-input" autocomplete="off" placeholder="הוסף רגש או אווירה" aria-expanded="false"/><div class="menu" role="listbox" hidden></div></div></div>
+<div class="field full" data-combo="dynamic"><label for="dynamic">דינמיקה בין הדמויות <span class="hint">חפש, בחר או הקלד דינמיקה חדשה</span></label><div class="combobox"><div class="cb-row"><input id="dynamic" class="cb-input" autocomplete="off" placeholder="חפש דינמיקה" aria-expanded="false"/><button type="button" class="chevron" aria-label="פתח דינמיקות">⌄</button></div><div class="menu" role="listbox" hidden></div></div></div>
 <div class="field full"><label for="situation">מה קורה בסצנה? <span class="hint">רשות</span></label><textarea id="situation" placeholder="לדוגמה: אימון משותף שבו כל אחת מנסה להוכיח שהיא טובה יותר מהשנייה."></textarea></div>
 </div>
 <div class="split"></div>
-<details class="advanced"><summary>הגדרות מתקדמות — יחסים, רצונות ותוצאה</summary><div class="form-grid">
-<div class="field" data-combo="dynamic"><label for="dynamic">דינמיקה בין הדמויות</label><div class="combobox"><div class="cb-row"><input id="dynamic" class="cb-input" autocomplete="off" placeholder="חפש דינמיקה" aria-expanded="false"/><button type="button" class="chevron" aria-label="פתח דינמיקות">⌄</button></div><div class="menu" role="listbox" hidden></div></div></div>
+<details class="advanced"><summary>הגדרות מתקדמות — רצונות ותוצאה</summary><div class="form-grid">
 <div class="field"><label for="length">אורך</label><select class="native" id="length"><option>קצר</option><option selected>בינוני</option><option>ארוך</option></select></div>
 <div class="field full"><label for="goalA">מה הדמות הראשונה רוצה? <span class="hint">רשות</span></label><input class="native" id="goalA" placeholder="למשל: להוכיח שהיא טובה יותר" /></div>
 <div class="field full"><label for="goalB">מה הדמות השנייה רוצה? <span class="hint">רשות</span></label><input class="native" id="goalB" placeholder="למשל: לא להיראות חלשה" /></div>
@@ -108,7 +108,7 @@ const setMenu=(input,menu,items,onSelect,selected=[],allowNew=true)=>{
  const show=()=>setMenu(input,menu,catalog[type],choose);
  input.addEventListener('focus',()=>{input.select();show()});input.addEventListener('input',show);input.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll();if(e.key==='Enter'){e.preventDefault();const first=menu.querySelector('button.option');if(first)first.click();else {choose(input.value,true);closeAll();refresh()}}});
  arrow.addEventListener('click',()=>{if(menu.hidden){input.value='';show();input.focus()}else closeAll()});
- input.addEventListener('blur',()=>{setTimeout(()=>{if(!root.contains(document.activeElement)){if(input.value.trim()&&!menu.hidden){state[type]=input.value.trim();if(!catalog[type].includes(state[type])&&!state.unverified.includes(state[type]))state.unverified.push(state[type])}else input.value=state[type];closeAll();refresh()}},140)});
+ input.addEventListener('blur',()=>{setTimeout(()=>{if(!root.contains(document.activeElement)){if(input.value.trim()&&input.value.trim()!==state[type]){state[type]=input.value.trim();if(!catalog[type].includes(state[type])&&!state.unverified.includes(state[type]))state.unverified.push(state[type])}else input.value=state[type];closeAll();refresh()}},140)});
  }
  for(const type of ['characters','moods']){
  const root=document.querySelector('[data-multi="'+type+'"]');const input=root.querySelector('input');const menu=root.querySelector('.menu');const tags=root.querySelector('.tags');
