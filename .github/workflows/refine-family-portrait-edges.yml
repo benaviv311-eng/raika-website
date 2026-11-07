@@ -1,0 +1,74 @@
+name: Refine family portrait edge mattes
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/refine-family-portrait-edges.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install imaging tools
+        run: python -m pip install Pillow numpy scipy
+      - name: Remove warm color fringing without repainting approved characters
+        run: |
+          python - <<'PY'
+          import numpy as np, base64, io
+          from pathlib import Path
+          from PIL import Image, ImageDraw, ImageFilter
+          from scipy.ndimage import distance_transform_edt
+          names=['raika','rai','hikari','raigo','raiko']
+          dest=Path('family-matted')
+          dest.mkdir(exist_ok=True)
+          compare=Image.new('RGB',(5*230,390),(12,19,17))
+          draw=ImageDraw.Draw(compare)
+          for i,name in enumerate(names):
+              src=Image.open(Path('family-cutouts-v2')/(name+'.png')).convert('RGBA')
+              a=np.asarray(src,dtype=np.uint8).copy()
+              alpha=a[:,:,3]
+              solid=alpha>=235
+              if solid.sum() < 1000: raise RuntimeError('Missing subject mask for '+name)
+              indices=distance_transform_edt(~solid,return_distances=False,return_indices=True)
+              edge=(alpha>0)&(alpha<235)
+              rgb=a[:,:,:3]
+              neighbor=rgb[indices[0,edge],indices[1,edge]].astype(np.float32)
+              original=rgb[edge].astype(np.float32)
+              mix=(.70 * np.power(1.0-alpha[edge].astype(np.float32)/235.0, .75))[:,None]
+              rgb[edge]=np.clip(original*(1.0-mix)+neighbor*mix,0,255).astype(np.uint8)
+              # Strip hidden RGB to prevent interpolation of residual studio colors.
+              rgb[alpha==0]=0
+              result=Image.fromarray(a,'RGBA')
+              result.save(dest/(name+'.png'),format='PNG',optimize=True)
+              verify=np.array(Image.open(dest/(name+'.png')).convert('RGBA'))
+              assert np.array_equal(verify[:,:,3],alpha)
+              assert np.array_equal(verify[alpha==255],a[alpha==255])
+              print(name,'edge pixels cleaned',edge.sum(),'alpha unchanged',True)
+              # Preview each image on the live site's green background with diffused silhouette glow.
+              t=result.copy();t.thumbnail((210,325),Image.Resampling.LANCZOS)
+              x=i*230+(230-t.width)//2
+              y=13+(325-t.height)
+              glow=t.getchannel('A').filter(ImageFilter.GaussianBlur(12))
+              glow.putdata([int(v*.16) for v in glow.getdata()])
+              layer=Image.new('RGBA',t.size,(233,188,116,0));layer.putalpha(glow)
+              panel=Image.new('RGBA',t.size,(12,19,18,255))
+              panel.alpha_composite(layer)
+              panel.alpha_composite(t)
+              compare.paste(panel.convert('RGB'),(x,y))
+              draw.text((i*230+11,355),name,fill=(238,212,174))
+          buf=io.BytesIO();compare.save(buf,'JPEG',quality=86,optimize=True)
+          (dest/'qa-review.jpg.base64.txt').write_text(base64.b64encode(buf.getvalue()).decode('ascii'))
+          PY
+      - name: Save candidates for website integration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add family-matted/
+          git commit -m "Prepare soft-matted family portraits without color fringe"
+          git push origin main
