@@ -133,6 +133,19 @@
   filter:drop-shadow(0 0 22px rgba(245,205,146,.28)) drop-shadow(0 0 55px rgba(219,145,79,.11));
 }
 
+/* Rai's original transparent portrait: warm halo only, no dark image panel. */
+.family-carousel .character--rai .character-media{
+  background:radial-gradient(ellipse at 50% 50%,rgba(234,176,99,.23) 0%,rgba(224,151,72,.10) 37%,transparent 71%);
+}
+.family-carousel .character--rai .character-media img{
+  filter:drop-shadow(0 0 20px rgba(245,205,146,.38)) drop-shadow(0 0 52px rgba(219,145,79,.22));
+}
+.profile-dialog[data-character="rai"] .profile-art{
+  background:radial-gradient(ellipse at 50% 50%,rgba(234,176,99,.20),rgba(224,151,72,.08) 40%,transparent 72%);
+}
+.profile-dialog[data-character="rai"] .profile-art img{
+  filter:drop-shadow(0 0 18px rgba(245,205,146,.36)) drop-shadow(0 0 44px rgba(219,145,79,.18));
+}
 .family-carousel .character--hikari{width:100%;grid-column:auto;justify-self:stretch}
 .family-carousel .character--hikari .character-media img{height:515px}
 .family-carousel .character--raigo .character-media img{height:325px}
@@ -291,6 +304,7 @@
       document.getElementById("profile-description").textContent = info.description;
       document.getElementById("profile-traits").textContent = info.traits;
       const portrait = document.getElementById("profile-image");
+      dialog.dataset.character = button.dataset.character;
       portrait.src = info.image;
       portrait.alt = info.alt;
       if (typeof dialog.showModal === "function") dialog.showModal();
