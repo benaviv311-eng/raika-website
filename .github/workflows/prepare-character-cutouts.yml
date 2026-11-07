@@ -1,0 +1,63 @@
+name: Prepare transparent character portraits
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/prepare-character-cutouts.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  transparent-portraits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install portrait background-removal dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "rembg[cpu]>=2.0.60" "Pillow>=11"
+      - name: Create transparent portraits without repainting characters
+        env:
+          U2NET_HOME: /tmp/u2net-models
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from rembg import remove, new_session
+          from PIL import Image
+          from io import BytesIO
+          src_names=['raika','rai','hikari','raigo','raiko']
+          dst=Path('family-cutouts')
+          dst.mkdir(exist_ok=True)
+          sess=new_session('u2net')
+          for name in src_names:
+              inp=Path(f'{name}-character-rai-bg-2026.webp')
+              if not inp.exists(): raise SystemExit(f'Missing source: {inp}')
+              output=remove(inp.read_bytes(),session=sess,alpha_matting=True,alpha_matting_foreground_threshold=240,alpha_matting_background_threshold=12,alpha_matting_erode_size=6)
+              im=Image.open(BytesIO(output)).convert('RGBA')
+              alpha=im.getchannel('A')
+              lo,hi=alpha.getextrema()
+              histogram=alpha.histogram()
+              opaque=sum(histogram[200:])/sum(histogram)
+              transparent=sum(histogram[:20])/sum(histogram)
+              if lo!=0 or hi<245 or opaque<.08 or transparent<.10:
+                  raise SystemExit(f'Unexpected alpha distribution for {name}: {lo=}, {hi=}, {opaque=:.2f}, {transparent=:.2f}')
+              # Keep original full dimensions for consistent object-fit and alignment.
+              out=dst/f'{name}.webp'
+              im.save(out,'WEBP',lossless=True,method=6)
+              print(f'{name}: {im.size} alpha bounds={lo,hi} foreground={opaque:.2%} transparent={transparent:.2%} output={out.stat().st_size} bytes')
+          PY
+      - name: Commit transparent portraits for visual review
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add family-cutouts/*.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "Create transparent cutouts of existing family character art"
+            git push origin main
+          fi
