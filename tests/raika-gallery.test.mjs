@@ -8,7 +8,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const page = readFileSync(join(root, 'index.html'), 'utf8');
 
 const variants = [
-  ['Dual Blades', 'raika-dual-blades.webp'],
+  ['Dual Blades', 'raika-dual-blades-v2.png'],
   ['Bō Staff', 'raika-bo-staff.webp'],
   ['Spinning Kick', 'raika-spinning-kick.webp'],
   ['Nunchaku', 'raika-nunchaku.webp'],
@@ -20,7 +20,12 @@ test('Raika has four distinct gallery variants and valid image assets', () => {
     assert.ok(page.includes(`character-variants/${filename}`), `Missing variant path: ${filename}`);
     const image = join(root, 'character-variants', filename);
     assert.ok(statSync(image).size > 10_000, `Image must not be empty: ${filename}`);
-    assert.equal(readFileSync(image).toString('ascii', 0, 4), 'RIFF', `Expected WebP: ${filename}`);
+    const bytes = readFileSync(image);
+    if (filename.endsWith('.png')) {
+      assert.equal(bytes.toString('hex', 0, 8), '89504e470d0a1a0a', `Expected PNG: ${filename}`);
+    } else {
+      assert.equal(bytes.toString('ascii', 0, 4), 'RIFF', `Expected WebP: ${filename}`);
+    }
   }
 });
 
