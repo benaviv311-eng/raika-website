@@ -216,12 +216,9 @@
 /* Sakura Village Guard uses the established unframed House of Rai carousel language. */
 .guard-section{padding-top:72px}
 .guard-carousel .character--guard-hikari .character-media img{height:484px}
-.guard-carousel .character--guard-mamoru .character-media img{height:430px;opacity:.85}
-.guard-footnote{max-width:520px;margin:14px auto 0;text-align:center;color:#a99473;font-size:12px;line-height:1.6}
 @media(max-width:700px){
   .guard-section{padding-top:55px}
   .guard-carousel .character--guard-hikari .character-media img{height:385px}
-  .guard-carousel .character--guard-mamoru .character-media img{height:320px}
 }
 </style></head><body><header><div class="wrap nav"><a class="brand" href="#top">RAI<span>K</span>A</a><nav><a href="#story">The Story</a><a href="#characters">Characters</a><a href="#comic">Read</a><a href="#support">Support</a><a href="https://www.instagram.com/raika.samurairabbit/" target="_blank" rel="noopener">Instagram ↗</a></nav></div></header><main><section class="hero" id="top"><img class="hero-art" src="raika-hero-blue-2026.svg" alt="Raika, white rabbit samurai in blue training robes with golden lightning emblem"><div class="wrap"><div class="hero-inner"><div class="eyebrow">An original samurai fantasy</div><h1>RAIKA<small>The Legacy of Reishin</small></h1><p>Strength to fight. Wisdom to protect. Enter a world of ancient traditions, impossible choices, and a young warrior finding her path.</p><div class="buttons"><a class="btn primary" href="#comic">Read the free comic</a><a class="btn" href="#support">Support the journey</a></div></div></div></section><section class="section" id="story"><div class="wrap"><div class="eyebrow">The world of Raika</div><h2>A legend begins with a choice.</h2><p>Beyond the mountain paths, clans and warriors carry stories of honor, loyalty, and sacrifice. Raika's journey is only beginning.</p><div class="cards"><div class="card"><strong>01</strong><h3>The Warrior</h3><p>Meet Raika: a young rabbit samurai learning that courage is more than strength.</p></div><div class="card"><strong>02</strong><h3>The Legacy</h3><p>Training, family, and ancient teachings shape the path ahead.</p></div><div class="card"><strong>03</strong><h3>The Journey</h3><p>Discover an original fantasy universe through illustrated comic storytelling.</p></div></div></div></section><section class="section" id="characters"><div class="wrap"><div class="eyebrow">The family behind the legend</div><h2>HOUSE OF RAI</h2><p>Family · Strength · Wisdom · Legacy</p><div class="family-carousel" id="family-carousel" role="region" aria-roledescription="carousel" aria-label="Rai's family">
 <div class="family-carousel-shell">
@@ -275,19 +272,18 @@
             <div class="character-body"><div class="character-role">Archer · Village Guard</div><h3>Yumi</h3><p>A watchful archer whose blue eyes and steady bow help protect the village.</p><button type="button" class="profile-trigger" data-character="yumiGuard" aria-label="Explore Yumi's profile">Explore character <span aria-hidden="true">↗</span></button></div>
           </article>
           <article class="character character--guard-go" hidden>
-            <div class="character-media"><img loading="lazy" src="guard-characters/go-shield.webp" alt="Gō, identified by the creator in this portrait with a lightning-marked samurai shield and sword"></div>
-            <div class="character-body"><div class="character-role">Village Guard · Shield &amp; Lightning</div><h3>Gō</h3><p>A steadfast defender of Sakura Village, carrying a shield marked with lightning.</p><button type="button" class="profile-trigger" data-character="goGuard" aria-label="Explore Gō's profile">Explore character <span aria-hidden="true">↗</span></button></div>
+            <div class="character-media"><img loading="lazy" src="guard-characters/axe-warrior-unconfirmed.webp" alt="Gō, a massive dark-furred samurai guard wielding a heavy battle axe"></div>
+            <div class="character-body"><div class="character-role">Village Guard · Heavy Axe</div><h3>Gō</h3><p>The patrol's formidable front-line fighter, built for direct force and carrying a heavy axe.</p><button type="button" class="profile-trigger" data-character="goGuard" aria-label="Explore Gō's profile">Explore character <span aria-hidden="true">↗</span></button></div>
           </article>
           <article class="character character--guard-mamoru" hidden>
-            <div class="character-media"><img loading="lazy" src="guard-characters/mamoru-pending.svg" alt="Decorative lightning emblem. Mamoru's portrait has not yet been confirmed."></div>
-            <div class="character-body"><div class="character-role">Village Guard · Reference Pending</div><h3>Mamoru</h3><p>A member of Sakura Village's guard. His individual portrait awaits confirmation.</p><button type="button" class="profile-trigger" data-character="mamoruGuard" aria-label="Explore Mamoru's pending profile">Explore character <span aria-hidden="true">↗</span></button></div>
+            <div class="character-media"><img loading="lazy" src="guard-characters/go-shield.webp" alt="Mamoru, broad-built samurai guard holding a large lightning-marked shield and sword"></div>
+            <div class="character-body"><div class="character-role">Village Guard · Shield Bearer</div><h3>Mamoru</h3><p>The defensive anchor of Sakura Village's patrol, protecting his fellow guards with a large shield.</p><button type="button" class="profile-trigger" data-character="mamoruGuard" aria-label="Explore Mamoru's profile">Explore character <span aria-hidden="true">↗</span></button></div>
           </article>
         </div>
         <button class="family-arrow family-arrow-next" type="button" id="guard-next" aria-label="Next guard member" title="Next guard member">›</button>
       </div>
       <span class="family-visually-hidden" id="guard-announcement" aria-live="polite" aria-atomic="true"></span>
     </div>
-    <p class="guard-footnote">Mamoru's portrait will be revealed soon.</p>
   </div>
 </section>
 <dialog class="profile-dialog" id="character-profile" aria-labelledby="profile-heading" aria-describedby="profile-description">
@@ -397,24 +393,20 @@
       alt: "Yumi in bronze samurai armor, blue eyes, holding a bow and an arrow"
     },
     goGuard: {
-      title: "Gō", role: "Sakura Village Guard · Lightning Shield",
-      quote: "A steadfast defender of Sakura Village.",
-      description: "Gō is a formidable village defender. His lightning-marked shield and samurai armor are part of this guard portrait.",
-      traits: "Strength · Defense · Courage",
-      image: "guard-characters/go-shield.webp",
-      alt: "Gō holding his lightning-marked shield",
-      variants: [
-        {label: "Shield & Lightning", image: "guard-characters/go-shield.webp", alt: "Gō with his lightning-marked shield and sword"},
-        {label: "Axe Guard — ID Unconfirmed", image: "guard-characters/axe-warrior-unconfirmed.webp", alt: "An axe-wielding black rabbit guard; character identity awaiting confirmation"}
-      ]
+      title: "Gō", role: "Sakura Village Guard · Heavy Axe",
+      quote: "Still standing.",
+      description: "A massive, powerfully built guard and the patrol's direct-force fighter. Gō meets armored wolf attackers with his heavy axe and presses forward through the clash.",
+      traits: "Strength · Resolve · Front-Line Combat",
+      image: "guard-characters/axe-warrior-unconfirmed.webp",
+      alt: "Gō, a massive dark-furred guard with his heavy battle axe"
     },
     mamoruGuard: {
-      title: "Mamoru", role: "Sakura Village Guard · Portrait Pending",
-      quote: "Character portrait awaiting creator confirmation.",
-      description: "Mamoru belongs to the guard trio. His portrait is being prepared; this emblem is a placeholder until his appearance is confirmed.",
-      traits: "Guard · Reference Pending",
-      image: "guard-characters/mamoru-pending.svg",
-      alt: "Decorative lightning emblem, Mamoru portrait pending"
+      title: "Mamoru", role: "Sakura Village Guard · Shield Bearer",
+      quote: "The defensive anchor of the patrol.",
+      description: "A broad-built defender who carries a large shield. Mamoru absorbs incoming strikes and holds the defensive line for Rai, Gō and Yumi.",
+      traits: "Defense · Vigilance · Protection",
+      image: "guard-characters/go-shield.webp",
+      alt: "Mamoru holding his large lightning-marked shield and sword"
     },
   };
   const dialog = document.getElementById("character-profile");
