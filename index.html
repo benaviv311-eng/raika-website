@@ -259,24 +259,24 @@
       <div class="family-carousel-shell">
         <button class="family-arrow family-arrow-prev" type="button" id="guard-prev" aria-label="Previous guard member" title="Previous guard member">‹</button>
         <div class="character-gallery family-slides" id="guard-slides">
-          <article class="character character--guard-hikari">
+          <article class="character character--guard-rai character--rai">
+            <div class="character-media"><img loading="lazy" src="guard-characters/rai-guard-commander-20261108.webp" alt="Sensei Rai, commander of the Sakura Village Guard, wearing heavy battle armor and helmet with golden lightning, holding his three-bladed Reishin spear"></div>
+            <div class="character-body"><div class="character-role">Guard Commander · Samurai Mentor</div><h3>Sensei Rai</h3><p>The commander of Sakura Village Guard. His wisdom guides the patrol, and his three-bladed Reishin spear stands ready to protect the village.</p><button type="button" class="profile-trigger" data-character="raiGuard" aria-label="Explore Sensei Rai's guard commander profile">Explore character <span aria-hidden="true">↗</span></button></div>
+          </article>
+          <article class="character character--guard-hikari" hidden>
             <div class="character-media"><img loading="lazy" src="guard-characters/hikari-captain-helmet.webp" alt="Hikari in her canonical guard captain's black and bronze samurai armor, wearing a helmet and holding a rope dart"></div>
             <div class="character-body"><div class="character-role">Guard Captain · Mother</div><h3>Hikari</h3><p>Protecting her family and the village, with a rope-dart, twin daggers and the captain's armor.</p><button type="button" class="profile-trigger" data-character="hikariGuard" aria-label="Explore Hikari's guard profile">Explore character <span aria-hidden="true">↗</span></button></div>
           </article>
-          <article class="character character--guard-rai character--rai" hidden>
-            <div class="character-media"><img loading="lazy" src="rai-from-reference-transparent-gold-20261107.webp" alt="Sensei Rai, rabbit samurai wearing his lightning headband and dark blue armor"></div>
-            <div class="character-body"><div class="character-role">Sensei · Village Protector</div><h3>Sensei Rai</h3><p>A samurai mentor whose strength and wisdom guide those defending Sakura Village.</p><button type="button" class="profile-trigger" data-character="rai" aria-label="Explore Sensei Rai's profile">Explore character <span aria-hidden="true">↗</span></button></div>
-          </article>
           <article class="character character--guard-yumi" hidden>
-            <div class="character-media"><img loading="lazy" src="guard-characters/yumi-archer.webp" alt="Yumi, a brown-furred rabbit archer with blue eyes, in bronze samurai armor and helmet, holding a bow and arrow"></div>
+            <div class="character-media"><img loading="lazy" src="guard-characters/yumi-guard-20261108.webp" alt="Yumi, the blue-eyed rabbit archer in standard Sakura Village Guard battle armor, holding her bow and arrow"></div>
             <div class="character-body"><div class="character-role">Archer · Village Guard</div><h3>Yumi</h3><p>A watchful archer whose blue eyes and steady bow help protect the village.</p><button type="button" class="profile-trigger" data-character="yumiGuard" aria-label="Explore Yumi's profile">Explore character <span aria-hidden="true">↗</span></button></div>
           </article>
           <article class="character character--guard-go" hidden>
-            <div class="character-media"><img loading="lazy" src="guard-characters/axe-warrior-unconfirmed.webp" alt="Gō, a massive dark-furred samurai guard wielding a heavy battle axe"></div>
+            <div class="character-media"><img loading="lazy" src="guard-characters/go-guard-20261108.webp" alt="Gō, a massive dark-furred samurai guard in standard battle armor, wielding his lightning battle axe"></div>
             <div class="character-body"><div class="character-role">Village Guard · Heavy Axe</div><h3>Gō</h3><p>The patrol's formidable front-line fighter, built for direct force and carrying a heavy axe.</p><button type="button" class="profile-trigger" data-character="goGuard" aria-label="Explore Gō's profile">Explore character <span aria-hidden="true">↗</span></button></div>
           </article>
           <article class="character character--guard-mamoru" hidden>
-            <div class="character-media"><img loading="lazy" src="guard-characters/go-shield.webp" alt="Mamoru, broad-built samurai guard holding a large lightning-marked shield and sword"></div>
+            <div class="character-media"><img loading="lazy" src="guard-characters/mamoru-guard-20261108.webp" alt="Mamoru, broad-built samurai in standard battle armor holding his large lightning shield and sword"></div>
             <div class="character-body"><div class="character-role">Village Guard · Shield Bearer</div><h3>Mamoru</h3><p>The defensive anchor of Sakura Village's patrol, protecting his fellow guards with a large shield.</p><button type="button" class="profile-trigger" data-character="mamoruGuard" aria-label="Explore Mamoru's profile">Explore character <span aria-hidden="true">↗</span></button></div>
           </article>
         </div>
@@ -376,6 +376,14 @@
         {label: "Master Raiko", image: "character-variants/raiko-master-imitation.webp", alt: "Raiko imitating a master with an enthusiastic martial arts punch"}
       ]
     },
+    raiGuard: {
+      title: "Sensei Rai", role: "Guard Commander · Samurai Mentor",
+      quote: "To fight you need strength; to protect you need wisdom.",
+      description: "Commander of Sakura Village Guard, Rai stands before his warriors in full battle armor. His lightning-marked helmet and three-bladed Reishin spear represent the duty to defend the village.",
+      traits: "Leadership · Wisdom · Protection",
+      image: "guard-characters/rai-guard-commander-20261108.webp",
+      alt: "Sensei Rai in commander battle armor holding the three-bladed Reishin spear"
+    },
     hikariGuard: {
       title: "Hikari", role: "Guard Captain · Mother · Rope-Dart Fighter",
       quote: "She carries the weight of two worlds.",
@@ -387,26 +395,26 @@
     yumiGuard: {
       title: "Yumi", role: "Archer · Sakura Village Guard",
       quote: "A watchful guardian of Sakura Village.",
-      description: "A light-brown rabbit with sharp blue eyes. Yumi carries her bow and arrows while standing watch in bronze samurai armor.",
+      description: "A light-brown rabbit with sharp blue eyes. Yumi carries her bow and arrows in the standard dark-plated armor of Sakura Village Guard.",
       traits: "Vigilance · Precision · Loyalty",
-      image: "guard-characters/yumi-archer.webp",
-      alt: "Yumi in bronze samurai armor, blue eyes, holding a bow and an arrow"
+      image: "guard-characters/yumi-guard-20261108.webp",
+      alt: "Yumi in standard village guard armor with blue eyes, holding her bow and an arrow"
     },
     goGuard: {
       title: "Gō", role: "Sakura Village Guard · Heavy Axe",
       quote: "Still standing.",
       description: "A massive, powerfully built guard and the patrol's direct-force fighter. Gō meets armored wolf attackers with his heavy axe and presses forward through the clash.",
       traits: "Strength · Resolve · Front-Line Combat",
-      image: "guard-characters/axe-warrior-unconfirmed.webp",
-      alt: "Gō, a massive dark-furred guard with his heavy battle axe"
+      image: "guard-characters/go-guard-20261108.webp",
+      alt: "Gō, a massive dark-furred guard in standard battle armor with his heavy axe"
     },
     mamoruGuard: {
       title: "Mamoru", role: "Sakura Village Guard · Shield Bearer",
       quote: "The defensive anchor of the patrol.",
       description: "A broad-built defender who carries a large shield. Mamoru absorbs incoming strikes and holds the defensive line for Rai, Gō and Yumi.",
       traits: "Defense · Vigilance · Protection",
-      image: "guard-characters/go-shield.webp",
-      alt: "Mamoru holding his large lightning-marked shield and sword"
+      image: "guard-characters/mamoru-guard-20261108.webp",
+      alt: "Mamoru in standard guard battle armor holding his lightning shield and sword"
     },
   };
   const dialog = document.getElementById("character-profile");
