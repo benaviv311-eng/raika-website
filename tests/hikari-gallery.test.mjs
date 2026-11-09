@@ -9,8 +9,8 @@ const page = readFileSync(join(root, 'index.html'), 'utf8');
 const approvedVariants = [
   ['Rope Dart Throw', 'hikari-rope-dart-throw.webp'],
   ['Overhead Rope Spin', 'hikari-overhead-rope-spin.webp'],
-  ['Dual Daggers', 'hikari-dual-daggers.webp'],
-  ['Crossed Dagger Defense', 'hikari-crossed-dagger-defense.webp'],
+  ['Dual Daggers', 'hikari-dual-daggers-transparent-20261109.webp'],
+  ['Crossed Dagger Defense', 'hikari-crossed-dagger-defense-transparent-20261109.webp'],
 ];
 
 function profileSection(key, nextKey) {

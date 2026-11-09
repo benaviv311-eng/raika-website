@@ -7,10 +7,10 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const page = readFileSync(join(root, 'index.html'), 'utf8');
 const approvedVariants = [
-  ['Precision Shot', 'yumi-precision-shot.webp'],
-  ['Kneeling Shot', 'yumi-kneeling-shot.webp'],
-  ['Spinning Bow Strike', 'yumi-spinning-bow-strike.webp'],
-  ['Bow Defense', 'yumi-bow-defense.webp'],
+  ['Precision Shot', 'yumi-precision-shot-transparent-20261109.webp'],
+  ['Kneeling Shot', 'yumi-kneeling-shot-transparent-20261109.webp'],
+  ['Spinning Bow Strike', 'yumi-spinning-bow-strike-transparent-20261109.webp'],
+  ['Bow Defense', 'yumi-bow-defense-transparent-20261109.webp'],
 ];
 
 test('Yumi profile presents four approved poses in the intended sequence', () => {
