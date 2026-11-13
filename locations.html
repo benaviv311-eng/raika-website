@@ -43,6 +43,19 @@
     .filters{display:flex;gap:8px;flex-wrap:wrap}
     .filter{padding:9px 13px;border:1px solid #d8ad6559;background:transparent;color:#c6c9bf;cursor:pointer;font:700 12px "DM Sans",sans-serif}
     .filter[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#101713}
+
+    /* Approved location gallery: only the two approved images are rendered. */
+    .location-feature{border:1px solid var(--line);background:#15231d;margin-bottom:34px;overflow:hidden}
+    .location-feature__intro{padding:28px 28px 20px}
+    .location-feature__intro h3{margin:10px 0 8px;font-size:clamp(22px,3vw,34px)}
+    .location-feature__intro p{font-size:14px;max-width:820px;margin:0}
+    .location-feature__gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:0 14px 14px}
+    .location-shot{margin:0;min-width:0;background:#0b1715;border:1px solid #d8ad6530}
+    .location-shot img{display:block;width:100%;height:auto;aspect-ratio:1672/941;object-fit:cover}
+    .location-shot figcaption{padding:15px 16px 17px;font-size:12px;line-height:1.8;color:#c0cabe}
+    .location-shot figcaption strong{display:block;color:#ead2a7;font-family:Cinzel,Georgia,serif;font-size:16px}
+    .location-shot figcaption .he-name{font-family:Arial,sans-serif;font-weight:700}
+    @media(max-width:740px){.location-feature__gallery{grid-template-columns:1fr}.location-feature__intro{padding:22px}.location-shot figcaption{padding:12px}}
     .place-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
     .place{background:var(--panel);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;min-width:0}
     .place[hidden]{display:none}
@@ -79,19 +92,37 @@
   <section class="hero" aria-labelledby="page-title"><div class="wrap">
     <div class="eyebrow">The Legacy of Reishin / Canon World</div>
     <h1 id="page-title">Places of <span style="color:var(--gold)">Reishin</span></h1>
-    <p>Discover the settings of the Sakura Village saga. Every location listed here has a documented canon or scene approval. No location images are displayed. A location image will be added only after it is shown in the chat and explicitly approved.</p>
+    <p>Discover the settings of the Sakura Village saga. Every location listed here has a documented canon or scene approval. Two location images from the opening mountain sequence have been approved and published here. All other locations remain image-free until their artwork is individually approved.</p>
     <div class="hero-actions"><a class="btn primary" href="#locations">Explore locations</a><a class="btn" href="index.html">Back to RAIKA</a></div>
   </div></section>
   <main><div class="wrap" id="locations">
     <div class="section-head"><div>
       <div class="eyebrow">The Sakura Village Saga</div>
       <h2>Approved story settings</h2>
-      <p>Location information is displayed without images. Every proposed location image must be presented and approved here before it can appear on the site.</p>
+      <p>The first two approved landscape images are displayed below. All other locations remain text-only until separately approved.</p>
     </div><div class="filters" role="group" aria-label="Filter locations">
       <button class="filter" type="button" data-filter="all" aria-pressed="true">All locations</button>
       <button class="filter" type="button" data-filter="approved" aria-pressed="false">Canon-approved</button>
       <button class="filter" type="button" data-filter="setting" aria-pressed="false">Visual-setting rules</button>
     </div></div>
+
+    <section class="location-feature" id="mount-medoshi" aria-labelledby="mount-medoshi-title">
+      <div class="location-feature__intro">
+        <div class="place-kicker"><span>Opening sequence</span><span class="status">2 images approved</span></div>
+        <h3 id="mount-medoshi-title">Mount Medoshi</h3>
+        <p>The snow-covered summit where Medoshi appears in the opening of the story, and the vast northern lands extending toward the Kingdom of Lions. Both images were individually reviewed and approved.</p>
+      </div>
+      <div class="location-feature__gallery">
+        <figure class="location-shot">
+          <img src="assets/locations/medoshi-silent-summit.webp" alt="The Silent Summit — towering snow-covered Mount Medoshi rising above clouds, with a lone windswept pine tree at its peak." width="1672" height="941" loading="eager" decoding="async">
+          <figcaption><strong><span class="he-name" lang="he" dir="rtl">פסגת הדממה</span> · The Silent Summit</strong>Image 1 — the mountain seen from below, rising high above the clouds.</figcaption>
+        </figure>
+        <figure class="location-shot">
+          <img src="assets/locations/northern-lands.webp" alt="The Northern Lands — a lush northern wilderness of forests, waterways and mountains, with the distant Lion Kingdom's volcanic mountain at the horizon." width="1672" height="941" loading="lazy" decoding="async">
+          <figcaption><strong><span class="he-name" lang="he" dir="rtl">ארצות הצפון</span> · The Northern Lands</strong>Image 2 — the entire region north of the Kingdom of Lions, viewed from the mountain.</figcaption>
+        </figure>
+      </div>
+    </section>
     <div class="place-grid">
       <article class="place" data-kind="approved">
         <figure class="place-media place-media--abstract" aria-label="Decorative title graphic; not canonical environment artwork"><span>Sakura Village<br>Training Square</span></figure>
@@ -139,7 +170,7 @@
         </div>
       </article>
     </div>
-    <aside class="world-note" aria-label="Canon policy"><h3>Canon first. No speculative artwork.</h3><p>All location images are currently withheld. A story location does not automatically approve any image of it. Each new image must first be shown and explicitly approved in the chat, then added to this page. Other website sections remain unchanged.</p></aside>
+    <aside class="world-note" aria-label="Canon policy"><h3>Canon first. No speculative artwork.</h3><p>Only the two mountain-sequence images above have been approved for display. A story location does not automatically approve any other illustration. Every additional image must first be shown and explicitly approved in the chat. Other website sections remain unchanged.</p></aside>
   </div></main>
   <footer class="footer"><div class="wrap"><span>© 2026 RAIKA — The Legacy of Reishin.</span><a href="index.html">Return to the official website</a></div></footer>
   <script>
