@@ -183,3 +183,10 @@ Do not merge these three by accident.
 - [x] Stage 01B: provisional **connectivity graph** documented.
 - [ ] Stage 01C: compare user-approved gate/candle comic imagery in detail to establish actual layout.
 - [ ] Stage 02: creator approves formal aerial village geometry (including all 3 tree identities and river crossing choices).
+
+
+## CANON CORRECTION — Village symbolism (creator locked 2026-11-13)
+**CRITICAL:** The defining emblem and recurring visual symbol of **Sakura Village is the cherry blossom (sakura flower), NOT a lightning bolt**. Flower designs should guide village civic banners, street signs, paving details, architectural ornamentation, decorations, market canopies and the Great Sakura Village Square. **The lightning insignia belongs specifically to House Rai / the Reishin lineage** and may be used only on that family's legitimate emblems and associated places (subject to approved visuals). It is not a blanket symbol for the village's public buildings or main square.
+- Reject the first generated Great Sakura Square image with extensive lightning-banner and lightning-floor motifs; it is NOT approved canon.
+- The Great Sakura's tree, proportions and surrounding village elements remain subjects of the next revised candidate illustration for user approval, but remove civic lightning motifs and replace with sakura blossom motifs.
+- This correction overrides prior speculative sketches and any draft that implied the village was defined by the lightning bolt.
