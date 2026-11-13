@@ -99,3 +99,27 @@ CAUTION: screenplay does not explicitly identify the specific gate as the recent
 
 ### Current agreed routing constraint
 The dojo exit and Shizuka path must be walkably connected, with at least one sakura-branch moment. The final street placement, length and turn count require original comic frame examination and explicit creator approval.
+
+## STAGE 01 — Follow-up source reconciliation (2026-11-13)
+**Source priority:** creator's latest explicit panel/scene correction > already approved visual > earlier screenplay draft. Earlier scripts that still place Shi Sōsakusha on the dojo gate are superseded by the creator-approved candle storyboard correction: he sits on a sakura branch **on the path after flying from the dojo**. Do not use a gate-top perch in any village-map illustration.
+
+**Topological anchors for a preliminary graph:**
+A. The training area where the failed protect-the-civilian exercise takes place.
+B. Departure/exit leading away from training area.
+C. A village path containing the sakura branch where Shi pauses with belongings and an unfinished verse.
+D. Shizuka's house exterior, shoji doorway; warm interior behind.
+E. Memorial and tea room in the same house: Kaminari photograph, two candles, low tea table. Interior continuity: Raika on frame-left, Shizuka and memorial frame-right upon entry; tea scene Raika seated left, Shizuka right. These are CAMERA-SPACE constraints, not cardinal directions.
+
+**Known, distinct visual elements until proven otherwise:**
+- the courtyard sakura tree within the dojo perimeter;
+- the branch/tree on the exterior path used by Shi;
+- the village's centrally proposed Great Sakura landmark.
+Do not merge these three by accident.
+
+**Image source audit status:** Canva original comic design `DAHZ4hNWKnw` (20-page design) and page metadata were verified. Current source access supplied page thumbnails/metadata and screenplay text but has NOT established precise positions from a high-resolution visual reading of the relevant comic panels. Exact gate-to-house cardinal bearing, roads, creek crossings, path length, visible mountains, and house facade are **unverified**. No 'visual map verified' claim should be made.
+
+**Unresolved names:** screenplays say `Inazuma Dojo`; approved location images use `Dojo Kaminari`. Relationship needs creator/source decision. Likewise `Rai's Aunt's House` in approved project brief versus `Shizuka's House` in source; familial identity remains open.
+
+**Checkpoint for stage 01 completion:** inspect the actual user-approved images of comic candle scene and approved dojo gate/courtyard side by side at full resolution; mark sight lines/left-right spatial relations only where visible; obtain explicit agreement on any names or cardinal placements that cannot be inferred from the approved sources.
+
+**NEXT:** construct **a provisional village macro-connectivity map** around Great Sakura Square and other locked brief landmarks, explicitly showing unknown bearings rather than pretending the previous schematic compass was canon; then select the first exterior establishing image for creator review, only once the panel geometry is reconciled.
