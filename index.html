@@ -220,6 +220,14 @@
   .guard-section{padding-top:55px}
   .guard-carousel .character--guard-hikari .character-media img{height:385px}
 }
+
+/* World characters: new approved portraits use the existing gallery lighting. */
+.world-characters-section { padding-top: 56px; }
+.world-characters-section .world-character-card { max-width: 540px; margin: 32px auto 0; }
+.world-characters-section .world-character-card .character-media { height: 450px; background: radial-gradient(ellipse at 50% 47%, #4a3a28 0%, #111915 72%); }
+.world-characters-section .world-character-card .character-media img { height: 430px; width: 100%; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 0 19px rgba(245,205,146,.24)) drop-shadow(0 0 42px rgba(219,145,79,.09)); }
+@media (max-width: 640px) { .world-characters-section .world-character-card .character-media { height: 380px; } .world-characters-section .world-character-card .character-media img { height: 365px; } }
+
 </style></head><body><header><div class="wrap nav"><a class="brand" href="#top">RAI<span>K</span>A</a><nav><a href="#story">The Story</a><a href="#characters">Characters</a><a href="locations.html">Locations</a><a href="symbols.html">Symbols</a><a href="#comic">Read</a><a href="#support">Support</a><a href="https://www.instagram.com/raika.samurairabbit/" target="_blank" rel="noopener">Instagram ↗</a></nav></div></header><main><section class="hero" id="top"><img class="hero-art" src="raika-hero-blue-2026.svg" alt="Raika, white rabbit samurai in blue training robes with golden lightning emblem"><div class="wrap"><div class="hero-inner"><div class="eyebrow">An original samurai fantasy</div><h1>RAIKA<small>The Legacy of Reishin</small></h1><p>Strength to fight. Wisdom to protect. Enter a world of ancient traditions, impossible choices, and a young warrior finding her path.</p><div class="buttons"><a class="btn primary" href="#comic">Read the free comic</a><a class="btn" href="#support">Support the journey</a></div></div></div></section><section class="section" id="story"><div class="wrap"><div class="eyebrow">The world of Raika</div><h2>A legend begins with a choice.</h2><p>Beyond the mountain paths, clans and warriors carry stories of honor, loyalty, and sacrifice. Raika's journey is only beginning.</p><div class="cards"><div class="card"><strong>01</strong><h3>The Warrior</h3><p>Meet Raika: a young rabbit samurai learning that courage is more than strength.</p></div><div class="card"><strong>02</strong><h3>The Legacy</h3><p>Training, family, and ancient teachings shape the path ahead.</p></div><div class="card"><strong>03</strong><h3>The Journey</h3><p>Discover an original fantasy universe through illustrated comic storytelling.</p></div></div><div class="buttons"><a class="btn" href="locations.html">Explore canon locations</a></div></div></section><section class="section" id="characters"><div class="wrap"><div class="eyebrow">The family behind the legend</div><h2>HOUSE OF RAI</h2><p>Family · Strength · Wisdom · Legacy</p><div class="family-carousel" id="family-carousel" role="region" aria-roledescription="carousel" aria-label="Rai's family">
 <div class="family-carousel-shell">
 <button class="family-arrow family-arrow-prev" type="button" id="family-prev" aria-label="Previous family member" title="Previous family member">‹</button>
@@ -290,6 +298,24 @@
     </div>
   </div>
 </section>
+
+<section class="section world-characters-section" id="world-characters">
+  <div class="wrap">
+    <div class="eyebrow">Beyond the Guard</div>
+    <h2>OTHER CHARACTERS</h2>
+    <p>Discover more figures from the world of RAIKA.</p>
+    <article class="character world-character-card">
+      <div class="character-media"><img loading="lazy" src="world-characters/turtle-elder-approved-20261113.webp" alt="An elderly orange-scaled turtle with a long white beard, cream traveling robes, walking staff, brown shell and shoulder bag, on transparent background"></div>
+      <div class="character-body">
+        <div class="character-role">Character · Canonical name pending</div>
+        <h3>Turtle Elder</h3>
+        <p>An elderly turtle with a wooden walking staff, cream robes and a traveling bag. Further story details and a canonical name are to be confirmed.</p>
+        <button type="button" class="profile-trigger" data-character="turtleElder" aria-label="Explore Turtle Elder character profile">Explore character <span aria-hidden="true">↗</span></button>
+      </div>
+    </article>
+  </div>
+</section>
+
 <dialog class="profile-dialog" id="character-profile" aria-labelledby="profile-heading" aria-describedby="profile-description">
   <button class="profile-close" type="button" aria-label="Close character profile">×</button>
   <div class="profile-layout">
@@ -316,6 +342,16 @@
 </dialog><section class="section feature" id="comic"><div class="wrap"><div class="eyebrow">Read the free preview</div><h2>Enter the story.</h2><p>Read RAIKA — The Legacy of Reishin right here on the website. Turn through all six pages, jump to any page, and use the viewer controls to zoom or expand your reading space. No payment required.</p><div class="comic-reader" id="comic-reader"><div class="comic-reader-head"><div><div class="eyebrow">The Legacy of Reishin</div><div class="comic-reader-title">Free Comic Preview</div></div><span class="reader-page-label" id="comic-page-label" aria-live="polite">PAGE 1 OF 6</span></div><div class="comic-reader-stage" id="comic-reader-stage" tabindex="0" aria-label="Comic reader. Use the arrows to turn pages."><img id="comic-page-image" class="comic-page-image" src="comic-pages/page-1.webp" alt="RAIKA comic page 1 of 6" fetchpriority="high" decoding="async"><button class="comic-arrow comic-arrow-prev" type="button" id="comic-arrow-prev" aria-label="Previous comic page" title="Previous page">‹</button><button class="comic-arrow comic-arrow-next" type="button" id="comic-arrow-next" aria-label="Next comic page" title="Next page">›</button></div><div class="comic-reader-controls"><div class="reader-navigation"><button class="reader-btn" type="button" id="comic-prev" aria-label="Previous page">← Previous</button><button class="reader-btn primary" type="button" id="comic-next" aria-label="Next page">Next →</button></div><div class="reader-pages" role="group" aria-label="Choose comic page"><button class="reader-page-btn" type="button" data-comic-page="1" aria-current="page">01</button><button class="reader-page-btn" type="button" data-comic-page="2">02</button><button class="reader-page-btn" type="button" data-comic-page="3">03</button><button class="reader-page-btn" type="button" data-comic-page="4">04</button><button class="reader-page-btn" type="button" data-comic-page="5">05</button><button class="reader-page-btn" type="button" data-comic-page="6">06</button></div><div class="reader-tools"><button class="reader-btn" type="button" id="comic-zoom-out" aria-label="Zoom out">−</button><button class="reader-btn" type="button" id="comic-zoom-in" aria-label="Zoom in">+</button><button class="reader-btn" type="button" id="comic-fullscreen">Fullscreen ⛶</button></div></div></div><div class="comic-download"><span>Prefer to keep a copy?</span><a href="https://drive.google.com/uc?export=download&id=1P5WU3eBgS8wy1W-t47UcNedQyRoGCSBA" target="_blank" rel="noopener">Download the original PDF ↗</a></div></div></section><section class="section support" id="support"><div class="wrap"><div class="eyebrow">Help write the next chapter</div><h2>Become part of the legend.</h2><p>RAIKA is an independent creative project. Your support helps bring new comic chapters, illustrations, and stories to life.</p><a class="btn primary" href="https://ko-fi.com/raikathelegacyofreishin" target="_blank" rel="noopener">Support on Ko-fi ↗</a></div></section></main><footer class="footer"><div class="wrap"><span>© 2026 RAIKA — The Legacy of Reishin.</span><a href="locations.html">Canon Locations</a><a href="https://www.instagram.com/raika.samurairabbit/">Instagram</a></div></footer><script>
 (function(){
   const data = {
+
+    turtleElder: {
+      title: "Turtle Elder",
+      role: "Character · Canonical name pending",
+      quote: "Character profile in development.",
+      description: "An elderly orange-scaled turtle with a flowing white beard, cream robes, a wooden walking staff with a hanging stone, a brown shell and a traveling bag. His canonical name and story role have not yet been confirmed.",
+      traits: "Canonical details pending",
+      image: "world-characters/turtle-elder-approved-20261113.webp",
+      alt: "Turtle Elder, an orange-scaled elder turtle holding a carved wooden staff"
+    },
     raika: {
       title: "Raika", role: "Young Samurai · Daughter · Apprentice",
       quote: "Courage is more than strength.",
