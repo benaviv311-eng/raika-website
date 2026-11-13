@@ -92,14 +92,14 @@
   <section class="hero" aria-labelledby="page-title"><div class="wrap">
     <div class="eyebrow">The Legacy of Reishin / Canon World</div>
     <h1 id="page-title">Places of <span style="color:var(--gold)">Reishin</span></h1>
-    <p>Discover the settings of the Sakura Village saga. Every location listed here has a documented canon or scene approval. Two location images from the opening mountain sequence have been approved and published here. All other locations remain image-free until their artwork is individually approved.</p>
+    <p>Discover the settings of the Sakura Village saga. Every location listed here has a documented canon or scene approval. Only explicitly approved location images are displayed here. Locations without separately approved artwork remain image-free.</p>
     <div class="hero-actions"><a class="btn primary" href="#locations">Explore locations</a><a class="btn" href="index.html">Back to RAIKA</a></div>
   </div></section>
   <main><div class="wrap" id="locations">
     <div class="section-head"><div>
       <div class="eyebrow">The Sakura Village Saga</div>
       <h2>Approved story settings</h2>
-      <p>The first two approved landscape images are displayed below. All other locations remain text-only until separately approved.</p>
+      <p>The opening mountain landscapes and the Dojo Kaminari interior have approved illustrations. Other locations remain text-only until separately approved.</p>
     </div><div class="filters" role="group" aria-label="Filter locations">
       <button class="filter" type="button" data-filter="all" aria-pressed="true">All locations</button>
       <button class="filter" type="button" data-filter="approved" aria-pressed="false">Canon-approved</button>
@@ -142,6 +142,18 @@
           <div class="place-note"><p>No location image is displayed. A dedicated image must be approved in the chat before publication.</p></div>
         </div>
       </article>
+      <article class="place" id="dojo-kaminari" data-kind="approved setting">
+        <figure class="place-media" aria-label="Approved visual reference for Dojo Kaminari">
+          <img data-approved-image="dojo-kaminari" alt="The approved Dojo Kaminari interior: warm wooden training hall, shoji doorway overlooking Sakura blossoms, staff and weapon racks, a punching bag, and framed portraits of Sairan and Kaminari." width="2048" height="1152" loading="lazy" decoding="async">
+          <figcaption>Approved location image · Dojo Kaminari</figcaption>
+        </figure>
+        <div class="place-body">
+          <div class="place-kicker"><span>Training hall</span><span class="status">Artwork approved</span></div>
+          <h3><span lang="he" dir="rtl">דוג׳ו קאמינרי</span> · Dojo Kaminari</h3>
+          <p>A traditional wooden training hall with a polished timber floor, an open shoji entryway toward the courtyard, training weapons mounted along the wall, a heavy training bag, and portraits of Sensei Sairan and Sensei Kaminari.</p>
+          <div class="place-note"><p>The exact illustration approved in the chat is displayed without visual alterations. No other locations were changed.</p></div>
+        </div>
+      </article>
       <article class="place" data-kind="approved">
         <figure class="place-media place-media--abstract" aria-label="Decorative title graphic; not canonical environment artwork"><span>Under the<br>Sakura Tree</span></figure>
         <div class="place-body">
@@ -170,13 +182,40 @@
         </div>
       </article>
     </div>
-    <aside class="world-note" aria-label="Canon policy"><h3>Canon first. No speculative artwork.</h3><p>Only the two mountain-sequence images above have been approved for display. A story location does not automatically approve any other illustration. Every additional image must first be shown and explicitly approved in the chat. Other website sections remain unchanged.</p></aside>
+    <aside class="world-note" aria-label="Canon policy"><h3>Canon first. No speculative artwork.</h3><p>Only images explicitly approved in the chat are published: two views of Mount Medoshi and the Dojo Kaminari interior. A story location does not automatically approve any other illustration. Every additional image must first be shown and explicitly approved in the chat. Other website sections remain unchanged.</p></aside>
   </div></main>
   <footer class="footer"><div class="wrap"><span>© 2026 RAIKA — The Legacy of Reishin.</span><a href="index.html">Return to the official website</a></div></footer>
   <script>
   (function(){
     const controls=[...document.querySelectorAll(".filter")];
     const cards=[...document.querySelectorAll(".place")];
+    const approvedImage=document.querySelector('img[data-approved-image="dojo-kaminari"]');
+    if(approvedImage){
+      let started=false;
+      const loadApprovedDojo=async()=>{
+        if(started)return;
+        started=true;
+        try{
+          const count=21;
+          const partUrls=Array.from({length:count},(_,i)=>'location-assets/dojo-kaminari.b64/'+String(i).padStart(3,'0')+'.txt');
+          const chunks=await Promise.all(partUrls.map(async url=>{
+            const response=await fetch(url);
+            if(!response.ok)throw new Error('Missing approved artwork part: '+url);
+            return (await response.text()).trim();
+          }));
+          approvedImage.src='data:image/png;base64,'+chunks.join('');
+        }catch(error){
+          console.error('Could not load approved Dojo Kaminari artwork',error);
+          approvedImage.alt+=' (Image temporarily unavailable)';
+        }
+      };
+      if('IntersectionObserver' in window){
+        const observer=new IntersectionObserver(entries=>{
+          if(entries.some(entry=>entry.isIntersecting)){observer.disconnect();loadApprovedDojo();}
+        },{rootMargin:'500px'});
+        observer.observe(approvedImage);
+      }else{loadApprovedDojo();}
+    }
     controls.forEach(button=>button.addEventListener("click",()=>{
       const kind=button.dataset.filter;
       controls.forEach(item=>item.setAttribute("aria-pressed",String(item===button)));
