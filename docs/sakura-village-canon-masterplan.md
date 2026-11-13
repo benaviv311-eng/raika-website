@@ -66,3 +66,36 @@ Compass orientation in the previous schematic was **illustrative only**: do not 
 
 ### Current next action
 **STAGE 01 — Canon audit**, beginning with the **candle-scene exit from dojo gate and the walk to Shizuka's house**, then building outward to Great Sakura plaza and all other anchor places. Do not jump straight to a final aerial illustration or website publication.
+
+## STAGE 01 — Initial source-based audit (2026-11-13, in progress)
+Source references inspected:
+- Canva comic `The Legacy of Reishin`, design `DAHZ4hNWKnw` (20 pages; verified available; original visual continuity requires a page-by-page enlarged inspection).
+- English screenplay `RAIKA_The_Legacy_of_Rishin_English_Screenplay_Corrected(1).pdf`, scenes 2, 3, 4, 5–8, 8A, 8A.1, 8A.2, 8B and 10.
+- `Raika_Candles_Storyboard_Plan_v1.md`, including the later corrected staging of wandering poet Shi.
+- Website-approved Dojo Kaminari entrance/courtyard/interior images and `symbols.html`.
+
+### Confirmed narrative adjacency (NOT compass bearing)
+1. Training exercise / Raika's anger -> leaves the training area -> travels on foot toward Shizuka's house.
+2. Shi Sōsakusha is on a **sakura branch along the route**, having flown from the dojo: explicitly **not** sitting atop the gate in the later approved storyboard.
+3. The route arrives at Shizuka's **shoji entrance**; warm candlelight behind the paper doors; small memorial space within house contains portrait of Kaminari, two candles, and tea table.
+4. Exterior dojo gate uses actual approved House Rai/Reishin insignia (`reishin-house-canonical.png`). No interchangeable new lightning symbol.
+5. Courtyard tree is **inside** compound: from inner-yard camera looking toward gate, on the left; from outside gate looking into yard, on the right.
+6. `Inazuma Dojo` is named in screenplay; `Dojo Kaminari` is named in the website-approved setting gallery. Treat whether the two names designate the same compound or different sites as **unresolved**, not a fact.
+7. `Shizuka's House` is named in screenplay; `Rai's Aunt's House` is named in the agreed village brief. Treat their identity and familial relationship as **unverified** before publishing a combined label.
+
+### Initial topology (relative and diagrammatic, not literal distances)
+`[training zone] → [approved dojo outer gate / exit?] → [village path with sakura branch + Shi] → [Shizuka shoji doorway] → [memorial + tea interior]`
+CAUTION: screenplay does not explicitly identify the specific gate as the recently approved Dojo Kaminari gate; visual/comic check must prove this alignment.
+
+### Open spatial decisions — do not canonize yet
+- Which physical dojo compound is used in candle departure, exactly?
+- Which side of that gate does Raika exit from, and which direction does the street run in the approved panel?
+- Is the roadside sakura branch near the dojo part of the courtyard tree, another tree, or the Great Sakura? **Do not conflate trees.**
+- Is Shizuka Rai's aunt? Confirm exact relationship before naming the building.
+- Is the candle house within village residential quarter or along a quieter peripheral path, and which way does its door face?
+- Is the large village Sakura visible from the gate? Not established.
+- Where do village waterways intersect the route? No evidence yet.
+- Dojo's east/west/north/south on the village map remains open until a larger visual audit.
+
+### Current agreed routing constraint
+The dojo exit and Shizuka path must be walkably connected, with at least one sakura-branch moment. The final street placement, length and turn count require original comic frame examination and explicit creator approval.
