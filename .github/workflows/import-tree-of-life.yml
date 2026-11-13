@@ -1,0 +1,14 @@
+name: Import approved Tree of Life crest
+on:
+  push:
+    paths:
+      - '.github/workflows/import-tree-of-life.yml'
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download approved image
+        run: echo 'Image upload pending'
