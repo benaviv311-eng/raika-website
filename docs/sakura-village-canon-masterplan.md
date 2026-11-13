@@ -123,3 +123,63 @@ Do not merge these three by accident.
 **Checkpoint for stage 01 completion:** inspect the actual user-approved images of comic candle scene and approved dojo gate/courtyard side by side at full resolution; mark sight lines/left-right spatial relations only where visible; obtain explicit agreement on any names or cardinal placements that cannot be inferred from the approved sources.
 
 **NEXT:** construct **a provisional village macro-connectivity map** around Great Sakura Square and other locked brief landmarks, explicitly showing unknown bearings rather than pretending the previous schematic compass was canon; then select the first exterior establishing image for creator review, only once the panel geometry is reconciled.
+
+## STAGE 01B — Village-wide connectivity graph, version 0.2 (2026-11-13)
+**Decision level:** spatial-planning PROPOSAL within approved list of village places. Roads, elevations, compass bearings and distances NOT approved as geographic canon.
+
+### Confirmed or creator-locked planning anchors
+- **Great Sakura Square:** designated civic and visual heart; the Great Sakura tree stays within the village central plaza.
+- **Sakuranbo School** belongs in Sakura Village and includes a sports/school courtyard in the village-design brief.
+- **Dojo(s)**, outdoor training areas and **Rai Family Home** exist as story settings; exact site identity and distances unresolved.
+- **Shizuka's House:** narrative path leads from a training area to its shoji entrance via a sakura branch where Shi perches.
+- **Mayor's Residence; Battle Arena; Market Quarter; waterways:** included in approved design brief, not yet geolocated.
+- Market minimum businesses: forge, shoemaker, fabrics, blankets/futons, Komugi's bakery; plus organic food, ceramic, herbs, tea as suggestions.
+
+### Proposed functional neighborhood graph
+**Core circular promenade**:
+- Great Sakura Square ↔ Market Quarter (busy pedestrian boulevard, across/along a principal stone bridge if river courses permit).
+- Great Sakura Square ↔ Mayor's civic residence (public approach rising to a quieter forecourt).
+- Great Sakura Square ↔ Sakuranbo School (safe residential/school street).
+- Great Sakura Square ↔ residential network ↔ Rai Family Home.
+- Great Sakura Square ↔ dojo/training district (narrower road that becomes a quieter training path).
+- Dojo outer entrance ↔ sakura-lined footpath where Shi sits ↔ Shizuka's House (direct narrative connectivity, no hard compass).
+- Training district ↔ Battle Arena (service access without crowd traffic through the school).
+- Market Quarter ↔ craft/service lane ↔ Forge (furnace at far edge for fire separation).
+- Waterways ↔ orchard/gardens/working channels, with walking bridges as needed; this is a hydrography proposal rather than a comic-established route.
+
+### Walking patterns the geography must support
+1. **Candle scene:** exercise → dojo exit → roadside sakura branch → Shizuka's home; emotional transition from busy/training sounds to quiet home setting. Keep unhurried single walk, no invented compulsory marketplace detour.
+2. **Daily school life:** residential ↔ Sakuranbo School; school ↔ Great Sakura Square; optionally school ↔ dojo by an independently walkable connection.
+3. **Village commerce:** house ↔ Great Sakura Square ↔ Market Quarter ↔ bakery, leather, textiles, blankets; forge located away from crowded cloth stalls.
+4. **Public celebration/tournament:** Great Sakura Square ↔ Battle Arena with a broad approach that allows spectators; mayor has a public route to both.
+5. **Water crossing:** market and civic roads can meet at a recognizable main stone bridge; position remains open.
+
+### Three sakura tree identifiers (do not merge)
+- TREE-D: the approved sakura **inside Dojo Kaminari courtyard**, specific fixed left/right camera reversal.
+- TREE-S: the **roadside branch** on which Shi Sōsakusha sits in the candle scene.
+- TREE-G: the **Great Sakura**, grand tree at the village center.
+
+### Suggested district order for aerial draft
+1. Central Square around TREE-G
+2. Market and central bridge
+3. Quiet residential area + Sakuranbo School + Rai Family Home
+4. Training zone(s) and dojo exit
+5. Shizuka's House reached by TREE-S path
+6. Battle Arena on public-access edge
+7. Mayor's civic terrace
+8. Rills, streams, footbridges and landscape continuity
+(Note: this is DESIGN priority / neighborhood adjacency, not compass locations.)
+
+### Canon-risk register
+- **HIGH:** do not silently equate `Inazuma Dojo` with `Dojo Kaminari`.
+- **HIGH:** do not assert Shizuka is Rai's aunt without confirming kinship.
+- **HIGH:** not every large sakura tree is TREE-G.
+- **HIGH:** no invented crest; original `reishin-house-canonical.png`.
+- **MEDIUM:** avoid a river that forces Raika across a bridge on the candle route until such crossing is confirmed.
+- **MEDIUM:** do not depict Mayor's Residence or an arena next to a specific canon house before geography sign-off.
+- **MEDIUM:** external streets, routes and market facilities are design assumptions until approved.
+
+### Progress gate
+- [x] Stage 01B: provisional **connectivity graph** documented.
+- [ ] Stage 01C: compare user-approved gate/candle comic imagery in detail to establish actual layout.
+- [ ] Stage 02: creator approves formal aerial village geometry (including all 3 tree identities and river crossing choices).
