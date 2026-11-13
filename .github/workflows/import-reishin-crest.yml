@@ -1,0 +1,29 @@
+name: Import approved Reishin crest
+on:
+  push:
+    paths:
+      - '.github/workflows/import-reishin-crest.yml'
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Fetch approved canon image
+        env:
+          SOURCE_URL: 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/5c006d55-31e8-4cfa-b809-e8c5a6ef1f94.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiN2M5MjdkNDI3ZWQ5OTU2MCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NDY1OTkwNn0.e_QSQ1HyPcGGgHrD2UGoUgoBz-tB0avdQAj7zqu8wG8'
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --silent --show-error "$SOURCE_URL" -o reishin-house-canonical.png
+          file reishin-house-canonical.png
+          test "$(stat -c%s reishin-house-canonical.png)" -gt 100000
+      - name: Commit original image
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reishin-house-canonical.png
+          git commit -m "Add approved canonical Reishin house crest" || exit 0
+          git push
