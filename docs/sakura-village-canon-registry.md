@@ -29,7 +29,7 @@ Last verified: 2026-11-14
 | SV-CREST-001 | Sakura Village | candidate Sakura civic seal `a_detailed_high_quality_emblem_logo_a_decorative.png` | NEEDS EXPLICIT CONFIRMATION | NOT PUBLISHED | Village crest separate from school crest |
 
 ## Verification and next step
-The Great Sakura: all three approved views published; waiting for creator's check before publishing the next location. **DO NOT move on to publishing Mayor's Residence or Sakuranbo School** until the creator inspects the published Great Sakura gallery and agrees to proceed.
+The Great Sakura: four replacement views published. Creator has inspected the live website and expressly confirmed completion ("מאשר", 2026-11-14). This location is CLOSED/LOCKED. Any future modification requires new creator approval.
 
 
 ## Great Sakura — image replacement / gallery revision 2026-11-14
@@ -40,4 +40,8 @@ Creator explicitly approved the replacement frontal view ("מאושר"), the new
 - SV-GS-V2-003 | Market-side View | APPROVED | PUBLISHED in `locations.html#great-sakura` | `assets/locations/great-sakura-v2-side.webp`
 - SV-GS-V2-004 | The Sacred Rope and Roots | APPROVED | PUBLISHED in `locations.html#great-sakura` | `assets/locations/great-sakura-v2-closeup.webp`
 
-The location is pending the creator's confirmation of the LIVE gallery; do not advance to the next location before that confirmation. Note: similar rope-and-tassel design is maintained across shots, but exact tassel arrangement should be compared if stricter geometric identity is required later.
+The creator CONFIRMED the live gallery ("מאשר", 2026-11-14), so this location is COMPLETE and LOCKED. Note: similar rope-and-tassel design is maintained across shots, but exact tassel arrangement should be compared if stricter geometric identity is required later.
+
+## Location closure — 2026-11-14
+- **The Great Sakura — CLOSED / FULLY APPROVED / SITE VERIFIED BY CREATOR.** Four canonical gallery images: Front View, The Sakura Approach, Market-side View, The Sacred Rope and Roots. No further edits or replacement without explicit user request and approval.
+- **Next per masterplan Stage 04**: walkway from approved dojo area toward Shizuka's House, subject to Stage 01 source/camera-angle reconciliation; complete and publish one location at a time. The masterplan sequence lists this before Sakuranbo School and Mayor's Residence.
