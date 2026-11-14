@@ -119,3 +119,10 @@ CREATOR EXPLICITLY CORRECTED the assistant: **Inazuma Dojo** on the provided Sak
 - The stone bridge on the LEFT is geometrically plausible in the waterway network but an exact bridge placement is not established by the planning map; do not insist it must be crossed on the story route.
 - **QA: PASS ON MAIN DIRECTIONAL AND ICONOGRAPHIC CONSTRAINTS; creator image approval remains PENDING. NOT PUBLISHED.** The creator requested that work continue after QA; do not treat that as an explicit image-approval record.
 - Next proposed SR-03: quiet residential approach beyond Shu's Tree toward Shizuka's House; stream remains on left, house vicinity sits north/right of path, no characters, no re-created dojo gate, no assumed named facade locked before creator review.
+
+## Original comic source discovery — creator's named Canva design (2026-11-14)
+- Creator explicitly pointed to **The Legacy of Reishin Original**. Located exact original Canva design ID `DAHURd4JOcg` (16-page whiteboard). This is DISTINCT from `DAHZ4hNWKnw` (20-page comic titled `The Legacy of Reishin`); do NOT conflate the two.
+- Original's page-level media inventory inspected via Canva: 16 boards total; pages 1–14 nonempty (19 image media fills), pages 15–16 empty. The tags and media inventory do not establish a verified full view of Shizuka's house entry. The original house exterior/entrance remains NOT VISUALLY VERIFIED.
+- The later 20-page Canva design has candle/home-themed art among late pages, but it must not be substituted for a confirmed original reference without comparison.
+- Screenplay (English Final) scene 8A.1 confirms a sliding shoji door backlit by candlelight, NOT the overall building shape, number of stairs, roof, porch details or compass bearings.
+- At present, retain previously creator-approved path images and do not replace architecture or claim a canonical house exterior until an actual source panel is verified. No image changes or website publish were authorized by the retrieval request.
