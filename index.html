@@ -313,6 +313,15 @@
         <button type="button" class="profile-trigger" data-character="medoshi" aria-label="Explore Medoshi's character profile">Explore character <span aria-hidden="true">↗</span></button>
       </div>
     </article>
+    <article class="character world-character-card">
+      <div class="character-media"><img loading="lazy" src="world-characters/sairan-palm-strike-approved.png" alt="Sairan, elderly gray rabbit lightning master in burgundy and sand-colored monk-warrior clothing"></div>
+      <div class="character-body">
+        <div class="character-role">Lightning Master · Age 91</div>
+        <h3>Sairan</h3>
+        <p>An elder martial arts master whose calm discipline conceals the power of lightning. Father of Kaminari, grandfather of Rai, and great-grandfather of Raika.</p>
+        <button type="button" class="profile-trigger" data-character="sairan" aria-label="Explore Sairan's four approved combat poses">Explore character <span aria-hidden="true">↗</span></button>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -343,6 +352,21 @@
 (function(){
   const data = {
 
+    sairan: {
+      title: "Sairan",
+      role: "Lightning Master · Monk-Warrior · Age 91",
+      quote: "True power requires control.",
+      description: "Sairan is a 91-year-old elder rabbit and master of martial arts and lightning. Father of Kaminari, grandfather of Rai, and great-grandfather of Raika, he fights with the calm precision of a seasoned monk-warrior. When invoking lightning, his yellow eyes glow completely white.",
+      traits: "Mastery · Lightning · Discipline · Wisdom",
+      image: "world-characters/sairan-palm-strike-approved.png",
+      alt: "Sairan, gray-furred elder rabbit martial master in a guarded open-palm stance",
+      variants: [
+        {label: "Quiet Palm Strike", image: "world-characters/sairan-palm-strike-approved.png", alt: "Sairan striking with an open palm in a balanced stance"},
+        {label: "Lightning Hammer Kick", image: "world-characters/sairan-hammer-kick-approved.png", alt: "Sairan performing a hammer kick charged with blue-white lightning"},
+        {label: "Summon Lightning", image: "world-characters/sairan-lightning-summon-approved.png", alt: "Sairan punching upward and summoning lightning with luminous white eyes"},
+        {label: "Lightning Defense", image: "world-characters/sairan-lightning-defense-approved.png", alt: "Sairan generating a defensive lightning shield using both hands"}
+      ]
+    },
     medoshi: {
       title: "Medoshi",
       role: "Sage & Mage · Side of Light · Age 87",
