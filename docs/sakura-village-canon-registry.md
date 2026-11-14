@@ -30,3 +30,14 @@ Last verified: 2026-11-14
 
 ## Verification and next step
 The Great Sakura: all three approved views published; waiting for creator's check before publishing the next location. **DO NOT move on to publishing Mayor's Residence or Sakuranbo School** until the creator inspects the published Great Sakura gallery and agrees to proceed.
+
+
+## Great Sakura — image replacement / gallery revision 2026-11-14
+Creator explicitly approved the replacement frontal view ("מאושר"), the new approach and market-side angles ("מאושר. הבא" / "מאושר הבא"), and the close-up detail ("מאושר"). The previous three gallery images remain as historical Git objects but have been removed from the visible Great Sakura gallery. These are four individually approved files:
+
+- SV-GS-V2-001 | Village Square — Front View | APPROVED | PUBLISHED in `locations.html#great-sakura` | `assets/locations/great-sakura-v2-front.webp`
+- SV-GS-V2-002 | The Sakura Approach | APPROVED | PUBLISHED in `locations.html#great-sakura` | `assets/locations/great-sakura-v2-approach.webp`
+- SV-GS-V2-003 | Market-side View | APPROVED | PUBLISHED in `locations.html#great-sakura` | `assets/locations/great-sakura-v2-side.webp`
+- SV-GS-V2-004 | The Sacred Rope and Roots | APPROVED | PUBLISHED in `locations.html#great-sakura` | `assets/locations/great-sakura-v2-closeup.webp`
+
+The location is pending the creator's confirmation of the LIVE gallery; do not advance to the next location before that confirmation. Note: similar rope-and-tassel design is maintained across shots, but exact tassel arrangement should be compared if stricter geometric identity is required later.
