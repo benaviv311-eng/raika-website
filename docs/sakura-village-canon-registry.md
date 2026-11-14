@@ -73,3 +73,13 @@ These are sequence anchors, not verified coordinates.
 - Spatial turn/branch/compass direction of departure and Shizuka entrance unknown.
 - Whether Shizuka is Rai's aunt unknown.
 - No user approval for any Shizuka-route images; do not publish or declare completed.
+
+## Dojo exit visual audit — anchored to exact approved image (2026-11-14)
+- Original directly inspected: `RAIKA - Dojo Kaminari Gate Open.webp` (existing creator-approved image).
+- The camera is OUTSIDE the open outer gate, looking IN toward a distant closed secondary gate on the far wall.
+- Visible inside from the outside perspective: long training building is on CAMERA LEFT; cherry tree, bench, and flower petals are on CAMERA RIGHT.
+- The original House Rai/Reishin crest is visible over the outer gate with Reishin Japanese signage. Do not redraw the symbol.
+- A proposed reverse view from INSIDE facing the same outer gate would reverse these screen positions: the training building belongs on the viewer's RIGHT and the cherry tree belongs on viewer's LEFT.
+- The visible outside approach is a stone-paved road. No verified branch, bridge, bend, Shizuka home, or compass bearing in this image.
+- Canva comic metadata verified the design exists and includes 20 pages, but thumbnail metadata alone was insufficient to identify an exact panel proving the identity of this gate as the canonical candle-scene exit. DO NOT claim the identity is established from the comic.
+- **Image-01 production gate remains OPEN**: either confirm the dojo-to-Shizuka exit from a readable panel of the comic or get the creator's explicit approval to treat the approved Dojo Kaminari gate as the route's departure anchor.
