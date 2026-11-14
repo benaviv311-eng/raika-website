@@ -13,9 +13,9 @@ Last verified: 2026-11-14
 ## Image records
 | ID | Location | Approved source / exact image | Image approval | Site publication | Notes |
 |---|---|---|---|---|---|
-| SV-GS-001 | The Great Sakura | `a_cinematic_highly_detailed_scene_of_the_great_sa.png` | APPROVED (user: "מעולה" after street view; assistant explicitly registered approval) | PUBLISHED `assets/locations/great-sakura-street-view-approved.webp` | First gallery image; awaiting user's live-site review before next location |
-| SV-GS-002 | The Great Sakura | `a_cinematic_highly_detailed_stylized_3d_cg_scene_u.png` (aerial) | NEEDS EXPLICIT CONFIRMATION | NOT PUBLISHED | Draft aerial / possible map-alignment ambiguity |
-| SV-GS-003 | The Great Sakura | `a_detailed_cinematic_highly_detailed_3d_anime_st.png` (under-tree close-up) | NEEDS EXPLICIT CONFIRMATION | NOT PUBLISHED | User said "continue" rather than expressly approving this individual view |
+| SV-GS-001 | The Great Sakura | `a_cinematic_highly_detailed_scene_of_the_great_sa.png` (street view) | APPROVED: "מעולה" | PUBLISHED `assets/locations/great-sakura-street-view-approved.webp` | Original first gallery image retained |
+| SV-GS-002 | The Great Sakura | `a_detailed_cinematic_fantasy_anime_style_panorama.png` (aerial panorama) | APPROVED by user: "תעלה" for both additional views (2026-11-14) | PUBLISHED `assets/locations/great-sakura-aerial-approved.webp` | 2nd gallery image, original view preserved |
+| SV-GS-003 | The Great Sakura | `a_cinematic_highly_detailed_stylized_3d_cg_scene_u.png` (under-tree) | APPROVED by user: "תעלה" for both additional views (2026-11-14) | PUBLISHED `assets/locations/great-sakura-under-tree-approved.webp` | 3rd gallery image, original view preserved |
 | SV-MY-001 | Mayor's Residence | `a_cinematic_wide_3d_illustrated_scene_of_the_mayor.png` | APPROVED (user "מעולה" then "מאושר") | NOT PUBLISHED | Next location after Great Sakura complete |
 | SV-MY-002 | Mayor's Residence | council hall interior `a_detailed_cinematic_highly_detailed_3d_illustra.png` | NEEDS EXPLICIT CONFIRMATION | NOT PUBLISHED | Created, no explicit approval |
 | SV-MY-003 | Mayor's Residence | private study `a_richly_detailed_cinematic_interior_scene_a_tra.png` | NEEDS EXPLICIT CONFIRMATION | NOT PUBLISHED | Created, no explicit approval |
@@ -29,4 +29,4 @@ Last verified: 2026-11-14
 | SV-CREST-001 | Sakura Village | candidate Sakura civic seal `a_detailed_high_quality_emblem_logo_a_decorative.png` | NEEDS EXPLICIT CONFIRMATION | NOT PUBLISHED | Village crest separate from school crest |
 
 ## Verification and next step
-The Great Sakura: one approved view released for creator review. **DO NOT move on to publishing Mayor's Residence or Sakuranbo School** until the creator inspects the published Great Sakura gallery and agrees to proceed.
+The Great Sakura: all three approved views published; waiting for creator's check before publishing the next location. **DO NOT move on to publishing Mayor's Residence or Sakuranbo School** until the creator inspects the published Great Sakura gallery and agrees to proceed.
