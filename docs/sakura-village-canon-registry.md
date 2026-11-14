@@ -90,3 +90,11 @@ Creator explicitly confirmed "כן" that the existing approved **Dojo Kaminari o
 - INSIDE looking OUT: courtyard sakura tree screen-left; training building screen-right.
 - The outbound path after the gate may be designed with explicit approval, but no cardinal compass direction, turn, stream crossing, or fixed distance has yet been confirmed.
 - Next: create candidate SR-01, a reverse camera view from the dojo courtyard toward the confirmed exit, then ask for creator image approval. Do not publish before creator approval.
+
+## Canon correction — dojo name (2026-11-14)
+CREATOR EXPLICITLY CORRECTED the assistant: **Inazuma Dojo** on the provided Sakura Village map is the correct canonical name of the existing dojo formerly titled "Dojo Kaminari" on the site. The two names are NOT separate locations here. Rename website-visible heading, descriptive text, aria labels and location next-link without changing any of the four approved artworks.
+- PUBLIC TITLE: Inazuma Dojo; APPROVAL: LOCKED.
+- Existing assets continue to use legacy `dojo-kaminari-*` filenames; the website fragment remains `#dojo-kaminari` for link compatibility.
+- Removed duplicate text-only Inazuma Dojo location card: the main approved gallery is the one canonical entry.
+- The 2026-11-14 user-supplied official map governs the planned path from training district (lower-right) through Shu's Sakura Path to Shizuka's house; keep distinct from image approval.
+- This later correction supersedes previous registry text calling the dojo naming question unresolved.

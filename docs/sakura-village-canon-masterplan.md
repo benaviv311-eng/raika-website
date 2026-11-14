@@ -203,3 +203,11 @@ Do not merge these three by accident.
 - The mistakenly generated Dojo Kazan exterior image in the Sakura Village production sequence is **REJECTED FOR SAKURA VILLAGE** and must not be published or treated as an approved village reference.
 - Sakura Village's dojo/instructional architecture must be derived from the exact relevant canonical dojo(s); `Inazuma Dojo` and `Dojo Kaminari` name identity remains unresolved pending source review; neither is Dojo Kazan.
 - Resume the agreed Sakura Village landmark sequence rather than moving to unrelated world locations. Next eligible uncompleted village location is `Sakuranbo School` or a pending explicitly requested village landmark, keeping the individual-image approval gate.
+
+## CANON NAME CORRECTION — Inazuma Dojo (creator locked 2026-11-14)
+**Latest explicit creator instruction OVERRIDES earlier unresolved-name notes:** the dojo previously labeled "Dojo Kaminari" in the website gallery is canonically **Inazuma Dojo**, exactly as labeled on the supplied Sakura Village Official Village Map v1.0. This is a **RENAME OF THE EXISTING APPROVED LOCATION**, not a second dojo, not Dojo Kazan, and not permission to redesign architecture.
+- The four approved images (closed gate, open gate, courtyard, interior) remain unchanged.
+- Keep legacy fragment `#dojo-kaminari` and underlying asset paths stable to prevent broken existing links; public-facing name and captions use **Inazuma Dojo**.
+- The creator previously confirmed this existing gate is the departure gate on Raika's candle-scene route to Shizuka's House.
+- Map location: lower-right training district; dotted pink route heads through Sakura Path (Shi's tree) toward Shizuka's House (left of Great Sakura). Preserve the supplied map as planning reference; it is not a substitute for per-image approval.
+- Earlier statements saying the Inazuma/Dojo Kaminari identity is unresolved are superseded by this explicit correction.
