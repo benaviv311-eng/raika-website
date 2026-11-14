@@ -112,3 +112,10 @@ CREATOR EXPLICITLY CORRECTED the assistant: **Inazuma Dojo** on the provided Sak
 - The geography of SR-02 still needs correction against the creator-supplied Sakura Village map (tree to right of forward route and stream to left). Its character depiction is additionally out of scope; do not render it in replacements.
 - New creation workflow: source map -> location-only angle proposal -> render one standalone location image -> creator approval -> continuity check -> site gallery after location completed.
 - Earlier suggestions to render an avian uguisu Shi in SR-02 are superseded. Character design verification is NOT a prerequisite for location approval.
+
+## Sakura Path — geographic QA of candidate SR-02 (2026-11-14)
+- Current image `שביל_הסאקורה_ועץ_שו.png` (near-identical alternate `שביל_הסאקורה_בכפר_השקיעה.png`): compared visually against the creator-provided Official Sakura Village Map v1.0 and approved SR-01 exterior path.
+- From Inazuma toward Shizuka, Sakura/Shu's roadside tree is on the RIGHT / north side of path; stream is to the LEFT / south side. Both align in the current candidate. Sakura civic insignia and zero characters meet the location-only canon; this is separate from Great Sakura TREE-G (no large ceremonial rope, altar, plaza).
+- The stone bridge on the LEFT is geometrically plausible in the waterway network but an exact bridge placement is not established by the planning map; do not insist it must be crossed on the story route.
+- **QA: PASS ON MAIN DIRECTIONAL AND ICONOGRAPHIC CONSTRAINTS; creator image approval remains PENDING. NOT PUBLISHED.** The creator requested that work continue after QA; do not treat that as an explicit image-approval record.
+- Next proposed SR-03: quiet residential approach beyond Shu's Tree toward Shizuka's House; stream remains on left, house vicinity sits north/right of path, no characters, no re-created dojo gate, no assumed named facade locked before creator review.
