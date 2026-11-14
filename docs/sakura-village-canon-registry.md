@@ -83,3 +83,10 @@ These are sequence anchors, not verified coordinates.
 - The visible outside approach is a stone-paved road. No verified branch, bridge, bend, Shizuka home, or compass bearing in this image.
 - Canva comic metadata verified the design exists and includes 20 pages, but thumbnail metadata alone was insufficient to identify an exact panel proving the identity of this gate as the canonical candle-scene exit. DO NOT claim the identity is established from the comic.
 - **Image-01 production gate remains OPEN**: either confirm the dojo-to-Shizuka exit from a readable panel of the comic or get the creator's explicit approval to treat the approved Dojo Kaminari gate as the route's departure anchor.
+
+## Creator decision — dojo exit identity (2026-11-14)
+Creator explicitly confirmed "כן" that the existing approved **Dojo Kaminari open outer gate** is the gate Raika exits on her way to Shizuka's house. This resolves the outstanding gate-identity question. Preserve the exact approved exterior architecture and crest.
+- OUTSIDE looking IN: training building screen-left; sakura courtyard tree and bench screen-right.
+- INSIDE looking OUT: courtyard sakura tree screen-left; training building screen-right.
+- The outbound path after the gate may be designed with explicit approval, but no cardinal compass direction, turn, stream crossing, or fixed distance has yet been confirmed.
+- Next: create candidate SR-01, a reverse camera view from the dojo courtyard toward the confirmed exit, then ask for creator image approval. Do not publish before creator approval.
