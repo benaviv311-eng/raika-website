@@ -1,0 +1,29 @@
+name: Import approved Lion Kingdom crest
+on:
+  push:
+    paths:
+      - '.github/workflows/import-lion-crest.yml'
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Fetch canonical artwork
+        env:
+          SOURCE_URL: 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/cf13dc0f-309f-4d46-8841-9fd27071a9e6.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOTcyZDc4Y2Q1OTE4OTRlMiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NDY4MjA2MX0.s4SO_mPTgTmQfSIamFGS8DWyvKuZiQwmrpc3cOMKA-c'
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --silent --show-error "$SOURCE_URL" -o lion-kingdom-conquerors-claw-canonical.png
+          file lion-kingdom-conquerors-claw-canonical.png
+          test "$(stat -c%s lion-kingdom-conquerors-claw-canonical.png)" -gt 100000
+      - name: Commit canonical artwork
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lion-kingdom-conquerors-claw-canonical.png
+          git commit -m "Restore full-resolution canonical lion crest" || exit 0
+          git push

@@ -1,0 +1,72 @@
+name: Rebuild clean character cutouts for review
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/rebuild-clean-family.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install background removal
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "rembg[cpu]>=2.0.60" "Pillow>=11" scipy
+      - name: Compare clean segmentation without alpha matting
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from rembg import remove, new_session
+          from PIL import Image,ImageDraw,ImageFilter
+          import numpy as np, io, base64
+          names=['raika','rai','hikari','raigo','raiko']
+          models=['u2net','isnet-general-use']
+          all_img={}
+          for model in models:
+              session=new_session(model)
+              out=Path('family-clean')/model
+              out.mkdir(parents=True,exist_ok=True)
+              for name in names:
+                  source=Image.open(f'{name}-character-rai-bg-2026.webp').convert('RGBA')
+                  result=remove(source,session=session,alpha_matting=False,post_process_mask=True).convert('RGBA')
+                  alpha=np.array(result.getchannel('A'))
+                  # Matte cleanup: eliminate near-transparent muddy halos and snap nearly solid subject.
+                  alpha2=np.where(alpha<30,0,np.where(alpha>230,255,alpha)).astype('uint8')
+                  result.putalpha(Image.fromarray(alpha2,'L'))
+                  path=out/(name+'.webp')
+                  result.save(path,'WEBP',lossless=True,method=6)
+                  all_img[(model,name)]=result
+                  print(model,name,result.size,'alpha_opaque',round((alpha2>230).mean(),3),'alpha_nontransparent',round((alpha2>30).mean(),3))
+          # Preview on dark green AND neutral grey checker to expose background artifacts.
+          cell_w,cell_h=205,325
+          sheet=Image.new('RGB',(cell_w*5,cell_h*2),(19,27,24))
+          draw=ImageDraw.Draw(sheet)
+          for mi,model in enumerate(models):
+              for i,name in enumerate(names):
+                  im=all_img[(model,name)]
+                  im.thumbnail((196,288))
+                  layer=Image.new('RGB',im.size,(40,49,49) if mi==0 else (87,90,89))
+                  layer.paste(im, (0,0), im)
+                  sheet.paste(layer,(cell_w*i+(cell_w-im.width)//2,cell_h*mi+10))
+                  draw.text((cell_w*i+6,cell_h*mi+301),model+' '+name,fill=(232,217,190))
+          buf=io.BytesIO();sheet.save(buf,'JPEG',quality=79,optimize=True)
+          Path('family-clean/comparison.jpg.base64.txt').write_text(base64.b64encode(buf.getvalue()).decode('ascii'))
+          print('Comparison sheet bytes:',len(buf.getvalue()))
+          PY
+      - name: Commit candidates and QA preview
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add family-clean
+          git commit -m "Build clean character cutout candidates without alpha matting"
+          git push origin main
