@@ -45,3 +45,31 @@ The creator CONFIRMED the live gallery ("מאשר", 2026-11-14), so this locatio
 ## Location closure — 2026-11-14
 - **The Great Sakura — CLOSED / FULLY APPROVED / SITE VERIFIED BY CREATOR.** Four canonical gallery images: Front View, The Sakura Approach, Market-side View, The Sacred Rope and Roots. No further edits or replacement without explicit user request and approval.
 - **Next per masterplan Stage 04**: walkway from approved dojo area toward Shizuka's House, subject to Stage 01 source/camera-angle reconciliation; complete and publish one location at a time. The masterplan sequence lists this before Sakuranbo School and Mayor's Residence.
+
+## Shizuka Route — Stage 01C / source-based continuity checkpoint (2026-11-14)
+**STATUS: PLANNING ONLY. Nothing generated, approved, or published.**
+
+### Source access checked
+- Canva comic design DAHZ4hNWKnw: the 20-page metadata and page-level thumbnails are accessible via Canva; cannot establish high-resolution exact walking direction from those thumbnails alone. Avoid claiming verified cardinal orientation or where a specific dojo exit appears.
+- Existing masterplan + storyboard-derived source audit in `docs/sakura-village-canon-masterplan.md` is the currently grounded narrative continuity baseline.
+
+### Scene anchors
+1. Training zone -> departure toward outer path.
+2. Path from training zone toward Shizuka's shoji entry.
+3. Shi Sosakusha sits on a Sakura branch ALONG THE PATH; never on dojo gate.
+4. Shizuka entry: warm candlelight behind shoji.
+5. Interior two candles, Kaminari remembrance and tea table.
+These are sequence anchors, not verified coordinates.
+
+### Camera / location design proposal (NOT locked)
+- SR-01: EXIT / exterior gate-to-path establishing view. Back toward dojo building; position of tree within dojo compound must match gate orientation before rendering.
+- SR-02: PATH / forward-facing quiet path; no invented compulsory stream bridge, no Great Sakura in shot unless proved visible.
+- SR-03: ROADSIDE SAKURA / tree with branch reserved for Shi; distinct from TREE-D dojo courtyard and TREE-G Great Sakura.
+- SR-04: SHIZUKA HOUSE APPROACH / shoji door, credible continuity from SR-02/03, warm interior candle glow.
+- SR-05: SHIZUKA THRESHOLD / closer image of same entry, with no invented architecture changes.
+
+### Unresolved gating decisions
+- Which dojo is exited? Screenplay says Inazuma; website says Dojo Kaminari. Do not equate without evidence.
+- Spatial turn/branch/compass direction of departure and Shizuka entrance unknown.
+- Whether Shizuka is Rai's aunt unknown.
+- No user approval for any Shizuka-route images; do not publish or declare completed.
