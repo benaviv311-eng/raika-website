@@ -1,0 +1,104 @@
+name: Archive approved Korokage Artlist gallery locally
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/archive-korokage-gallery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  archive-gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install gallery image utilities
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "rembg[cpu]>=2.0.60" "Pillow>=11" numpy scipy
+      - name: Archive original approved images and prepare transparent gallery art
+        run: |
+          python - <<'PY'
+          import json, io, urllib.request, urllib.parse, html, re
+          from pathlib import Path
+          from PIL import Image, ImageFilter
+          from rembg import remove, new_session
+          import numpy as np
+
+          root=Path('world-characters/korokage')
+          root.mkdir(parents=True,exist_ok=True)
+          manifest=Path('world-characters/korokage-artlist-approved-manifest.json')
+          assets=json.loads(manifest.read_text())['media']
+          session=new_session('isnet-general-use')
+          replacements=[]
+          report=[]
+
+          for record in assets:
+              slug=record['slug']
+              source_url=record['url']
+              parsed=urllib.parse.urlsplit(source_url)
+              if parsed.scheme!='https' or parsed.hostname!='cms-toolkit-artifacts.artlist.io' or not parsed.path.endswith('.png'):
+                  raise ValueError('Unexpected source for '+slug)
+              req=urllib.request.Request(source_url,headers={'User-Agent':'RAIKA-approved-gallery-archiver/1.0'})
+              with urllib.request.urlopen(req,timeout=70) as response:
+                  image_bytes=response.read(16000000)
+              if not (image_bytes.startswith(b'\x89PNG\r\n\x1a\n') and len(image_bytes)>100000):
+                  raise ValueError('Not the expected approved PNG: '+slug)
+              original_path=root / (slug+'.png')
+              original_path.write_bytes(image_bytes)
+              original=Image.open(io.BytesIO(image_bytes)).convert('RGBA')
+              if min(original.size)<800: raise ValueError('Unexpected small original image: '+slug)
+              alpha_original=np.asarray(original.getchannel('A'),dtype=np.uint8)
+              if np.percentile(alpha_original,50)<245:
+                  cut=original
+              else:
+                  cut=remove(original,session=session,alpha_matting=False,post_process_mask=True).convert('RGBA')
+                  alpha=np.asarray(cut.getchannel('A'),dtype=np.uint8)
+                  if float((alpha<20).mean())<.12 or float((alpha>185).mean())<.035:
+                      raise ValueError('Automated cutout is not reliable for '+slug)
+                  # Preserve the source RGB pixels everywhere the subject remains visible.
+                  source_rgba=np.array(original)
+                  source_rgba[:,:,3]=alpha
+                  cut=Image.fromarray(source_rgba,'RGBA')
+              cut_path=root / (slug+'-cutout.webp')
+              cut.save(cut_path,format='WEBP',lossless=True,method=6)
+              if cut_path.stat().st_size<50000: raise ValueError('Invalid cutout for '+slug)
+              replacements.append((record['url'], 'world-characters/korokage/'+slug+'-cutout.webp'))
+              report.append({'slug':slug,'original_file':original_path.as_posix(),'cutout_file':cut_path.as_posix(),
+                             'source_bytes':len(image_bytes),'cutout_bytes':cut_path.stat().st_size,
+                             'original_dimensions':list(original.size)})
+              print(slug,original.size,len(image_bytes),cut_path.stat().st_size)
+
+          index_path=Path('index.html')
+          markup=index_path.read_text()
+          for original_url,local_file in replacements:
+              expected=(markup.count(original_url)+markup.count(html.escape(original_url,quote=True)))
+              if not expected: raise ValueError('Approved image URL missing from website: '+local_file)
+              markup=markup.replace(html.escape(original_url,quote=True),local_file).replace(original_url,local_file)
+          # The source images are now truly cut out, so remove the temporary fade-out masks.
+          markup=markup.replace('-webkit-mask-image:radial-gradient(ellipse 58% 59% at 50% 52%,#000 67%,transparent 99%);mask-image:radial-gradient(ellipse 58% 59% at 50% 52%,#000 67%,transparent 99%)','')
+          markup=markup.replace('-webkit-mask-image:radial-gradient(ellipse 58% 58% at 50% 49%,#000 65%,transparent 99%);mask-image:radial-gradient(ellipse 58% 58% at 50% 49%,#000 65%,transparent 99%)','')
+          index_path.write_text(markup)
+          record_path=root/'image-checks.json'
+          record_path.write_text(json.dumps(report,indent=2))
+          print('Archived original images:',len(report),'updated index')
+          PY
+      - name: Commit originals and website-ready transparent cutouts
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html world-characters/korokage/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Archive Korokage canonical art and publish gallery cutouts'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
