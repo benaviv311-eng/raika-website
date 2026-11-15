@@ -8,10 +8,10 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const page = readFileSync(join(root, 'index.html'), 'utf8');
 const variants = [
   ['Airborne Orb', 'portraits/medoshi-airborne-orb-clean.webp'],
-  ['Staff Strike', 'medoshi-staff-strike-approved.webp'],
-  ['Earth Bind', 'medoshi-earth-bind-approved.webp'],
-  ['Tree of Life Defense', 'medoshi-tree-of-life-defense-approved.webp'],
-  ['Mage Form', 'medoshi-mage-form.webp']
+  ['Staff Strike', 'portraits/medoshi-staff-strike-cutout.webp'],
+  ['Earth Bind', 'portraits/medoshi-earth-bind-cutout.webp'],
+  ['Tree of Life Defense', 'portraits/medoshi-tree-of-life-defense-cutout.webp'],
+  ['Mage Form', 'portraits/medoshi-mage-form-cutout.webp']
 ];
 
 test('Medoshi keeps his approved wanderer portrait and canonical profile', () => {
@@ -41,4 +41,19 @@ test('The original Medoshi airborne action art remains preserved', () => {
   const original = readFileSync(join(root, 'world-characters/medoshi-airborne-orb-approved.webp'));
   assert.equal(original.toString('ascii', 0, 4), 'RIFF');
   assert.ok(original.length > 200_000);
+});
+
+test('Every original approved Medoshi pose is preserved in the canonical asset folder', () => {
+  const originalFiles = [
+    'medoshi-airborne-orb-approved.webp',
+    'medoshi-staff-strike-approved.webp',
+    'medoshi-earth-bind-approved.webp',
+    'medoshi-tree-of-life-defense-approved.webp',
+    'medoshi-mage-form.webp'
+  ];
+  for (const filename of originalFiles) {
+    const bytes = readFileSync(join(root, 'world-characters', filename));
+    assert.equal(bytes.toString('ascii', 0, 4), 'RIFF', filename);
+    assert.ok(bytes.length > 100_000, filename);
+  }
 });
