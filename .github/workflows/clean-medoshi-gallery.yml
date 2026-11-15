@@ -67,9 +67,13 @@ jobs:
                   if mode=="light":
                       # A near-neutral bright studio background; retain only vivid magic and the subject.
                       chroma=vmax-vmin
-                      color_signal=np.maximum(chroma-18,0)
-                      effect=np.clip(color_signal*5.5,0,255)
+                      color_signal=np.maximum(chroma-27,0)
+                      effect=np.clip(color_signal*6.3,0,255)
                       colorful=(chroma>30).astype(np.float32)
+                      # Reject neutral specks in the left part of the studio sweep.
+                      yy,xx=np.indices((h,w))
+                      stray=(xx<w*.48)&(yy<h*.76)&(chroma<51)
+                      person[stray]=0
                       near=maximum_filter(colorful,size=21)
                       # Soft purple-blue arcs can be nearly white at their cores.
                       bright=np.clip((vmax-205)*4,0,255)
@@ -83,8 +87,10 @@ jobs:
                       signal=np.maximum.reduce((cobalt,violet,turquoise))
                       effect=np.clip((signal-8)*5.1,0,255)
                       near=maximum_filter((signal>25).astype(np.float32),size=29)
-                      bright=np.clip((vmax-165)*4.5,0,255)
-                      effect=np.maximum(effect,bright*near*.83)
+                      # Any near-white light inside these dark scenes is part of the magic;
+                      # keep intense highlights without punching holes in the orb/tree.
+                      bright=np.clip((vmax-120)*3.8,0,255)
+                      effect=np.maximum(effect,bright*.97)
                       # Dark studio surfaces must never survive simply for being bluish.
                       effect*=np.clip((vmax-82)/75,0,1)
                   effect=gaussian_filter(effect,0.65)
