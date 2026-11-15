@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const page = readFileSync(join(root, 'index.html'), 'utf8');
 const variants = [
-  ['Airborne Orb', 'medoshi-airborne-orb-approved.webp'],
+  ['Airborne Orb', 'portraits/medoshi-airborne-orb-clean.webp'],
   ['Staff Strike', 'medoshi-staff-strike-approved.webp'],
   ['Earth Bind', 'medoshi-earth-bind-approved.webp'],
   ['Tree of Life Defense', 'medoshi-tree-of-life-defense-approved.webp'],
@@ -35,4 +35,10 @@ test('Medoshi’s five gallery images are complete WebP files', () => {
     assert.equal(buf.toString('ascii', 8, 12), 'WEBP');
     assert.equal(buf.readUInt32LE(4) + 8, buf.length);
   }
+});
+
+test('The original Medoshi airborne action art remains preserved', () => {
+  const original = readFileSync(join(root, 'world-characters/medoshi-airborne-orb-approved.webp'));
+  assert.equal(original.toString('ascii', 0, 4), 'RIFF');
+  assert.ok(original.length > 200_000);
 });
