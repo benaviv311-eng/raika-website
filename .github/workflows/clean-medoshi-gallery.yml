@@ -70,25 +70,23 @@ jobs:
                       color_signal=np.maximum(chroma-27,0)
                       effect=np.clip(color_signal*6.3,0,255)
                       colorful=(chroma>30).astype(np.float32)
-                      # Reject neutral specks in the left part of the studio sweep.
-                      yy,xx=np.indices((h,w))
-                      stray=(xx<w*.48)&(yy<h*.76)&(chroma<51)
-                      person[stray]=0
                       near=maximum_filter(colorful,size=21)
                       # Soft purple-blue arcs can be nearly white at their cores.
                       bright=np.clip((vmax-205)*4,0,255)
                       effect=np.maximum(effect,bright*near*.72)
-                      # An opaque gray studio dust/swoosh was falsely included in the
-                      # far-left upper area. Suppress that neutral patch, keeping bright
-                      # blue-violet magic and leaving the full wooden staff intact.
-                      arch=(xx<w*.53)&(yy<h*.57)
-                      keep_arc=np.clip((chroma-51)/36,0,1)
-                      effect[arch]*=keep_arc[arch]
-                      person[arch & (chroma<80)]=0
-                      # Do not show the neutral speckle dust panel around the crystal.
-                      dust=(xx<w*.30)&(yy>h*.56)&(chroma<35)
-                      person[dust]=0
-                      effect[dust]=0
+                      # A *continuous* transparency gradient (never a rectangular
+                      # crop) softens pale gray sweep and dust around the magic.
+                      yy,xx=np.indices((h,w))
+                      xkeep=np.clip((xx/w-.14)/.48,0,1)
+                      ykeep=np.clip((yy/h-.08)/.62,0,1)
+                      spatial_keep=np.maximum(xkeep,ykeep)
+                      chroma_keep=np.clip((chroma-26)/51,0,1)
+                      taper=chroma_keep+(1-chroma_keep)*spatial_keep
+                      person*=taper
+                      effect*=taper
+                      dust=(xx<w*.28)&(yy>h*.61)&(chroma<27)
+                      person[dust]*=.16
+                      effect[dust]*=.16
                   else:
                       # The action art contains a blue-gray studio stage. Its tint must not
                       # turn into an opaque rectangular layer behind the enchanted roots/tree.
