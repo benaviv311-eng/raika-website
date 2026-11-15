@@ -1,0 +1,51 @@
+{
+  "character": "Korokage",
+  "workflow": "approved_artlist_only",
+  "website": "index.html#korokage",
+  "publicMediaStatus": "Artlist-hosted signed image URLs. NOT yet permanently archived in the GitHub repository.",
+  "note": "Preserve original approved artwork. Do not replace any generation with imitations. This manifest retains the exact approved generation IDs to enable future archival.",
+  "media": [
+    {
+      "slug": "base",
+      "generationId": "01a1d85f-07bd-7a15-a0c6-aa687d75f6ec",
+      "url": "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__8/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-82c7249b-77b7-40f9-88e8-2842874ba5fa.png?Expires=2110095733&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=uDMVodpDp2sykbRRGjE-JJjGtiP8V1kbOVgg2eJQOZLbqYoTvDStgRCHKIvgZ19qV8vt5uO8fyE0ZzNX81das1wTx1PD333GoUbqMyvfKk~uepBBMXtdZrnEkUMIDn9gGe3r5WQYAEWZ06uOhLVdo2qivoJevpo3Tz0jInw5rUVSgZq1t9hKg5q8rXpE4R4~ewOFirh8Zz-SiMUVVbQgXVp~PqjNEh8RcpUOMpuxe1UgOJqFZ-EVPehmdls-737g2DsTo9QsumCPnNy3qTiNur9tn1pOie7vZIEQf-VyUAyJonXg3NY1iFa2AjF3aBhBFl7rxceG10Ymf6aGcXxVDg__",
+      "role": "canonical portrait",
+      "approved": true
+    },
+    {
+      "slug": "steel-feather-barrage",
+      "generationId": "01a1de46-7cac-73ce-849c-1900635c3740",
+      "url": "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__9/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-4f016319-d105-45c2-90c3-84da69a7c1cb.png?Expires=2110094842&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=QCJtHWAKtxHVeizBzdGDfXCyQvs5jWPuZP-yRPxWHyROoil7Jj8YUn-D4p7EO9GzDvyqEWXXO-AODYxpYsKpBjl18HyrASmdIQ4faYSvffK6vPhCHi5cyk1J3Q4YqLmPU0i14udzZyrzWdBeBHEQhH1rJTLMPPMiyl2mtWgWOg7CBEC4-7sNAMe9iXxLW5Bq13XFh5hs5UprwO2zFhJiH1NCIZckCjqCMy6pJ5hz78ZTuiRJTSr2L75-UyJRQP-KAxFbOnFNKPzAEbeGcsIZ8Vqv6uSS23Fs1GSOpQ7T1HT9uGBxnzs8x0Stf2-8645x7x-rNPwqPDU~NdPmJGO2Fw__",
+      "role": "approved action pose 1",
+      "approved": true
+    },
+    {
+      "slug": "twin-steel-feather-kunai",
+      "generationId": "01a1de4e-fbca-7935-a8ea-ef6b2c09daa1",
+      "url": "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__7/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-b03c6abc-19f7-4cc8-80df-2839ff30b92c.png?Expires=2110095721&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=PTK6gv2ajlSjHLunVtV8RyJa9VWL-dswR9iGAObrHlKBtv2m546Qzp9MI~rCwxF5853WiISnWnH2Q-cCMJCglkuI9ifPHar7oUI5cH~qesP1vyLO0lYCpqU~HkGvr4Thdq7rpSNkrGvql6E0iFjcLzJk-HmIuOQCn1ed3yU9jEjjuxdM6~NA2uIt1OqNHXGH1j2DGNuQDyIm2FpB4h7FuxceStE~TAoPIEhgvLsuWTYha0M-cg5HY9o1HG5UhYquSfRfusSn9mTGNzgV~WjYcLxqfLU6EmYr-sukzBK3hCFrbpIKEKpahaQw~wr3rE8Hy5b2CgkxQUlIgiB9eJ1XDg__",
+      "role": "approved action pose 2",
+      "approved": true
+    },
+    {
+      "slug": "steel-wing-armor",
+      "generationId": "01a1de6b-ad79-7a14-94ae-201150351ada",
+      "url": "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__7/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-3a452f43-3c16-4938-b9be-b8f35a28d03c.png?Expires=2110093021&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=vhncd3xVdMRpKIMmcod~KC2-17sisRgTAoBJQp4DV87hYdYcJ-JRG920093UHr-bRhVLWtXzQXziRN-SlImHUTqYBUWtrkUakZ4TZ0SZaACiRPvN~dnAjoFfiQLuSGyAPLlceqNWyAOXUIm2KtpDdLvAD-xXipGZs6buF5uD-aq92y6t8Yz9r-AunaVmbCRmJwNL1fQ5zZFHH0lx02aeat3Hmrpz~-SmzLUtbFgyNzb69~pp-uix-9DdHU3oeVfwMRxf8McMjwGuVQg-FpEfsjYpy0op0NaawgcvxGgGtdj65ii7i3JTQfvQesGX39PKP0-Rp863iA-xdhC7TNxTlQ__",
+      "role": "approved action pose 3",
+      "approved": true
+    },
+    {
+      "slug": "numbing-touch",
+      "generationId": "01a1de88-660f-75cf-8e55-551bc4fae804",
+      "url": "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__3/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-983d7178-598e-42bb-bf2d-9f6342b31ba6.png?Expires=2110094895&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=AFHBxF-N2n3ZpJD9wPdxb0XExWIvvw~SuLiZIv~O8VpGn9slfxE~XEvca83V-QhhsvpR-0ihd1fHEdXiqcHOGGiRqNYB7oRw1hTqJNpjx-tjjrkhPk6c0jL~vVilYZ56KLTun8kmHfGPYzNviWBuIZuH0jFEB1c96cuEIji2E8Vuzs5j70RN7mxfLp3PQJZhbgKuAO3DS0UM7B6PaAHospGh84IGkHEfZUe5j-snvRxddvXIJNUmWuiRKw~2B6jm-OMwiTVcu~5g1vYB9xPMC7aol5UwZmAM1KTYHCnrE6U26YAfAFTCAXwTgJ6ixFsQ4PoyYp7G9pU~WYnpc-ReGA__",
+      "role": "approved action pose 4",
+      "approved": true
+    },
+    {
+      "slug": "shadow-mist",
+      "generationId": "01a1de8d-86cc-7102-bafa-c5fa1d0e4773",
+      "url": "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__3/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-782cb5a6-889b-414f-a524-85c6170399bc.png?Expires=2110095237&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=Y2WNZuNAilCMf~ZLlXf~KFe-DCoO55unhILNwNo1mx-59sSsLESOCCtg-flBd~3HuIkIwYaiLOYRcC8P5SfMHbVLs5QK7OXWFAAOPy8LOvQFjI9b37GUK-tc5WMLZDnP6qH6ChrvFPjWmEDZ6LX-~57Re1g~jLB4zXTNBiUtmnikmIFQFajI-ygb1S67Qhtbq3WDGbYxhnqRvY7D~cA43tLgsTFbmm4TdA5xLsFTZSJlejTSfJBWJuTsUbGlZOLkDUKCV65xLPn6p4iAFx8LNO2axL-LQaT-wW1zDiakyVZoXz6s~C3KtLseWTEjX4xZSxGfdGdimCp2~GsjJiNwfw__",
+      "role": "approved action pose 5",
+      "approved": true
+    }
+  ]
+}
