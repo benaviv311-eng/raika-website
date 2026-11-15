@@ -1,0 +1,47 @@
+name: QA original size Korokage transparency against dark site background
+
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/qa-korokage-composite.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export full-resolution composited portraits for real visual checking
+        run: |
+          python -m pip install "Pillow>=11"
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import io,base64
+          root=Path('world-characters/review-v3/korokage')
+          for name in ['steel-feather-barrage','steel-wing-armor','numbing-touch']:
+            img=Image.open(root/(name+'-clean.webp')).convert('RGBA')
+            bg=Image.new('RGBA',img.size,(12,19,18,255))
+            bg.alpha_composite(img)
+            frame=bg.convert('RGB')
+            out=io.BytesIO()
+            frame.save(out,'JPEG',quality=90,optimize=True)
+            (root/(name+'-full-on-dark.jpg.base64.txt')).write_text(base64.b64encode(out.getvalue()).decode('ascii'))
+            print(name,'full preview jpeg bytes',len(out.getvalue()), 'image',img.size)
+          PY
+      - name: Save full-size previews
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/review-v3/korokage/*-full-on-dark.jpg.base64.txt
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Store full resolution QA of Korokage portraits on site background"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
