@@ -1,0 +1,68 @@
+[
+  {
+    "slug": "base",
+    "original_file": "world-characters/korokage/base.png",
+    "cutout_file": "world-characters/korokage/base-cutout.webp",
+    "source_bytes": 2218590,
+    "cutout_bytes": 750302,
+    "original_dimensions": [
+      1024,
+      1536
+    ]
+  },
+  {
+    "slug": "steel-feather-barrage",
+    "original_file": "world-characters/korokage/steel-feather-barrage.png",
+    "cutout_file": "world-characters/korokage/steel-feather-barrage-cutout.webp",
+    "source_bytes": 2159256,
+    "cutout_bytes": 508816,
+    "original_dimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "slug": "twin-steel-feather-kunai",
+    "original_file": "world-characters/korokage/twin-steel-feather-kunai.png",
+    "cutout_file": "world-characters/korokage/twin-steel-feather-kunai-cutout.webp",
+    "source_bytes": 1926720,
+    "cutout_bytes": 538722,
+    "original_dimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "slug": "steel-wing-armor",
+    "original_file": "world-characters/korokage/steel-wing-armor.png",
+    "cutout_file": "world-characters/korokage/steel-wing-armor-cutout.webp",
+    "source_bytes": 2259005,
+    "cutout_bytes": 696498,
+    "original_dimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "slug": "numbing-touch",
+    "original_file": "world-characters/korokage/numbing-touch.png",
+    "cutout_file": "world-characters/korokage/numbing-touch-cutout.webp",
+    "source_bytes": 1963016,
+    "cutout_bytes": 516306,
+    "original_dimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "slug": "shadow-mist",
+    "original_file": "world-characters/korokage/shadow-mist.png",
+    "cutout_file": "world-characters/korokage/shadow-mist-cutout.webp",
+    "source_bytes": 2024912,
+    "cutout_bytes": 311158,
+    "original_dimensions": [
+      1536,
+      1024
+    ]
+  }
+]
