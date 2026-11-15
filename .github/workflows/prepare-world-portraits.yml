@@ -84,5 +84,12 @@ jobs:
           git add world-characters/portraits/
           if ! git diff --cached --quiet; then
             git commit -m "Add clean unframed display cutouts for Medoshi and Sairan"
-            git push origin main
+            # Other repository automation may push while the segmentation model runs.
+            # Rebase on current main without modifying approved source artwork.
+            for attempt in 1 2 3 4; do
+              git pull --rebase origin main
+              if git push origin HEAD:main; then exit 0; fi
+              sleep 3
+            done
+            exit 1
           fi
