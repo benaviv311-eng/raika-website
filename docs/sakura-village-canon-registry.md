@@ -246,3 +246,10 @@ Check pixel-level exterior geometry separately; no interior photos exist as appr
 - **Visual geometry QA: PASS against its INT-01 source because exact crop.** This does NOT prove that the underlying INT-01 has been formally creator approved or that cropped portrait has full high-res character fidelity.
 - **Approval status: INT-03 candidate awaiting creator's EXPLICIT confirmation; not published.** INT-01 image composite also has no recorded explicit final approval, and INT-02 remains blocked pending actual visual access. Do not conflate them.
 - NEXT: after creator approves this candidate, keep sequence aligned to final website upload only after location's approved set is complete; no new living characters in location images.
+
+## Shizuka interior INT-04 — tea table exact source crop (2026-11-15)
+- User requested `נמשיך` after INT-03 memorial crop. Treat this as instruction to proceed with next location view INT-04, **NOT** explicit image approval of INT-03 or INT-01. Do not silently approve either.
+- **INT-04 candidate**: `/mnt/data/shizuka_int04_tea_table_exact_crop_16x9.png`, 896 × 504 (16:9), produced by exact pixel crop of `shizuka_int01_kaminari_original_composite.png` (1671 × 941), rectangle `(420,397,1316,901)`. Verified pixels exactly equal parent image, with no regeneration, repaint, change to furniture, teapot or two cups.
+- Framing concentrates on existing wooden low tea table, sakura-decorated teapot and two cups, tatami, light and room details; this is NOT a novel reverse camera view.
+- Geometry/prop continuity against source INT-01 **PASS by pixel identity**; overall master image approval **PENDING** and new INT-04 image itself **AWAITING explicit creator approval**. Site **NOT UPDATED**.
+- INT-03 memorial crop `shizuka_int03_memorial_corner_16x9.png` remains PENDING user's specific image approval. INT-02 Artlist reverse-view also pending actual visual QA. Publish only individually approved images.
