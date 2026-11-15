@@ -1,0 +1,132 @@
+[
+  {
+    "character": "sairan",
+    "pose": "quiet-palm",
+    "original": "world-characters/sairan-palm-strike-approved.png",
+    "new": "world-characters/review-v2/sairan/quiet-palm-clean.webp",
+    "size": [
+      1086,
+      1448
+    ],
+    "original_transparent": 0.659,
+    "new_transparent": 0.658,
+    "new_opaque": 0.333
+  },
+  {
+    "character": "sairan",
+    "pose": "hammer-kick",
+    "original": "world-characters/sairan-hammer-kick-approved.png",
+    "new": "world-characters/review-v2/sairan/hammer-kick-clean.webp",
+    "size": [
+      2752,
+      1536
+    ],
+    "original_transparent": 0.0,
+    "new_transparent": 0.85,
+    "new_opaque": 0.146
+  },
+  {
+    "character": "sairan",
+    "pose": "lightning-summon",
+    "original": "world-characters/sairan-lightning-summon-approved.png",
+    "new": "world-characters/review-v2/sairan/lightning-summon-clean.webp",
+    "size": [
+      2752,
+      1536
+    ],
+    "original_transparent": 0.0,
+    "new_transparent": 0.899,
+    "new_opaque": 0.097
+  },
+  {
+    "character": "sairan",
+    "pose": "lightning-defense",
+    "original": "world-characters/sairan-lightning-defense-approved.png",
+    "new": "world-characters/review-v2/sairan/lightning-defense-clean.webp",
+    "size": [
+      2752,
+      1536
+    ],
+    "original_transparent": 0.0,
+    "new_transparent": 0.813,
+    "new_opaque": 0.171
+  },
+  {
+    "character": "korokage",
+    "pose": "base",
+    "original": "world-characters/korokage/base.png",
+    "new": "world-characters/review-v2/korokage/base-clean.webp",
+    "size": [
+      1024,
+      1536
+    ],
+    "original_transparent": 0.0,
+    "new_transparent": 0.553,
+    "new_opaque": 0.435
+  },
+  {
+    "character": "korokage",
+    "pose": "steel-feather-barrage",
+    "original": "world-characters/korokage/steel-feather-barrage.png",
+    "new": "world-characters/review-v2/korokage/steel-feather-barrage-clean.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "original_transparent": 0.0,
+    "new_transparent": 0.724,
+    "new_opaque": 0.256
+  },
+  {
+    "character": "korokage",
+    "pose": "twin-steel-feather-kunai",
+    "original": "world-characters/korokage/twin-steel-feather-kunai.png",
+    "new": "world-characters/review-v2/korokage/twin-steel-feather-kunai-clean.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "original_transparent": 0.0,
+    "new_transparent": 0.667,
+    "new_opaque": 0.319
+  },
+  {
+    "character": "korokage",
+    "pose": "steel-wing-armor",
+    "original": "world-characters/korokage/steel-wing-armor.png",
+    "new": "world-characters/review-v2/korokage/steel-wing-armor-clean.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "original_transparent": 0.0,
+    "new_transparent": 0.639,
+    "new_opaque": 0.351
+  },
+  {
+    "character": "korokage",
+    "pose": "numbing-touch",
+    "original": "world-characters/korokage/numbing-touch.png",
+    "new": "world-characters/review-v2/korokage/numbing-touch-clean.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "original_transparent": 0.0,
+    "new_transparent": 0.663,
+    "new_opaque": 0.324
+  },
+  {
+    "character": "korokage",
+    "pose": "shadow-mist",
+    "original": "world-characters/korokage/shadow-mist.png",
+    "new": "world-characters/review-v2/korokage/shadow-mist-clean.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "original_transparent": 0.0,
+    "new_transparent": 0.802,
+    "new_opaque": 0.187
+  }
+]
