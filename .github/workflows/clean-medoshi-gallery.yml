@@ -1,0 +1,142 @@
+name: Create transparent gallery art for all Medoshi poses
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/clean-medoshi-gallery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  gallery-cutouts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install segmentation and image processing libraries
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "rembg[cpu]>=2.0.60" "Pillow>=11" numpy scipy
+      - name: Make approved Medoshi gallery art transparent without altering canonical originals
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageDraw, ImageFilter
+          from scipy.ndimage import maximum_filter, gaussian_filter
+          from rembg import remove, new_session
+          import numpy as np
+          import io
+          import base64
+
+          root=Path("world-characters")
+          output=root/"portraits"
+          output.mkdir(parents=True,exist_ok=True)
+          poses=[
+              ("staff-strike","medoshi-staff-strike-approved.webp","light",0.98),
+              ("earth-bind","medoshi-earth-bind-approved.webp","dark",0.69),
+              ("tree-of-life-defense","medoshi-tree-of-life-defense-approved.webp","dark",0.59),
+              ("mage-form","medoshi-mage-form.webp","plain",0.99),
+          ]
+          session=new_session("isnet-general-use")
+          preview=Image.new("RGB",(1120,4*355),(16,26,23))
+          pen=ImageDraw.Draw(preview)
+
+          def subject_cutout(rgb):
+              im=Image.fromarray(rgb,'RGB')
+              # The same well-tested model used for Raika's approved standalone portraits.
+              cut=remove(im,session=session,alpha_matting=False,post_process_mask=True).convert("RGBA")
+              return np.asarray(cut.getchannel("A"),dtype=np.float32)
+
+          for i,(name,filename,mode,subject_limit) in enumerate(poses):
+              source=Image.open(root/filename).convert("RGB")
+              rgb=np.asarray(source,dtype=np.float32)
+              h,w=rgb.shape[:2]
+              person=subject_cutout(rgb.astype(np.uint8))
+              person=np.where(person<28,0,np.where(person>236,255,person))
+              if mode=="plain":
+                  alpha=person
+              else:
+                  r,g,b=rgb[:,:,0],rgb[:,:,1],rgb[:,:,2]
+                  vmax=np.maximum.reduce((r,g,b))
+                  vmin=np.minimum.reduce((r,g,b))
+                  if mode=="light":
+                      # A near-neutral bright studio background; retain only vivid magic and the subject.
+                      chroma=vmax-vmin
+                      color_signal=np.maximum(chroma-18,0)
+                      effect=np.clip(color_signal*5.5,0,255)
+                      colorful=(chroma>30).astype(np.float32)
+                      near=maximum_filter(colorful,size=21)
+                      # Soft purple-blue arcs can be nearly white at their cores.
+                      bright=np.clip((vmax-205)*4,0,255)
+                      effect=np.maximum(effect,bright*near*.72)
+                  else:
+                      # The action art contains a blue-gray studio stage. Its tint must not
+                      # turn into an opaque rectangular layer behind the enchanted roots/tree.
+                      cobalt=b-1.16*r-11
+                      violet=r-1.31*g-12
+                      turquoise=b-1.10*g-9
+                      signal=np.maximum.reduce((cobalt,violet,turquoise))
+                      effect=np.clip((signal-8)*5.1,0,255)
+                      near=maximum_filter((signal>25).astype(np.float32),size=29)
+                      bright=np.clip((vmax-165)*4.5,0,255)
+                      effect=np.maximum(effect,bright*near*.83)
+                      # Dark studio surfaces must never survive simply for being bluish.
+                      effect*=np.clip((vmax-82)/75,0,1)
+                  effect=gaussian_filter(effect,0.65)
+                  # Keep the silhouette, staff and robe from the original image. The
+                  # luminous effects may extend well outside that silhouette.
+                  if subject_limit<.99:
+                      person[:,int(w*subject_limit):]=0
+                  alpha=np.maximum(person,effect)
+              alpha=np.clip(alpha,0,255)
+              alpha[alpha<12]=0
+              alpha[alpha>248]=255
+              outarr=np.zeros((h,w,4),dtype=np.uint8)
+              outarr[:,:,:3]=np.asarray(source,dtype=np.uint8)
+              outarr[:,:,3]=alpha.astype(np.uint8)
+              outarr[outarr[:,:,3]==0,:3]=0
+              clean=Image.fromarray(outarr,"RGBA")
+              target=output/("medoshi-"+name+"-cutout.webp")
+              clean.save(target,"WEBP",lossless=True,method=6)
+              fraction_trans=float((alpha<12).mean())
+              fraction_opaque=float((alpha>180).mean())
+              if fraction_trans<.14 or fraction_opaque<.05:
+                  raise RuntimeError(f"Suspicious alpha for {name}: transparent={fraction_trans:.2f} opaque={fraction_opaque:.2f}")
+              print(name,"size",source.size,"alpha-0",round(fraction_trans,3),
+                    "opaque",round(fraction_opaque,3),"saved",target.stat().st_size)
+
+              for col,img in enumerate((source,clean)):
+                  thumb=img.copy()
+                  thumb.thumbnail((530,310),Image.Resampling.LANCZOS)
+                  place_x=col*560+(560-thumb.width)//2
+                  place_y=i*355+(310-thumb.height)//2+11
+                  if thumb.mode=="RGBA":
+                      bg=Image.new("RGBA",thumb.size,(16,26,23,255))
+                      bg.alpha_composite(thumb)
+                      thumb=bg.convert("RGB")
+                  preview.paste(thumb,(place_x,place_y))
+                  title=("ORIGINAL   " if col==0 else "CUTOUT   ")+name
+                  pen.text((col*560+18,i*355+329),title,fill=(242,215,171))
+          buffer=io.BytesIO()
+          preview.save(buffer,"JPEG",quality=88,optimize=True)
+          (output/"medoshi-gallery-review.jpg.base64.txt").write_text(base64.b64encode(buffer.getvalue()).decode("ascii"))
+          PY
+      - name: Commit derived images and QA preview without overwriting artwork
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/portraits/medoshi-*-cutout.webp world-characters/portraits/medoshi-gallery-review.jpg.base64.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "Add transparent Medoshi action art and QA comparison"
+            for attempt in 1 2 3 4; do
+              git pull --rebase origin main
+              if git push origin HEAD:main; then exit 0; fi
+              sleep 3
+            done
+            exit 1
+          fi
