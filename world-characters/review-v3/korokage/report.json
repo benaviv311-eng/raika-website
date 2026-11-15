@@ -1,0 +1,50 @@
+[
+  {
+    "pose": "base",
+    "mean_background_distance": 4.08,
+    "mean_foreground_distance": 38.68,
+    "before_fg_fraction": 0.445,
+    "after_fg_fraction": 0.444,
+    "file": "world-characters/review-v3/korokage/base-clean.webp"
+  },
+  {
+    "pose": "steel-feather-barrage",
+    "mean_background_distance": 4.36,
+    "mean_foreground_distance": 34.87,
+    "before_fg_fraction": 0.273,
+    "after_fg_fraction": 0.272,
+    "file": "world-characters/review-v3/korokage/steel-feather-barrage-clean.webp"
+  },
+  {
+    "pose": "twin-steel-feather-kunai",
+    "mean_background_distance": 4.69,
+    "mean_foreground_distance": 34.67,
+    "before_fg_fraction": 0.331,
+    "after_fg_fraction": 0.328,
+    "file": "world-characters/review-v3/korokage/twin-steel-feather-kunai-clean.webp"
+  },
+  {
+    "pose": "steel-wing-armor",
+    "mean_background_distance": 5.35,
+    "mean_foreground_distance": 33.19,
+    "before_fg_fraction": 0.359,
+    "after_fg_fraction": 0.359,
+    "file": "world-characters/review-v3/korokage/steel-wing-armor-clean.webp"
+  },
+  {
+    "pose": "numbing-touch",
+    "mean_background_distance": 5.07,
+    "mean_foreground_distance": 34.36,
+    "before_fg_fraction": 0.335,
+    "after_fg_fraction": 0.334,
+    "file": "world-characters/review-v3/korokage/numbing-touch-clean.webp"
+  },
+  {
+    "pose": "shadow-mist",
+    "mean_background_distance": 7.35,
+    "mean_foreground_distance": 28.08,
+    "before_fg_fraction": 0.196,
+    "after_fg_fraction": 0.195,
+    "file": "world-characters/review-v3/korokage/shadow-mist-clean.webp"
+  }
+]
