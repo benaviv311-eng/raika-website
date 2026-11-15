@@ -179,3 +179,12 @@ INT-02: reverse view from room toward the SAME shoji entrance, verify it lines u
 INT-03: detailed memorial shelf / two candles (no character portrait rendering).
 INT-04: tea table view matching blocking / shelf/door positions.
 Check pixel-level exterior geometry separately; no interior photos exist as approved references yet, so lock geometry only after INT-01 approval.
+
+## Canva original panel full-resolution retrieval audit (2026-11-15)
+- Creator requested full-resolution original source panel access to build exact Shizuka interior references.
+- Visually relevant Canva sources confirmed via connected account: `DAHURd4JOcg` (title `The Legacy of Reishin Original`, 16 whiteboard boards, 14 occupied) and `DAHZ4hNWKnw` (title `The Legacy of Reishin`, 20 comic pages).
+- Queried page inventories / media-asset metadata and current thumbnail links in Canva. The connector exposes rendered page thumbnails (typically 376x531 for the 20-page comic and 531x376 for Original whiteboard), media thumbnails (141x200), original media pixel dimensions, but **NO connector operation for downloading source image bytes or full-resolution export**.
+- The signed Canva media preview URL could not be downloaded with the available file/image runtime. Direct external DNS from execution container also unavailable. The page images were NOT successfully seen at full resolution; DO NOT assert facade/interior architecture based on source imagery that was never inspected.
+- The late comic page 20 media asset is `MAHaJfC4rWc` (tags bunny, candle, illustration, tradition, home) but tags alone do NOT prove specific doorway/candle placement or usable facade reference.
+- Independently verified source material from Library `Raika_Candles_Storyboard_Plan_v1.md`: panel 1.2 sliding paper shoji closed with warm light; panel 1.3 same door open; door to Raika side, Kaminari memorial shelf with two candles behind Shizuka side, low tea table between seating areas. This text is the only presently verified interior source; do not invent beyond it.
+- **Production gate:** keep INT-01 as planning only until actual panel visual export/access is available or creator explicitly approves a new designed interior using storyboard constraints. Do not generate based on claims of precise original-art matching.
