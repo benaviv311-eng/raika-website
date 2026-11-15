@@ -160,3 +160,22 @@ CREATOR EXPLICITLY CORRECTED the assistant: **Inazuma Dojo** on the provided Sak
 - **Architecture continuity: PASS by exact pixel identity.** Left lattice window, main right shoji, far right Sakura flag, roof, stone steps, ornaments and lighting exactly preserved wherever in crop.
 - **Limit:** This is a true 16:9 zoomed CROP of an existing 16:9 view, not a separate camera angle and not a newly verified original comic facade. The source image provides the approved architectural canon for this track.
 - **Approval: PENDING USER'S EXPLICIT CONFIRMATION on this crop. Website publication: NOT DONE.** Do not treat a technical QA pass as creator approval.
+
+## Shizuka's house — interior location design / plan before image generation (2026-11-15)
+**SOURCE:** Library `Raika_Candles_Storyboard_Plan_v1.md` passage "מפת החדר והמשכיות", panels 1.2–1.3 and 2.1. Creator asked to proceed with planning after 16:9 pixel-identical source crop; this is NOT explicit permission to label crop APPROVED or to publish it. Crop remains pending individual approval.
+
+### Canonically grounded interior continuity
+- Exterior approved approach shows one main right shoji sliding entrance, smaller lattice window on left, raised stone steps, and stream on path side. Exact-source crop keeps those pixels unchanged.
+- Through the **same** shoji entrance from the interior, dim sunset light enters; paper glows warmly with candles.
+- Traditional modest Japanese room in **warm timber and tatami**, intimate not palace-like; low tea table between the two future character blocking areas.
+- Memorial shelf containing a **photo of Kaminari** and **exactly two candle positions**. The shelf remains on the background side of Shizuka's seating area; entrance remains on Raika's seating side.
+- From entry camera facing inward: scene establishes memorial/shelf to the RIGHT side, door and entrant to the LEFT edge (storyboard panel 1.3); camera never crosses the 180° axis between seated characters in later blocking.
+- While building **LOCATION-ONLY** views: no Raika, Shizuka, Shi, or any other living character. Kaminari's framed photo is a prescribed PROP for the final comic; to avoid inventing character design for a location image, initially use a reserved photo frame/soft non-identifiable placeholder or no discernible face until actual character compositing.
+- Fireplace, freestanding altars, extra doors, elaborate luxury furniture, and modern decor are NOT specified in the source; don't invent such central features.
+
+### Proposed production order, separate from user approvals
+INT-01: wide view from threshold into room, doorway edge screen-left, tatami + tea area central, memorial shelf background-right; warm mixed sunset/candle lighting. This image is a **candidate**, requiring user's explicit image approval.
+INT-02: reverse view from room toward the SAME shoji entrance, verify it lines up with approved facade and lattice window.
+INT-03: detailed memorial shelf / two candles (no character portrait rendering).
+INT-04: tea table view matching blocking / shelf/door positions.
+Check pixel-level exterior geometry separately; no interior photos exist as approved references yet, so lock geometry only after INT-01 approval.
