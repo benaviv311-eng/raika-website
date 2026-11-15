@@ -19,7 +19,9 @@ test('Medoshi keeps his approved wanderer portrait and canonical profile', () =>
   const end = page.indexOf('    raika: {', start);
   assert.ok(start > 0 && end > start);
   const profile = page.slice(start, end);
-  assert.match(profile, /turtle-elder-approved-20261113.webp/);
+  assert.match(profile, /world-characters\/portraits\/medoshi-cutout\.webp/);
+  // The approved wanderer master file is retained untouched; only its display cutout is used.
+  assert.ok(readFileSync(join(root, 'world-characters/turtle-elder-approved-20261113.webp')).length > 300_000);
   assert.match(profile, /The time has come/);
   const entries = [...profile.matchAll(/label: "([^"]+)", image: "world-characters\/([^"?]+)(?:\?[^"]+)?"/g)];
   assert.deepEqual(entries.map(([, label, filename]) => [label, filename]), variants);
