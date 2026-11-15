@@ -86,7 +86,8 @@ jobs:
           premul_character=src*ap[:,:,None]
           premul=premul_character + (1-ap[:,:,None])*premul_energy
           result=np.zeros((h,w,4),dtype=np.uint8)
-          good=foreground_alpha>.012
+          # Suppress near-invisible checker compression residue at very low opacity.
+          good=foreground_alpha>.065
           colors=np.zeros_like(src)
           colors[good]=premul[good]/foreground_alpha[good,None]
           result[:,:,:3]=np.clip(colors,0,255).astype(np.uint8)
