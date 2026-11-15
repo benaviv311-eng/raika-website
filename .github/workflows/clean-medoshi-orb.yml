@@ -35,30 +35,36 @@ jobs:
           h,w=src.shape[:2]
           # The checkerboard was rendered into the artwork. Detect cell width from
           # the plain background at y=8, away from the orb and character.
-          row=gaussian_filter(src[8,:min(290,w),0],1.2)
-          threshold=(np.percentile(row,20)+np.percentile(row,80))/2
-          transitions=np.flatnonzero(np.diff(row>threshold))
-          gaps=np.diff(transitions)
-          gaps=gaps[(gaps>9)&(gaps<70)]
-          if len(gaps)<4: raise RuntimeError(f'Cannot detect checkerboard: transitions={transitions[:20]}')
-          cell=int(round(float(np.median(gaps))))
-          if not 12<=cell<=48: raise RuntimeError(f'Unexpected checkerboard size {cell}')
+          # Fitted checkerboard dimensions are FRACTIONAL. Rounding each square
+          # to 26 px caused phase drift and left a ghost grid in the first review.
+          row=gaussian_filter(src[8,:,0],1.1)
+          col=gaussian_filter(src[:,8,0],1.1)
+          base_threshold=(np.percentile(row[:260],20)+np.percentile(row[:260],80))/2
+          tx=np.flatnonzero(np.diff(row>base_threshold))
+          ty=np.flatnonzero(np.diff(col>base_threshold))
+          if len(tx)<25 or len(ty)<15: raise RuntimeError(f'Missing grid edges {len(tx)} {len(ty)}')
+          cell_x=float(np.polyfit(np.arange(len(tx)),tx,1)[0])
+          cell_y=float(np.polyfit(np.arange(len(ty)),ty,1)[0])
+          if not (18<cell_x<35 and 18<cell_y<35):
+              raise RuntimeError(f'Checkerboard dimensions inconsistent: {cell_x} {cell_y}')
           yy,xx=np.indices((h,w))
-          # Find checker phase and two base gray levels from non-effect border.
-          samples=(yy<min(64,h)) & (xx<min(280,w))
-          best=None
-          for offx in range(cell):
-            for offy in range(cell):
-              parity=((xx[:64,:280]+offx)//cell + (yy[:64,:280]+offy)//cell)%2
-              vals=src[:64,:280,0]
-              a=np.median(vals[parity==0]); b=np.median(vals[parity==1])
-              pred=np.where(parity==0,a,b)
-              score=np.mean(np.abs(pred-vals))
-              if best is None or score<best[0]: best=(score,offx,offy,a,b)
-          error,offx,offy,a,b=best
-          if error>8: raise RuntimeError(f'Checker fit unreliable: {best}')
-          phase=((xx+offx)//cell + (yy+offy)//cell)%2
+          # First transition flips index from square zero to square one.
+          ix=np.floor((xx-(tx[0]+0.5))/cell_x).astype(int)+1
+          iy=np.floor((yy-(ty[0]+0.5))/cell_y).astype(int)+1
+          phase=(ix+iy)%2
+          # Sample both grays only from the unlit upper left background.
+          sample=src[:min(90,h),:min(250,w),0]
+          par=phase[:min(90,h),:min(250,w)]
+          a=float(np.median(sample[par==0]))
+          b=float(np.median(sample[par==1]))
+          pred=np.where(par==0,a,b)
+          error=float(np.mean(np.abs(sample-pred)))
+          if error>9: raise RuntimeError(f'Checkerboard fit error {error:.2f} at {cell_x:.3f} x {cell_y:.3f}')
           base=np.where(phase==0,a,b).astype(np.float32)
+          # Anti-aliasing only at checker edges; retain sharp magical strands.
+          base=gaussian_filter(base,sigma=.45)
+          cell=(cell_x,cell_y)
+          offx=float(tx[0]);offy=float(ty[0])
           # Remove all grayscale checker pixels by subtracting their own measured
           # base level; tinted energy remains, including translucent blue trails.
           delta=np.maximum(src-base[:,:,None]-3,0)
