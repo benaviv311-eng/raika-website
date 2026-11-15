@@ -1,0 +1,111 @@
+name: Refine Korokage gallery cutouts against studio gray background
+
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/refine-korokage-background-v3.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install processing utilities
+        run: python -m pip install "Pillow>=11" numpy scipy
+      - name: Remove low-texture studio streaks but preserve Raven wings and steel feathers
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image,ImageDraw
+          from scipy.ndimage import gaussian_filter,uniform_filter,maximum_filter
+          import numpy as np,json,base64,io
+          root=Path('world-characters')
+          source=root/'korokage'
+          previous=root/'review-v2/korokage'
+          dest=root/'review-v3/korokage'
+          dest.mkdir(parents=True,exist_ok=True)
+          names=['base','steel-feather-barrage','twin-steel-feather-kunai','steel-wing-armor','numbing-touch','shadow-mist']
+          audit=[]
+          W,H=450,320
+          contact=Image.new('RGB',(W*3,H*len(names)),(13,22,20));draw=ImageDraw.Draw(contact)
+          for j,name in enumerate(names):
+              im=Image.open(source/(name+'.png')).convert('RGB')
+              orig=np.asarray(im,dtype=np.float32)
+              prev=Image.open(previous/(name+'-clean.webp')).convert('RGBA')
+              a=np.asarray(prev.getchannel('A'),dtype=np.float32)
+              h,w=a.shape
+              # Predict the original gray studio color using only pixels the
+              # portrait model already classified as surrounding background.
+              def smaller(array,mode='RGB'):
+                  return np.asarray(Image.fromarray(np.clip(array,0,255).astype('uint8'),mode).resize((max(320,w//4),max(220,h//4)),Image.Resampling.BILINEAR),dtype=np.float32)
+              rgb_small=smaller(orig)
+              bgmask=smaller(np.repeat((a<8)[...,None]*255,3,axis=2)).mean(axis=2)/255
+              # Gaussian-normalized interpolation avoids haloing the dark silhouette.
+              blur=23.0
+              denominator=gaussian_filter(bgmask,blur)+.001
+              field=np.stack([gaussian_filter(rgb_small[:,:,k]*bgmask,blur)/denominator for k in range(3)],axis=2)
+              field=np.asarray(Image.fromarray(np.clip(field,0,255).astype('uint8'),'RGB').resize((w,h),Image.Resampling.BILINEAR),dtype=np.float32)
+              difference=np.sqrt(np.mean((orig-field)**2,axis=2))
+              gray=.2126*orig[:,:,0]+.7152*orig[:,:,1]+.0722*orig[:,:,2]
+              localavg=uniform_filter(gray,size=13)
+              localstd=np.sqrt(np.maximum(uniform_filter(gray*gray,size=13)-localavg*localavg,0))
+              # Thin feathers and wing fringes have local contrast. Flat gray
+              # streaks left by the automatic segmentation lack both contrast
+              # against the studio field and local structure.
+              difference_strength=np.clip((difference-5)/16,0,1)
+              texture_strength=np.clip((localstd-2)/9,0,1)
+              likelihood=np.maximum(difference_strength,texture_strength*.87)
+              likelihood=maximum_filter(likelihood,size=3)
+              likelihood=gaussian_filter(likelihood,sigma=.6)
+              refined=a*likelihood
+              refined[refined<10]=0
+              refined[refined>250]=255
+              out=np.zeros((h,w,4),dtype=np.uint8)
+              out[:,:,:3]=np.asarray(im,dtype=np.uint8)
+              out[:,:,3]=refined.astype('uint8')
+              out[out[:,:,3]==0,:3]=0
+              result=Image.fromarray(out,'RGBA')
+              target=dest/(name+'-clean.webp')
+              result.save(target,'WEBP',lossless=True,method=6)
+              before_area=float((a>40).mean())
+              after_area=float((refined>40).mean())
+              if after_area<before_area*.53: raise RuntimeError('Overcleaning detected '+name+': '+str(after_area/before_area))
+              bgdiff=difference[a<8]
+              fgdiff=difference[a>200]
+              stats={
+                'pose':name,'mean_background_distance':round(float(np.median(bgdiff)),2),
+                'mean_foreground_distance':round(float(np.median(fgdiff)),2),
+                'before_fg_fraction':round(before_area,3),'after_fg_fraction':round(after_area,3),
+                'file':str(target)
+              }
+              audit.append(stats);print(stats)
+              for col,(label,art) in enumerate((('ORIGINAL',im),('PREVIOUS',prev),('REFINED',result))):
+                  thumb=art.copy();thumb.thumbnail((W-20,H-40),Image.Resampling.LANCZOS)
+                  bg=Image.new('RGBA',thumb.size,(12,19,18,255));bg.alpha_composite(thumb.convert('RGBA'))
+                  x=col*W+(W-thumb.width)//2;y=j*H+(H-38-thumb.height)//2+9
+                  contact.paste(bg.convert('RGB'),(x,y))
+                  draw.text((col*W+12,(j+1)*H-23),name+' '+label,fill=(240,210,170))
+          buff=io.BytesIO();contact.save(buff,'JPEG',quality=88,optimize=True)
+          (dest/'qa-review.jpg.base64.txt').write_text(base64.b64encode(buff.getvalue()).decode('ascii'))
+          (dest/'report.json').write_text(json.dumps(audit,indent=2))
+          PY
+      - name: Commit review-only refined assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/review-v3/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Build studio-background-cleaned Korokage candidate cutouts for visual approval"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
