@@ -1,0 +1,88 @@
+name: Prepare clean standalone portraits for other characters
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/prepare-world-portraits.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  world-portraits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install alpha cutout dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "rembg[cpu]>=2.0.60" "Pillow>=11" numpy
+      - name: Generate cutouts from approved artwork, preserving original images
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageDraw
+          from rembg import remove, new_session
+          import numpy as np, io, base64
+
+          items = {
+              'medoshi': Path('world-characters/turtle-elder-approved-20261113.webp'),
+              'sairan': Path('world-characters/sairan-palm-strike-approved.png')
+          }
+          dst=Path('world-characters/portraits')
+          dst.mkdir(exist_ok=True,parents=True)
+          session=new_session('isnet-general-use')
+          preview=Image.new('RGB',(520,460),(17,27,24))
+          draw=ImageDraw.Draw(preview)
+          for i,(name,source_path) in enumerate(items.items()):
+              source=Image.open(source_path).convert('RGBA')
+              # Flatten only for segmentation: original artwork pixels and source files are untouched.
+              flat=Image.new('RGBA', source.size, (224,224,224,255))
+              flat.alpha_composite(source)
+              output=remove(flat.convert('RGB'),session=session,alpha_matting=False,post_process_mask=True).convert('RGBA')
+              arr=np.array(output,dtype=np.uint8)
+              mask=arr[:,:,3].copy()
+              # Keep fine contours while suppressing leaked studio-background pixels.
+              mask[mask<28]=0
+              mask[mask>240]=255
+              # Enforce original transparency if available, so detached patchwork cannot reappear.
+              orig_alpha=np.array(source.getchannel('A'),dtype=np.uint8)
+              if (orig_alpha<250).mean()>.08:
+                  mask=np.minimum(mask,orig_alpha)
+              original_rgb=np.array(source,dtype=np.uint8)[:,:,:3]
+              arr[:,:,:3]=original_rgb
+              arr[:,:,3]=mask
+              arr[mask==0,:3]=0
+              clean=Image.fromarray(arr,'RGBA')
+              opacity=float((mask>180).mean())
+              transparency=float((mask<20).mean())
+              if opacity<.055 or transparency<.18:
+                  raise RuntimeError(f'Portrait mask looks wrong: {name} foreground={opacity:.3f} transparency={transparency:.3f}')
+              target=dst/(name+'-cutout.webp')
+              clean.save(target,'WEBP',lossless=True,method=6)
+              thumb=clean.copy()
+              thumb.thumbnail((248,398),Image.Resampling.LANCZOS)
+              backdrop=Image.new('RGBA',thumb.size,(17,27,24,255))
+              backdrop.alpha_composite(thumb)
+              x=i*260+(260-thumb.width)//2
+              preview.paste(backdrop.convert('RGB'),(x,12+398-thumb.height))
+              draw.text((i*260+12,430),name,fill=(232,210,171))
+              print(name,source.size,'output',target.stat().st_size,'foreground',round(opacity,3),'transparent',round(transparency,3))
+          buff=io.BytesIO()
+          preview.save(buff,'JPEG',quality=84,optimize=True)
+          (dst/'preview.jpg.base64.txt').write_text(base64.b64encode(buff.getvalue()).decode('ascii'))
+          PY
+      - name: Commit derived transparent display assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/portraits/
+          if ! git diff --cached --quiet; then
+            git commit -m "Add clean unframed display cutouts for Medoshi and Sairan"
+            git push origin main
+          fi
