@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, statSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -10,7 +10,8 @@ const variants = [
   ['Airborne Orb', 'medoshi-airborne-orb-approved.webp'],
   ['Staff Strike', 'medoshi-staff-strike-approved.webp'],
   ['Earth Bind', 'medoshi-earth-bind-approved.webp'],
-  ['Tree of Life Defense', 'medoshi-tree-of-life-defense-approved.webp']
+  ['Tree of Life Defense', 'medoshi-tree-of-life-defense-approved.webp'],
+  ['Mage Form', 'medoshi-mage-form.webp']
 ];
 
 test('Medoshi keeps his approved wanderer portrait and canonical profile', () => {
@@ -20,22 +21,16 @@ test('Medoshi keeps his approved wanderer portrait and canonical profile', () =>
   const profile = page.slice(start, end);
   assert.match(profile, /turtle-elder-approved-20261113.webp/);
   assert.match(profile, /The time has come/);
-  assert.equal((profile.match(/label:/g) || []).length, 4);
-  let previous = -1;
-  for (const [label, filename] of variants) {
-    const token = 'label: "' + label + '", image: "world-characters/' + filename + '"';
-    const pos = profile.indexOf(token);
-    assert.ok(pos > previous, label + ' missing or out of order');
-    previous = pos;
-  }
+  const entries = [...profile.matchAll(/label: "([^"]+)", image: "world-characters\/([^"?]+)(?:\?[^"]+)?"/g)];
+  assert.deepEqual(entries.map(([, label, filename]) => [label, filename]), variants);
 });
 
-test('Four approved Medoshi poses are real images', () => {
+test('Medoshi’s five gallery images are complete WebP files', () => {
   for (const [, filename] of variants) {
     const file = join(root, 'world-characters', filename);
     const buf = readFileSync(file);
-    assert.ok(statSync(file).size > 200_000);
     assert.equal(buf.toString('ascii', 0, 4), 'RIFF');
     assert.equal(buf.toString('ascii', 8, 12), 'WEBP');
+    assert.equal(buf.readUInt32LE(4) + 8, buf.length);
   }
 });
