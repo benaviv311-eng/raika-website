@@ -1,0 +1,128 @@
+name: Prepare clean Sairan and Korokage character cutouts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/refine-sairan-korokage-portraits.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install quality cutout tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "rembg[cpu]>=2.0.60" "Pillow>=11" "numpy>=1.26" scipy
+      - name: Cut approved source images and build dark-site visual comparisons
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageDraw, ImageFilter
+          from rembg import remove,new_session
+          from scipy.ndimage import binary_opening,binary_closing,gaussian_filter
+          import numpy as np,io,base64,json
+          root=Path('world-characters')
+          groups={
+            'sairan':[
+              ('quiet-palm','sairan-palm-strike-approved.png','portraits/sairan-cutout.webp'),
+              ('hammer-kick','sairan-hammer-kick-approved.png',None),
+              ('lightning-summon','sairan-lightning-summon-approved.png',None),
+              ('lightning-defense','sairan-lightning-defense-approved.png',None),
+            ],
+            'korokage':[
+              ('base','korokage/base.png','korokage/base-cutout.webp'),
+              ('steel-feather-barrage','korokage/steel-feather-barrage.png','korokage/steel-feather-barrage-cutout.webp'),
+              ('twin-steel-feather-kunai','korokage/twin-steel-feather-kunai.png','korokage/twin-steel-feather-kunai-cutout.webp'),
+              ('steel-wing-armor','korokage/steel-wing-armor.png','korokage/steel-wing-armor-cutout.webp'),
+              ('numbing-touch','korokage/numbing-touch.png','korokage/numbing-touch-cutout.webp'),
+              ('shadow-mist','korokage/shadow-mist.png','korokage/shadow-mist-cutout.webp'),
+            ]
+          }
+          session=new_session('isnet-general-use')
+          report=[]
+          for group,items in groups.items():
+            target_dir=root/'review-v2'/group
+            target_dir.mkdir(parents=True,exist_ok=True)
+            cell_w,cell_h=390,290
+            qa=Image.new('RGB',(cell_w*3,cell_h*len(items)),(13,22,20))
+            pencil=ImageDraw.Draw(qa)
+            for row,(name,source_rel,old_rel) in enumerate(items):
+              path=root/source_rel
+              source=Image.open(path).convert('RGBA')
+              srgba=np.asarray(source,dtype=np.uint8)
+              orig_alpha=srgba[:,:,3].copy()
+              already_alpha=float((orig_alpha<20).mean())
+              original_rgb=Image.new('RGB',source.size,(48,49,56))
+              original_rgb.paste(source,(0,0),source.getchannel('A'))
+              result=remove(original_rgb,session=session,alpha_matting=False,post_process_mask=True).convert('RGBA')
+              alpha=np.asarray(result.getchannel('A'),dtype=np.float32)
+              if already_alpha>.15:
+                # Respect original author-approved transparency, if any. A cleanup
+                # may only remove background, never restore pixels hidden in source.
+                alpha=np.minimum(alpha,orig_alpha)
+              alpha[alpha<32]=0
+              alpha[alpha>240]=255
+              # Feather silhouette gently without thinning fur or connected wings.
+              alpha=gaussian_filter(alpha,0.70).clip(0,255)
+              alpha[alpha<6]=0
+              array=srgba.copy()
+              array[:,:,3]=alpha.astype(np.uint8)
+              array[array[:,:,3]==0,:3]=0
+              clean=Image.fromarray(array,'RGBA')
+              out=target_dir/(name+'-clean.webp')
+              clean.save(out,'WEBP',lossless=True,method=6)
+              # Compare *on the actual website's dark background*.
+              views=[
+                ('ORIGINAL',source),
+                ('CURRENT',Image.open(root/old_rel).convert('RGBA') if old_rel else source),
+                ('NEW',clean)
+              ]
+              for col,(label,img) in enumerate(views):
+                thumb=img.copy()
+                thumb.thumbnail((cell_w-22,cell_h-36),Image.Resampling.LANCZOS)
+                backing=Image.new('RGBA',thumb.size,(12,19,18,255))
+                backing.alpha_composite(thumb)
+                x=col*cell_w+(cell_w-thumb.width)//2
+                y=row*cell_h+8+(cell_h-40-thumb.height)//2
+                qa.paste(backing.convert('RGB'),(x,y))
+                pencil.text((col*cell_w+13,(row+1)*cell_h-22),
+                             group+'/'+name+' '+label,fill=(241,211,174))
+              report.append({
+                'character':group,'pose':name,
+                'original':str(path),'new':str(out),
+                'size':list(source.size),
+                'original_transparent':round(already_alpha,3),
+                'new_transparent':round(float((array[:,:,3]<8).mean()),3),
+                'new_opaque':round(float((array[:,:,3]>220).mean()),3)
+              })
+              if (array[:,:,3]<8).mean()<.16 or (array[:,:,3]>220).mean()<.03:
+                raise RuntimeError('Suspicious mask for '+group+'/'+name)
+              print('clean',group,name,'size',source.size,'alpha',report[-1]['new_transparent'])
+            buffer=io.BytesIO()
+            qa.save(buffer,'JPEG',quality=81,optimize=True)
+            (target_dir/'qa-review.jpg.base64.txt').write_text(base64.b64encode(buffer.getvalue()).decode('ascii'))
+          (root/'review-v2'/'report.json').write_text(json.dumps(report,indent=2))
+          PY
+      - name: Save candidates for approval without touching original artwork or live website
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/review-v2/
+          if ! git diff --cached --quiet; then
+            git commit -m "Prepare verified Sairan Korokage background removal candidates for QA"
+            for attempt in 1 2 3 4; do
+              git pull --rebase origin main
+              if git push origin HEAD:main; then exit 0; fi
+              sleep 3
+            done
+            exit 1
+          fi
