@@ -1,0 +1,123 @@
+name: Clean baked checkerboard from Medoshi's approved Orb artwork
+
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/clean-medoshi-orb.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  clean-orb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install cutout tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "Pillow>=11" numpy scipy "rembg[cpu]>=2.0.60"
+      - name: Subtract baked checkerboard and preserve colored energy
+        run: |
+          python - <<'PY'
+          from PIL import Image,ImageDraw
+          from rembg import remove,new_session
+          from scipy.ndimage import gaussian_filter
+          from pathlib import Path
+          import numpy as np, base64, io
+          source=Path('world-characters/medoshi-airborne-orb-approved.webp')
+          original=Image.open(source).convert('RGB')
+          src=np.asarray(original).astype(np.float32)
+          h,w=src.shape[:2]
+          # The checkerboard was rendered into the artwork. Detect cell width from
+          # the plain background at y=8, away from the orb and character.
+          row=gaussian_filter(src[8,:min(290,w),0],1.2)
+          threshold=(np.percentile(row,20)+np.percentile(row,80))/2
+          transitions=np.flatnonzero(np.diff(row>threshold))
+          gaps=np.diff(transitions)
+          gaps=gaps[(gaps>9)&(gaps<70)]
+          if len(gaps)<4: raise RuntimeError(f'Cannot detect checkerboard: transitions={transitions[:20]}')
+          cell=int(round(float(np.median(gaps))))
+          if not 12<=cell<=48: raise RuntimeError(f'Unexpected checkerboard size {cell}')
+          yy,xx=np.indices((h,w))
+          # Find checker phase and two base gray levels from non-effect border.
+          samples=(yy<min(64,h)) & (xx<min(280,w))
+          best=None
+          for offx in range(cell):
+            for offy in range(cell):
+              parity=((xx[:64,:280]+offx)//cell + (yy[:64,:280]+offy)//cell)%2
+              vals=src[:64,:280,0]
+              a=np.median(vals[parity==0]); b=np.median(vals[parity==1])
+              pred=np.where(parity==0,a,b)
+              score=np.mean(np.abs(pred-vals))
+              if best is None or score<best[0]: best=(score,offx,offy,a,b)
+          error,offx,offy,a,b=best
+          if error>8: raise RuntimeError(f'Checker fit unreliable: {best}')
+          phase=((xx+offx)//cell + (yy+offy)//cell)%2
+          base=np.where(phase==0,a,b).astype(np.float32)
+          # Remove all grayscale checker pixels by subtracting their own measured
+          # base level; tinted energy remains, including translucent blue trails.
+          delta=np.maximum(src-base[:,:,None]-3,0)
+          strength=np.max(delta,axis=2)
+          energy_a=np.clip((strength-4)*2.65,0,255).astype(np.float32)
+          # Clean character silhouette using the same model as site portraits.
+          subject=remove(original,session=new_session('isnet-general-use'),alpha_matting=False,post_process_mask=True).convert('RGBA')
+          person_a=np.asarray(subject.getchannel('A'),dtype=np.float32)
+          # Force segmentation to the turtle and staff, not the detached energy orb.
+          person_a[:,int(w*.63):]=0
+          person_a=np.where(person_a<30,0,np.where(person_a>230,255,person_a))
+          person_a=gaussian_filter(person_a,0.7).clip(0,255)
+          energy_a=np.maximum(energy_a,np.where(person_a>35,0,energy_a))
+          ap=person_a/255
+          ae=energy_a/255
+          foreground_alpha=ap+(1-ap)*ae
+          # Work in premultiplied color to avoid checker stripes reappearing under glow.
+          premul_energy=np.clip(delta*1.20,0,255)
+          premul_character=src*ap[:,:,None]
+          premul=premul_character + (1-ap[:,:,None])*premul_energy
+          result=np.zeros((h,w,4),dtype=np.uint8)
+          good=foreground_alpha>.012
+          colors=np.zeros_like(src)
+          colors[good]=premul[good]/foreground_alpha[good,None]
+          result[:,:,:3]=np.clip(colors,0,255).astype(np.uint8)
+          result[:,:,3]=np.where(good,np.clip(foreground_alpha*255,0,255),0).astype(np.uint8)
+          result[result[:,:,3]==0,:3]=0
+          if result[0,0,3]>6 or (result[:,:,3]==0).mean()<.12:
+            raise RuntimeError('Checkerboard cleanup produced invalid alpha')
+          out=Path('world-characters/portraits/medoshi-airborne-orb-clean.webp')
+          out.parent.mkdir(parents=True,exist_ok=True)
+          Image.fromarray(result,'RGBA').save(out,'WEBP',lossless=True,method=6)
+          # Visual QA: original and cleaned over the actual dark green site color.
+          cw,ch=670,500
+          qa=Image.new('RGB',(cw*2,ch),(17,27,24))
+          pen=ImageDraw.Draw(qa)
+          processed=Image.fromarray(result,'RGBA')
+          for i,im in enumerate((original,processed)):
+            thumb=im.copy();thumb.thumbnail((cw-20,ch-35),Image.Resampling.LANCZOS)
+            bg=Image.new('RGBA',thumb.size,(17,27,24,255))
+            bg.alpha_composite(thumb.convert('RGBA'))
+            qa.paste(bg.convert('RGB'),(i*cw+(cw-thumb.width)//2,10+(ch-35-thumb.height)//2))
+            pen.text((i*cw+16,ch-22),('BEFORE - baked checker' if i==0 else 'AFTER - true alpha + preserved magic'),fill=(241,210,160))
+          outbuffer=io.BytesIO();qa.save(outbuffer,'JPEG',quality=86,optimize=True)
+          (out.parent/'medoshi-orb-review.jpg.base64.txt').write_text(base64.b64encode(outbuffer.getvalue()).decode('ascii'))
+          print('checker size',cell,'background values',a,b,'offsets',offx,offy,'fit',error)
+          print('alpha transparent',round((result[:,:,3]==0).mean(),3),'file size',out.stat().st_size)
+          PY
+      - name: Commit derivative and visual QA without touching approved original
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/portraits/medoshi-airborne-orb-clean.webp world-characters/portraits/medoshi-orb-review.jpg.base64.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "Generate true-alpha version of Medoshi Orb while preserving original"
+            for attempt in 1 2 3 4; do
+              git pull --rebase origin main
+              if git push origin HEAD:main; then exit 0; fi
+              sleep 3
+            done
+            exit 1
+          fi
