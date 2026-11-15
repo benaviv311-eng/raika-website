@@ -78,6 +78,17 @@ jobs:
                       # Soft purple-blue arcs can be nearly white at their cores.
                       bright=np.clip((vmax-205)*4,0,255)
                       effect=np.maximum(effect,bright*near*.72)
+                      # An opaque gray studio dust/swoosh was falsely included in the
+                      # far-left upper area. Suppress that neutral patch, keeping bright
+                      # blue-violet magic and leaving the full wooden staff intact.
+                      arch=(xx<w*.53)&(yy<h*.57)
+                      keep_arc=np.clip((chroma-51)/36,0,1)
+                      effect[arch]*=keep_arc[arch]
+                      person[arch & (chroma<80)]=0
+                      # Do not show the neutral speckle dust panel around the crystal.
+                      dust=(xx<w*.30)&(yy>h*.56)&(chroma<35)
+                      person[dust]=0
+                      effect[dust]=0
                   else:
                       # The action art contains a blue-gray studio stage. Its tint must not
                       # turn into an opaque rectangular layer behind the enchanted roots/tree.
