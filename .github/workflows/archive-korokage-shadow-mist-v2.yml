@@ -1,0 +1,97 @@
+name: Archive approved Korokage Shadow Mist v2 from Artlist
+
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/archive-korokage-shadow-mist-v2.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Pillow
+        run: python -m pip install "Pillow>=11" numpy
+      - name: Fetch original approved Artlist result and make gentle smoke-edge treatment
+        env:
+          ARTLIST_APPROVED_URL: "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__10/image-d25ec1aa-d6e4-4f53-b2d5-f72e79687119.png?Expires=2110182669&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=br1a-wZe2inb8jvG4dyFYd-yrUwSvTT1Q7M1hVhwiYQJx9UG4KHiugaOXSLJNl8sfTG6JHfaOk5e9Ujykmsr1ceBHk-XJbLQ6U4cj1hPmGbL7WXieNKmdNzPwwOY~QAYLuTJ2nj-p2vLfI7hlHuSVwfFcg8ZxquJQiV6~eg0Kj~ubaEzOhGHM7XJIL2Kfe5BsCkYgNuJooMJDsljSWg7xFTOP0b6Y~JQNgh-mipuzCPjRwSLNGWBNdtGOziiw5AKF7D3bHkGZszs08WGQacszsvgvmo8LQXxwPiTJxvh4ZKSx4-~4VZtVS5fJ1QQ6BPUShf1tRU07W1VjQfsFrVJzA__"
+        run: |
+          python - <<'PY'
+          import os, urllib.request, io, json, base64
+          from pathlib import Path
+          import numpy as np
+          from PIL import Image, ImageDraw
+          u=os.environ["ARTLIST_APPROVED_URL"]
+          req=urllib.request.Request(u, headers={"User-Agent":"RAIKA-approved-art-archive/1.0"})
+          with urllib.request.urlopen(req,timeout=80) as resp:
+              data=resp.read(20000000)
+          if not data.startswith(b'\x89PNG\r\n\x1a\n') or len(data)<100000:
+              raise RuntimeError("Missing approved PNG from Artlist")
+          dest=Path("world-characters/korokage")
+          dest.mkdir(parents=True,exist_ok=True)
+          original=dest/"shadow-mist-v2-artlist-approved.png"
+          original.write_bytes(data)
+          img=Image.open(io.BytesIO(data)).convert("RGBA")
+          if img.width<800 or img.height<400: raise RuntimeError("Art too small")
+          arr=np.asarray(img).copy()
+          h,w=arr.shape[:2]
+          oldalpha=arr[:,:,3].copy()
+          # Preserve the smoke itself: DO NOT do foreground segmentation.
+          # Blend only the outer fringe so opaque studio corners never make a hard rectangle.
+          y,x=np.mgrid[0:h,0:w]
+          dx=np.minimum(x,w-1-x)/w
+          dy=np.minimum(y,h-1-y)/h
+          fx=np.clip(dx/.13,0,1)
+          fy=np.clip(dy/.16,0,1)
+          smooth=lambda t: t*t*(3-2*t)
+          fade=smooth(fx)*smooth(fy)
+          if (oldalpha<245).mean()>.10:
+              # Already transparent: retain all true semi-transparent smoke.
+              alpha=oldalpha
+              strategy="original_alpha"
+          else:
+              alpha=np.rint(oldalpha*fade).clip(0,255).astype('uint8')
+              strategy="outer_edges_only"
+          arr[:,:,3]=alpha
+          arr[alpha==0,:3]=0
+          prepared=Image.fromarray(arr,"RGBA")
+          prepared_path=dest/"shadow-mist-v2-smoke-preserved.webp"
+          prepared.save(prepared_path,"WEBP",lossless=True,method=6)
+          backdrop=(12,19,18,255)
+          cw,ch=650,430
+          sheet=Image.new("RGB",(cw*2,ch),(12,19,18))
+          pen=ImageDraw.Draw(sheet)
+          for i,art in enumerate((img,prepared)):
+              thumb=art.copy()
+              thumb.thumbnail((cw-16,ch-40),Image.Resampling.LANCZOS)
+              bg=Image.new("RGBA",thumb.size,backdrop)
+              bg.alpha_composite(thumb)
+              sheet.paste(bg.convert("RGB"),(i*cw+(cw-thumb.width)//2,12+(ch-48-thumb.height)//2))
+              pen.text((i*cw+20,ch-26),("ORIGINAL APPROVED" if i==0 else "SMOKE-PRESERVED DISPLAY"),fill=(238,213,172))
+          pbuf=io.BytesIO()
+          sheet.save(pbuf,"JPEG",quality=87,optimize=True)
+          (dest/"shadow-mist-v2-qa.jpg.base64.txt").write_text(base64.b64encode(pbuf.getvalue()).decode("ascii"))
+          manifest={"artlistGenerationId":"01a1e3c3-ffbf-7817-b4af-1f4f6f414027","approved":True,
+            "original":str(original),"display":str(prepared_path),"strategy":strategy,
+            "dimensions":[w,h],"originalBytes":len(data),"displayBytes":prepared_path.stat().st_size,
+            "originalTransparent":round(float((oldalpha<20).mean()),4),"displayTransparent":round(float((alpha<20).mean()),4)}
+          (dest/"shadow-mist-v2-manifest.json").write_text(json.dumps(manifest,indent=2))
+          print(json.dumps(manifest))
+          PY
+      - name: Commit approved source and smoke-safe derivative without changing website yet
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/korokage/shadow-mist-v2-*
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Archive Artlist-approved Korokage Shadow Mist v2 and smoke-safe portrait"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
