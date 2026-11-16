@@ -1,0 +1,91 @@
+name: Archive approved Korokage steel-wing armor v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/archive-korokage-steel-wing-armor-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install transparent background tools
+        run: python -m pip install "rembg[cpu]>=2.0.60" "Pillow>=11" numpy scipy
+      - name: Archive exact approved Artlist image, generate alpha cutout and QA preview
+        env:
+          APPROVED_ARTLIST_URL: "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__8/image-803e033d-932e-41f8-84c5-365655508475.png?Expires=2110185151&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=PaK9CMot2~FMbH0t79ltzVVlPQY547cfinVyRZCUQAQYjtCgMqaK9QRpNRfcAX1MbRTTaTpoyK0IjvPFxPR844704o8YqBkiJGD6dObFatgTOnkgJL2hR8RgJkh-PlPahbHbPcZkCV610H4DTdPEd0sIiiMJQFewb6aHtq~sLqz9i4pGNzma~ICyukl2CGhnNV4u7asZim2E~kBS0TdZf5zC9TvBItY3zSGMk83d8NlWr7NHBKOO83Mc7ssPyGXUYs19n1DUKT-uAvjILx0zqZSY9He9kGRanJz0vQZSYQ1BT7QJcVvFxCv8nqKpWiydt7N9xazD2FrPWmml8xABHQ__"
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import urllib.request,os,io,base64,json
+          import numpy as np
+          from PIL import Image,ImageDraw
+          from rembg import remove,new_session
+          url=os.environ['APPROVED_ARTLIST_URL']
+          request=urllib.request.Request(url,headers={'User-Agent':'RAIKA-artwork-archive/1.0'})
+          with urllib.request.urlopen(request,timeout=80) as response:
+              content=response.read(18000000)
+          if not content.startswith(b'\x89PNG\r\n\x1a\n') or len(content)<100000: raise RuntimeError('Artlist approved PNG is unavailable')
+          dest=Path('world-characters/korokage')
+          dest.mkdir(parents=True,exist_ok=True)
+          original=dest/'steel-wing-armor-v2-artlist-approved.png'
+          original.write_bytes(content)
+          source=Image.open(io.BytesIO(content)).convert('RGBA')
+          if min(source.size)<850: raise RuntimeError('Unexpected dimensions for approved artwork')
+          rgb=Image.new('RGB',source.size,(43,44,51))
+          rgb.paste(source,(0,0),source.getchannel('A'))
+          cut=remove(rgb,session=new_session('isnet-general-use'),post_process_mask=True,alpha_matting=False).convert('RGBA')
+          old=np.asarray(source,dtype=np.uint8)
+          mask=np.asarray(cut.getchannel('A'),dtype=np.uint8)
+          if (old[:,:,3]<20).mean()>.1:
+              mask=np.minimum(mask,old[:,:,3])
+          if float((mask<20).mean())<.12 or float((mask>210).mean())<.06:
+              raise RuntimeError('Alpha cutout not reliable')
+          old[:,:,3]=mask
+          old[mask==0,:3]=0
+          portrait=Image.fromarray(old,'RGBA')
+          output=dest/'steel-wing-armor-v2-cutout.webp'
+          portrait.save(output,'WEBP',lossless=True,method=6)
+          # Visual QA comparing original and transparent final on the exact dark website tone.
+          w,h=560,370
+          qa=Image.new('RGB',(w*2,h),(12,19,18))
+          pencil=ImageDraw.Draw(qa)
+          for idx,(label,im) in enumerate((('ORIGINAL APPROVED',source),('TRANSPARENT ON SITE',portrait))):
+              resized=im.copy()
+              resized.thumbnail((w-20,h-40),Image.Resampling.LANCZOS)
+              bg=Image.new('RGBA',resized.size,(12,19,18,255))
+              bg.alpha_composite(resized)
+              qa.paste(bg.convert('RGB'),(idx*w+(w-resized.width)//2,4+(h-40-resized.height)//2))
+              pencil.text((idx*w+18,h-26),label,fill=(237,213,176))
+          out=io.BytesIO()
+          qa.save(out,'JPEG',quality=87,optimize=True)
+          (dest/'steel-wing-armor-v2-review.jpg.base64.txt').write_text(base64.b64encode(out.getvalue()).decode('ascii'))
+          manifest={'name':'Korokage Steel Wing Armor','artlistGenerationId':'01a1e3e9-d14c-7595-9b8a-2796e08ea4cc',
+              'approved':True,'source':str(original),'display':str(output),
+              'dimensions':list(source.size),'sourceBytes':len(content),'displayBytes':output.stat().st_size,
+              'transparentFraction':round(float((mask<20).mean()),3)}
+          (dest/'steel-wing-armor-v2-manifest.json').write_text(json.dumps(manifest,indent=2))
+          print(json.dumps(manifest))
+          PY
+      - name: Commit only new artwork and previews (originals preserved)
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add world-characters/korokage/steel-wing-armor-v2-*
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Archive Korokage approved Steel Wing Armor v2 with cutout QA'
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
