@@ -357,6 +357,15 @@
         <button type="button" class="profile-trigger" data-character="korokage" aria-label="Explore Korokage's five approved shinobi techniques">Explore character <span aria-hidden="true">↗</span></button>
       </div>
     </article>
+    <article class="character world-character-card character--komugi" id="komugi" hidden>
+      <div class="character-media"><img loading="lazy" src="world-characters/komugi/portrait.png" alt="Komugi, the warmhearted brown rabbit baker of Sakura Village, in his flour-dusted apron"></div>
+      <div class="character-body">
+        <div class="character-role">Village Baker · Sakura Village</div>
+        <h3>Komugi</h3>
+        <p>The warmhearted baker of Sakura Village. Komugi is generous, hardworking and determined to protect his neighbors, even when his training is more enthusiasm than technique.</p>
+        <button type="button" class="profile-trigger" data-character="komugi" aria-label="Explore Komugi's four approved character poses">Explore character <span aria-hidden="true">↗</span></button>
+      </div>
+    </article>
           <article class="character world-character-card character--bard" id="shi-sosakusha" hidden>
       <div class="character-media"><img loading="lazy" src="https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__1/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-d6515f16-c4f0-4e90-aa14-77da18b3fc57.png?Expires=2110182409&amp;Key-Pair-Id=K2ZDLYDZI2R1DF&amp;Signature=DmR0bYiPTMtWMDxIIP9qrLYmm24DrKAAtrBaGRVWC9hjQvvLgN55xTuj3lriFNeVZT7waj-NQqiNh-aOoVfUTdgLs-ovU4LatA4Btum9YEBxkfqcfhRobpiGaJxrnidzl0AKywJ43Tmnztslt91IPzBsv4wpoWyLAeds7RWTQEjgm13bGm51vfm3nOte5MZJ4bhws6vZDKfu39zFAWFphP4cWoUy7fusgvfZCVcoNKdTolic0ob6E8XEHXCqbblwG-D96HH7~b28GjQFDAEd1eyrhfVA3Mi6kj-eqHUIQpaLlOxfj4p9KWES2lEuZ09SYy4WVYh9DR7GTT5WLM7o5g__" alt="Shi Sōsakusha, the golden-feathered travelling bard of Sakura Village, playing his traditional wooden biwa in his worn indigo kimono"></div>
       <div class="character-body">
@@ -461,6 +470,21 @@
         {label: "Earth Bind", image: "world-characters/portraits/medoshi-earth-bind-cutout.webp?v=20261115-all-clean", alt: "Medoshi raising branching roots of blue-violet energy from the cracked ground"},
         {label: "Tree of Life Defense", image: "world-characters/portraits/medoshi-tree-of-life-defense-cutout.webp?v=20261115-all-clean", alt: "Medoshi on the left, both hands on his planted staff, shielding with the Tree of Life on the right"},
         {label: "Mage Form", image: "world-characters/portraits/medoshi-mage-form-cutout.webp?v=20261115-all-clean", alt: "Medoshi standing in his purple and gold mage robes with his crystal staff and three potion bottles"}
+      ]
+    },
+    komugi: {
+      title: "Komugi",
+      role: "Village Baker · Sakura Village",
+      quote: "",
+      description: "Komugi is the hardworking, kindhearted baker of Sakura Village. He offers fresh bread to others and wants to help protect his neighbors. When danger arrives, he is easily startled, but he keeps practicing to become braver—even if his punches are clumsy.",
+      traits: "Warmth · Generosity · Determination · Courage",
+      image: "world-characters/komugi/portrait.png",
+      alt: "Komugi, brown rabbit baker in a flour-dusted beige apron, standing in a relaxed pose",
+      variants: [
+        {label: "Kneading Dough", image: "world-characters/komugi/kneading-dough.png", alt: "Komugi energetically kneading dough on a low wooden table"},
+        {label: "Sharing Fresh Bread", image: "world-characters/komugi/sharing-bread.png", alt: "Komugi happily offering a freshly baked round loaf"},
+        {label: "Startled by Danger", image: "world-characters/komugi/startled.png", alt: "Komugi instinctively stepping back and holding up his paw in fear"},
+        {label: "Punching Practice", image: "world-characters/komugi/punching-bag.png", alt: "Komugi awkwardly punching a hanging training bag, determined to improve"}
       ]
     },
     raika: {
@@ -849,7 +873,7 @@
     dialog.addEventListener("close",startWorldRotation);
     document.querySelectorAll("#world-slides .profile-trigger").forEach(function(button){button.addEventListener("click",stopWorldRotation);});
     if(prefersLessMotion.addEventListener) prefersLessMotion.addEventListener("change",startWorldRotation);
-    showWorldCard(["#korokage","#shi-sosakusha"].includes(window.location.hash) ? Math.max(0,worldCards.findIndex(function(card){return "#"+card.id === window.location.hash;})) : 0,false);
+    showWorldCard(["#korokage","#shi-sosakusha","#komugi"].includes(window.location.hash) ? Math.max(0,worldCards.findIndex(function(card){return "#"+card.id === window.location.hash;})) : 0,false);
     startWorldRotation();
   }
 
