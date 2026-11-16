@@ -1,0 +1,15 @@
+{
+  "artlistGenerationId": "01a1e3c3-ffbf-7817-b4af-1f4f6f414027",
+  "approved": true,
+  "original": "world-characters/korokage/shadow-mist-v2-artlist-approved.png",
+  "display": "world-characters/korokage/shadow-mist-v2-smoke-preserved.webp",
+  "strategy": "outer_edges_only",
+  "dimensions": [
+    2752,
+    1536
+  ],
+  "originalBytes": 5001167,
+  "displayBytes": 3822084,
+  "originalTransparent": 0.0,
+  "displayTransparent": 0.1043
+}
