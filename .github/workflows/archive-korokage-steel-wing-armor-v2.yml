@@ -44,7 +44,7 @@ jobs:
           rgb=Image.new('RGB',source.size,(43,44,51))
           rgb.paste(source,(0,0),source.getchannel('A'))
           cut=remove(rgb,session=new_session('isnet-general-use'),post_process_mask=True,alpha_matting=False).convert('RGBA')
-          old=np.asarray(source,dtype=np.uint8)
+          old=np.array(source,dtype=np.uint8,copy=True)
           mask=np.asarray(cut.getchannel('A'),dtype=np.uint8)
           if (old[:,:,3]<20).mean()>.1:
               mask=np.minimum(mask,old[:,:,3])
