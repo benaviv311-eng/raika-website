@@ -1,0 +1,14 @@
+{
+  "name": "Korokage Steel Wing Armor",
+  "artlistGenerationId": "01a1e3e9-d14c-7595-9b8a-2796e08ea4cc",
+  "approved": true,
+  "source": "world-characters/korokage/steel-wing-armor-v2-artlist-approved.png",
+  "display": "world-characters/korokage/steel-wing-armor-v2-cutout.webp",
+  "dimensions": [
+    2752,
+    1536
+  ],
+  "sourceBytes": 5681985,
+  "displayBytes": 1560526,
+  "transparentFraction": 0.712
+}
