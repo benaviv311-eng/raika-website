@@ -39,6 +39,11 @@
 .profile-dialog[data-character="korokage"] .profile-art{background:transparent;padding:8px}
 .profile-dialog[data-character="korokage"] .profile-art img{;filter:drop-shadow(0 0 20px rgba(125,162,203,.28));max-height:505px}
 @media(max-width:640px){.profile-dialog[data-character="korokage"] .profile-layout{grid-template-columns:1fr}.profile-dialog[data-character="korokage"] .profile-gallery-options{grid-template-columns:repeat(3,minmax(0,1fr))}.profile-dialog[data-character="korokage"] .profile-art{height:310px}.character--korokage .character-media img{height:348px}}
+/* Sairan display sizing only: keep all four approved source images unchanged. */
+.character--sairan .character-media img{transform:scale(1.12);transform-origin:center bottom}
+.profile-dialog[data-character="sairan"] .profile-layout{grid-template-columns:minmax(0,54%) minmax(0,1fr)}
+.profile-dialog[data-character="sairan"] .profile-art{padding:6px}
+@media(max-width:640px){.profile-dialog[data-character="sairan"] .profile-layout{grid-template-columns:1fr}.profile-dialog[data-character="sairan"] .profile-art{height:340px}.profile-dialog[data-character="sairan"] .profile-art img{max-height:320px}}
 .profile-art img[src="hikari-transparent-gold-20261107.webp"]{transform:scale(.94);transform-origin:center bottom}
 .profile-copy{display:flex;flex-direction:column;justify-content:center;padding:46px 42px 40px}
 .profile-copy h2{margin:10px 0 6px;font-size:clamp(30px,4vw,47px)}
@@ -325,7 +330,7 @@
         <button type="button" class="profile-trigger" data-character="medoshi" aria-label="Explore Medoshi's character profile">Explore character <span aria-hidden="true">↗</span></button>
       </div>
     </article>
-          <article class="character world-character-card" hidden>
+          <article class="character world-character-card character--sairan" hidden>
       <div class="character-media"><img loading="lazy" src="world-characters/portraits/sairan-cutout.webp" alt="Sairan, elderly gray rabbit lightning master in burgundy and sand-colored monk-warrior clothing"></div>
       <div class="character-body">
         <div class="character-role">Lightning Master · Age 91</div>
