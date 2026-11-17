@@ -1,0 +1,77 @@
+name: Prepare Sairan pose display framing
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/prepare-sairan-display.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  frame:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Pillow
+        run: python -m pip install Pillow
+      - name: Frame approved poses without generating new art
+        run: |
+          python - <<'PY'
+          from PIL import Image, ImageChops
+          from pathlib import Path
+          import json
+          root = Path('world-characters/review-v2/sairan')
+          dest = Path('world-characters/display-v1/sairan')
+          dest.mkdir(parents=True, exist_ok=True)
+          entries = ['quiet-palm', 'hammer-kick', 'lightning-summon', 'lightning-defense']
+          report = []
+          for name in entries:
+              image = Image.open(root / (name+'-clean.webp')).convert('RGBA')
+              w, h = image.size
+              if name == 'lightning-summon':
+                  # The original approved lightning is cut at the source's top edge.
+                  # Fade the effect out naturally without inventing or regenerating art.
+                  gradient = Image.new('L',(w,h),255)
+                  grad_pixels=gradient.load()
+                  fade_end=int(h*0.125)
+                  for y in range(fade_end):
+                      t = y/max(1,fade_end)
+                      smooth = t*t*(3-2*t)
+                      grad_pixels_row_value = int(round(255*smooth))
+                      for x in range(w):
+                          grad_pixels[x,y]=grad_pixels_row_value
+                  alpha=ImageChops.multiply(image.getchannel('A'),gradient)
+                  image.putalpha(alpha)
+              threshold=image.getchannel('A').point(lambda a: 255 if a>10 else 0)
+              bbox=threshold.getbbox()
+              if not bbox: raise RuntimeError('Empty image: '+name)
+              x0,y0,x1,y1=bbox
+              # Crop away the empty 16:9 canvas with a small safe margin.
+              pad=round(max(x1-x0,y1-y0)*0.035)
+              box=(max(0,x0-pad),max(0,y0-pad),min(w,x1+pad),min(h,y1+pad))
+              cropped=image.crop(box)
+              # The precise pixels of the character remain unchanged.
+              cropped.save(dest/(name+'-framed.webp'),format='WEBP',lossless=True,method=6)
+              report.append({'pose':name,'originalSize':[w,h],'alphaBounds':list(bbox),'crop':list(box),'framedSize':list(cropped.size)})
+              print(name,report[-1])
+          (dest/'framing-report.json').write_text(json.dumps(report,indent=2))
+          PY
+      - name: Commit only new display derivatives
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/display-v1/sairan/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Create tightly framed Sairan display derivatives"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
