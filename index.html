@@ -39,26 +39,6 @@
 .profile-dialog[data-character="korokage"] .profile-art{background:transparent;padding:8px}
 .profile-dialog[data-character="korokage"] .profile-art img{;filter:drop-shadow(0 0 20px rgba(125,162,203,.28));max-height:505px}
 @media(max-width:640px){.profile-dialog[data-character="korokage"] .profile-layout{grid-template-columns:1fr}.profile-dialog[data-character="korokage"] .profile-gallery-options{grid-template-columns:repeat(3,minmax(0,1fr))}.profile-dialog[data-character="korokage"] .profile-art{height:310px}.character--korokage .character-media img{height:348px}}
-/* Sairan only: framed approved pose images have no empty wide canvas.
-   Fit the full figure and effects without zoom cropping or stretching. */
-.character--sairan .character-media img{transform:scale(1.10);transform-origin:center bottom}
-.profile-dialog[data-character="sairan"] .profile-layout{grid-template-columns:minmax(0,62%) minmax(0,1fr)}
-.profile-dialog[data-character="sairan"] .profile-art{
-  height:620px;min-height:620px;padding:10px;overflow:hidden;
-}
-.profile-dialog[data-character="sairan"] #profile-image{
-  display:block;width:100%;height:100%;max-width:100%;max-height:none;
-  object-fit:contain;object-position:center center;transform:none;
-}
-.profile-dialog[data-character="sairan"] .profile-gallery-option img{
-  height:79px;object-fit:contain;
-}
-@media(max-width:640px){
-  .profile-dialog[data-character="sairan"] .profile-layout{grid-template-columns:1fr}
-  .profile-dialog[data-character="sairan"] .profile-art{height:385px;min-height:385px;padding:8px}
-  .profile-dialog[data-character="sairan"] #profile-image{width:100%;height:100%;max-height:none;object-fit:contain;transform:none}
-  .profile-dialog[data-character="sairan"] .profile-gallery-option img{height:70px}
-}
 .profile-art img[src="hikari-transparent-gold-20261107.webp"]{transform:scale(.94);transform-origin:center bottom}
 .profile-copy{display:flex;flex-direction:column;justify-content:center;padding:46px 42px 40px}
 .profile-copy h2{margin:10px 0 6px;font-size:clamp(30px,4vw,47px)}
@@ -354,8 +334,8 @@
         <button type="button" class="profile-trigger" data-character="medoshi" aria-label="Explore Medoshi's character profile">Explore character <span aria-hidden="true">↗</span></button>
       </div>
     </article>
-          <article class="character world-character-card character--sairan" hidden>
-      <div class="character-media"><img loading="lazy" src="world-characters/portraits/sairan-cutout.webp" alt="Sairan, elderly gray rabbit lightning master in burgundy and sand-colored monk-warrior clothing"></div>
+          <article class="character world-character-card" hidden>
+      <div class="character-media"><img loading="lazy" src="world-characters/display-v1/sairan/quiet-palm-framed.webp?v=20261117-framed" alt="Sairan, elderly gray rabbit lightning master in burgundy and sand-colored monk-warrior clothing"></div>
       <div class="character-body">
         <div class="character-role">Lightning Master · Age 91</div>
         <h3>Sairan</h3>
