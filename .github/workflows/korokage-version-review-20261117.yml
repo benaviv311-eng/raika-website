@@ -1,0 +1,78 @@
+name: Korokage versions numbered comparison
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/korokage-version-review-20261117.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  make-comparisons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Pillow
+        run: python -m pip install "Pillow>=11"
+      - name: Render actual numbered character versions
+        env:
+          CATALOG_JSON: '{"base":[[1,"CANONICAL SOURCE","world-characters/korokage/base.png"],[2,"OLD CUTOUT","world-characters/korokage/base-cutout.webp"],[3,"REPLACED V2","world-characters/review-v2/korokage/base-clean.webp"],[4,"CURRENT WEBSITE","world-characters/review-v3/korokage/base-clean.webp"],[5,"REJECTED NEW BASE",{"external":"https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__8/image-7bd6cb11-b255-4ebf-bb60-39474bf8f5a7.png?Expires=2110269435&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=E-JLePNAz58Jez9ASZR71t9q1XsrPCrIMK-IxLiKlEj3kDth-W6BqstVvhCTjsANsh1Gpwf5CQ0kl0UCU9JSbhMJ9CA99JLvABWlcTFBiuljXThJC1i-fUyJ98pWpoS4gLzcTHXIaFn8MTFE-mB4usGnhCg9GbEV-4n3yZNRLZHbPhVDQIq-KXB96oxlvaV9-Yf2kbiWg7E-rt39~G4VM7RHgOc5nEv2RlWIqwx-NK3YF5l17oX1RT4bAaLo1G3i4aa-nxByec3-svrMszWC-D7kuBJ8-YM~473F~y4~HmWYXgW18~RYO-DDi7KwKRApV8vomnmxQeu5JPPl-oCxOg__"}]],"barrage":[[6,"ORIGINAL ARTLIST","world-characters/korokage/steel-feather-barrage.png"],[7,"EARLIER CUTOUT","world-characters/korokage/steel-feather-barrage-cutout.webp"],[8,"REPLACED V2","world-characters/review-v2/korokage/steel-feather-barrage-clean.webp"],[9,"CURRENT WEBSITE","world-characters/review-v3/korokage/steel-feather-barrage-clean.webp"]],"kunai":[[12,"ORIGINAL ARTLIST","world-characters/korokage/twin-steel-feather-kunai.png"],[13,"EARLIER CUTOUT","world-characters/korokage/twin-steel-feather-kunai-cutout.webp"],[14,"REPLACED V2","world-characters/review-v2/korokage/twin-steel-feather-kunai-clean.webp"],[15,"CURRENT WEBSITE","world-characters/review-v3/korokage/twin-steel-feather-kunai-clean.webp"]],"armor":[[17,"ORIGINAL ARTLIST","world-characters/korokage/steel-wing-armor.png"],[18,"EARLIER CUTOUT","world-characters/korokage/steel-wing-armor-cutout.webp"],[19,"REPLACED V2","world-characters/review-v2/korokage/steel-wing-armor-clean.webp"],[20,"REPLACED V3","world-characters/review-v3/korokage/steel-wing-armor-clean.webp"],[21,"APPROVED NEW SOURCE","world-characters/korokage/steel-wing-armor-v2-artlist-approved.png"],[22,"CURRENT WEBSITE","world-characters/korokage/steel-wing-armor-v2-cutout.webp"]],"numbing":[[23,"ORIGINAL ARTLIST","world-characters/korokage/numbing-touch.png"],[24,"EARLIER CUTOUT","world-characters/korokage/numbing-touch-cutout.webp"],[25,"REPLACED V2","world-characters/review-v2/korokage/numbing-touch-clean.webp"],[26,"REPLACED V3","world-characters/review-v3/korokage/numbing-touch-clean.webp"],[27,"APPROVED NEW SOURCE","world-characters/korokage/numbing-touch-v2-artlist-approved.png"],[28,"CURRENT WEBSITE","world-characters/korokage/numbing-touch-v2-cutout.webp"]],"shadow":[[29,"ORIGINAL ARTLIST","world-characters/korokage/shadow-mist.png"],[30,"EARLIER CUTOUT","world-characters/korokage/shadow-mist-cutout.webp"],[31,"REPLACED V2","world-characters/review-v2/korokage/shadow-mist-clean.webp"],[32,"CURRENT WEBSITE","world-characters/review-v3/korokage/shadow-mist-clean.webp"],[33,"EARLIER ARTLIST V2","world-characters/korokage/shadow-mist-v2-artlist-approved.png"],[34,"SOFT EDGE V2","world-characters/korokage/shadow-mist-v2-smoke-preserved.webp"],[35,"UNAPPROVED SMOKE ATTACK",{"external":"https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__4/image-e45e323f-0736-4bae-94d0-80ead6e2f04a.png?Expires=2110269435&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=jr2QQJxpzzgCBSSywSFneOnjm124JgoTqbWgnsOKLhgYqQzMq8VVNtrzfMKARf1Ep6DPuxyO9s75uQistat30yM2uOQsfJ2qKH0mBmUYhtESbsZxv4MI1BD~CR~4KzSFCEn6zntSQQ9rIY1BH0txVHAoBEsmnghm7G8lyhAExLyFdWaEP3tKAGDk404KNQK0BYB~7S1KAyUTyHqSgLIKw1ENw99w-SV0klqzC3mNaXs-IIAMaXjUGqKMoSgNeROO4T-u101PyZ574NeAPcWxBRxdr0zmY1sGf44ugpKclaBbeyUn-KZv8RIyaGtBUbL~Xh4yLvhCZvnmvTQTbz46Lg__"}]]}'
+        run: |
+          python - <<'PY'
+          import json,os,io,math,urllib.request,base64
+          from pathlib import Path
+          from PIL import Image,ImageDraw,ImageFont
+          groups=json.loads(os.environ['CATALOG_JSON'])
+          dest=Path('world-characters/korokage/version-review')
+          dest.mkdir(parents=True,exist_ok=True)
+          fontfile='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+          big=ImageFont.truetype(fontfile,26)
+          small=ImageFont.truetype(fontfile,18)
+          cellW,cellH=720,510
+          full=[]
+          for g,images in groups.items():
+              sheet=Image.new('RGB',(2*cellW,math.ceil(len(images)/2)*cellH),(12,19,18))
+              pencil=ImageDraw.Draw(sheet)
+              for index,record in enumerate(images):
+                  num,label,source=record
+                  if isinstance(source,dict):
+                      req=urllib.request.Request(source['external'],headers={'User-Agent':'RAIKA-char-archive/1.0'})
+                      with urllib.request.urlopen(req,timeout=90) as stream:
+                          data=stream.read(18000000)
+                      art=Image.open(io.BytesIO(data)).convert('RGBA')
+                  else:
+                      art=Image.open(source).convert('RGBA')
+                  thumb=art.copy()
+                  thumb.thumbnail((cellW-26,cellH-96),Image.Resampling.LANCZOS)
+                  under=Image.new('RGBA',thumb.size,(12,19,18,255))
+                  under.alpha_composite(thumb)
+                  row,col=divmod(index,2)
+                  bx,by=col*cellW,row*cellH
+                  pencil.rounded_rectangle((bx+10,by+8,bx+cellW-10,by+cellH-8),20,fill=(27,35,37),outline=(83,91,98),width=2)
+                  px=bx+(cellW-thumb.width)//2
+                  py=by+45+(cellH-95-thumb.height)//2
+                  sheet.paste(under.convert('RGB'),(px,py))
+                  pencil.text((bx+24,by+13),f'#{num:02d}  {label}',font=big,fill=(242,214,176))
+                  pencil.text((bx+23,by+cellH-36),f'{art.width}x{art.height}  |  {g.upper()}',font=small,fill=(175,189,199))
+                  full.append({'number':num,'pose':g,'status':label,'source':source,'width':art.width,'height':art.height})
+              buf=io.BytesIO()
+              sheet.save(buf,'JPEG',quality=78,optimize=True,subsampling=0)
+              (dest/(g+'-numbered.jpg.base64.txt')).write_text(base64.b64encode(buf.getvalue()).decode('ascii'))
+              print(g,'images',len(images),'reviewBytes',len(buf.getvalue()))
+          (dest/'manifest.json').write_text(json.dumps(full,ensure_ascii=False,indent=2))
+          PY
+      - name: Commit gallery previews without changing website
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/korokage/version-review/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Archive numbered previews of all Korokage pose versions and replacements"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
