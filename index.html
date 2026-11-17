@@ -39,28 +39,25 @@
 .profile-dialog[data-character="korokage"] .profile-art{background:transparent;padding:8px}
 .profile-dialog[data-character="korokage"] .profile-art img{;filter:drop-shadow(0 0 20px rgba(125,162,203,.28));max-height:505px}
 @media(max-width:640px){.profile-dialog[data-character="korokage"] .profile-layout{grid-template-columns:1fr}.profile-dialog[data-character="korokage"] .profile-gallery-options{grid-template-columns:repeat(3,minmax(0,1fr))}.profile-dialog[data-character="korokage"] .profile-art{height:310px}.character--korokage .character-media img{height:348px}}
-/* Sairan display sizing only: keep all four approved source images unchanged. */
-.character--sairan .character-media img{transform:scale(1.12);transform-origin:center bottom}
-.profile-dialog[data-character="sairan"] .profile-layout{grid-template-columns:minmax(0,54%) minmax(0,1fr)}
-.profile-dialog[data-character="sairan"] .profile-art{padding:6px}
-@media(max-width:640px){.profile-dialog[data-character="sairan"] .profile-layout{grid-template-columns:1fr}.profile-dialog[data-character="sairan"] .profile-art{height:340px}.profile-dialog[data-character="sairan"] .profile-art img{max-height:320px}}
-/* Sairan: landscape cutouts in a tall portrait slot. Keep original artwork untouched. */
-.profile-dialog[data-character="sairan"] #profile-image[src*="hammer-kick-clean.webp"],
-.profile-dialog[data-character="sairan"] #profile-image[src*="lightning-summon-clean.webp"]{
-  width:100%;height:500px;max-height:500px;object-fit:cover;object-position:center center;
+/* Sairan only: framed approved pose images have no empty wide canvas.
+   Fit the full figure and effects without zoom cropping or stretching. */
+.character--sairan .character-media img{transform:scale(1.10);transform-origin:center bottom}
+.profile-dialog[data-character="sairan"] .profile-layout{grid-template-columns:minmax(0,62%) minmax(0,1fr)}
+.profile-dialog[data-character="sairan"] .profile-art{
+  height:620px;min-height:620px;padding:10px;overflow:hidden;
 }
-.profile-dialog[data-character="sairan"] #profile-image[src*="lightning-defense-clean.webp"]{
-  transform:scale(1.22);transform-origin:center center;
+.profile-dialog[data-character="sairan"] #profile-image{
+  display:block;width:100%;height:100%;max-width:100%;max-height:none;
+  object-fit:contain;object-position:center center;transform:none;
 }
-/* The approved source ends its summoned lightning at its top edge.
-   Soften that edge visually instead of cropping the figure or editing the file. */
-.profile-dialog[data-character="sairan"] #profile-image[src*="lightning-summon-clean.webp"]{
-  -webkit-mask-image:linear-gradient(to bottom, transparent 0%,rgba(0,0,0,.6) 6%,#000 15%);
-  mask-image:linear-gradient(to bottom, transparent 0%,rgba(0,0,0,.6) 6%,#000 15%);
+.profile-dialog[data-character="sairan"] .profile-gallery-option img{
+  height:79px;object-fit:contain;
 }
 @media(max-width:640px){
-  .profile-dialog[data-character="sairan"] #profile-image[src*="hammer-kick-clean.webp"],
-  .profile-dialog[data-character="sairan"] #profile-image[src*="lightning-summon-clean.webp"]{height:320px;max-height:320px}
+  .profile-dialog[data-character="sairan"] .profile-layout{grid-template-columns:1fr}
+  .profile-dialog[data-character="sairan"] .profile-art{height:385px;min-height:385px;padding:8px}
+  .profile-dialog[data-character="sairan"] #profile-image{width:100%;height:100%;max-height:none;object-fit:contain;transform:none}
+  .profile-dialog[data-character="sairan"] .profile-gallery-option img{height:70px}
 }
 .profile-art img[src="hikari-transparent-gold-20261107.webp"]{transform:scale(.94);transform-origin:center bottom}
 .profile-copy{display:flex;flex-direction:column;justify-content:center;padding:46px 42px 40px}
@@ -465,13 +462,13 @@
       quote: "True power requires control.",
       description: "Sairan is a 91-year-old elder rabbit and master of martial arts and lightning. Father of Kaminari, grandfather of Rai, and great-grandfather of Raika, he fights with the calm precision of a seasoned monk-warrior. When invoking lightning, his yellow eyes glow completely white.",
       traits: "Mastery · Lightning · Discipline · Wisdom",
-      image: "world-characters/portraits/sairan-cutout.webp",
+      image: "world-characters/display-v1/sairan/quiet-palm-framed.webp?v=20261117-framed",
       alt: "Sairan, gray-furred elder rabbit martial master in a guarded open-palm stance",
       variants: [
-        {label: "Quiet Palm Strike", image: "world-characters/portraits/sairan-cutout.webp", alt: "Sairan striking with an open palm in a balanced stance"},
-        {label: "Lightning Hammer Kick", image: "world-characters/review-v2/sairan/hammer-kick-clean.webp?v=20261115-sairan-clean", alt: "Sairan performing a hammer kick charged with blue-white lightning"},
-        {label: "Summon Lightning", image: "world-characters/review-v2/sairan/lightning-summon-clean.webp?v=20261115-sairan-clean", alt: "Sairan punching upward and summoning lightning with luminous white eyes"},
-        {label: "Lightning Defense", image: "world-characters/review-v2/sairan/lightning-defense-clean.webp?v=20261115-sairan-clean", alt: "Sairan generating a defensive lightning shield using both hands"}
+        {label: "Quiet Palm Strike", image: "world-characters/display-v1/sairan/quiet-palm-framed.webp?v=20261117-framed", alt: "Sairan striking with an open palm in a balanced stance"},
+        {label: "Lightning Hammer Kick", image: "world-characters/display-v1/sairan/hammer-kick-framed.webp?v=20261117-framed", alt: "Sairan performing a hammer kick charged with blue-white lightning"},
+        {label: "Summon Lightning", image: "world-characters/display-v1/sairan/lightning-summon-framed.webp?v=20261117-framed", alt: "Sairan punching upward and summoning lightning with luminous white eyes"},
+        {label: "Lightning Defense", image: "world-characters/display-v1/sairan/lightning-defense-framed.webp?v=20261117-framed", alt: "Sairan generating a defensive lightning shield using both hands"}
       ]
     },
     medoshi: {
