@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c1312">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="RAIKA — Unified Character Gallery, a review-only design prototype for Kenkyosha.">
+<title>Kenkyosha — Character Gallery Preview | RAIKA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0c1312;--panel:#14221d;--gold:#d8ad65;--gold-light:#f4d7a0;--text:#f4f0e7;--muted:#adbab0;--line:rgba(216,173,101,.26)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 52% -10%,#233b2b 0,transparent 45%),var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold-light);outline-offset:4px}
+.wrap{max-width:1250px;padding:0 clamp(16px,3vw,42px);margin-inline:auto}
+header{border-bottom:1px solid #ffffff20;background:#0a120fbb}
+.nav{display:flex;justify-content:space-between;align-items:center;min-height:77px;gap:16px}
+.brand{font:900 24px Cinzel,Georgia,serif;letter-spacing:.16em}
+.brand span{color:var(--gold)}
+.return{font-size:13px;color:#d5b87f;display:inline-flex;align-items:center;gap:10px}
+.return:hover{color:white}
+.prelude{padding-top:44px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.23em;text-transform:uppercase;color:var(--gold)}
+.preview-note{font-size:11px;letter-spacing:.05em;color:#9ba99e;border:1px solid #60726855;border-radius:30px;padding:8px 13px}
+.heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-top:12px;margin-bottom:28px}
+.heading h1{font:700 clamp(36px,6vw,66px)/1.1 Cinzel,Georgia,serif;letter-spacing:.03em;margin:0}
+.heading p{font-size:13px;color:var(--muted);margin:11px 0 0;max-width:570px;line-height:1.65}
+.heading-submark{font:500 13px Cinzel,Georgia,serif;color:#9fa9a0;letter-spacing:.15em;white-space:nowrap;padding-bottom:6px}
+.gallery-layout{display:grid;grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr);gap:clamp(20px,3vw,38px);align-items:start}
+.visual{min-width:0}
+.stage{position:relative;height:min(65vh,650px);min-height:505px;display:grid;place-items:center;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 52% 51%,#3e3326 0%,#20302a 42%,#111a16 79%),#14211c;border:1px solid var(--line);border-radius:14px}
+.stage::before{content:"";position:absolute;inset:12px;border:1px solid #f3d39b14;border-radius:9px;pointer-events:none}
+.stage::after{content:"";position:absolute;bottom:23px;width:48%;height:32px;background:#0008;filter:blur(25px);border-radius:50%;z-index:-1;pointer-events:none}
+.stage img{display:block;width:100%;height:100%;padding:40px 52px 24px;object-fit:contain;object-position:center center;filter:drop-shadow(0 18px 24px rgba(0,0,0,.25));transition:opacity .18s ease;opacity:1}
+.stage img.is-changing{opacity:.3}
+.stage-top{position:absolute;top:25px;left:28px;right:28px;display:flex;align-items:center;justify-content:space-between;gap:20px;pointer-events:none}
+.stage-kicker{color:#e7c88e;text-transform:uppercase;font-size:10px;letter-spacing:.2em;font-weight:700}
+.counter{font:600 13px 'DM Sans',sans-serif;color:var(--gold-light);letter-spacing:.13em;font-variant-numeric:tabular-nums}
+.stage-footer{position:absolute;bottom:26px;left:28px;right:28px;display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none}
+.stage-footer .canon{font-size:10px;letter-spacing:.11em;color:#cad6c2cc;text-transform:uppercase}
+.stage-footer .label{font:600 12px Cinzel,Georgia,serif;color:#f3d39b}
+.nav-arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:58px;display:grid;place-items:center;border:1px solid #d8ad6588;border-radius:5px;background:rgba(12,20,17,.87);color:var(--gold-light);font:normal 33px Georgia,serif;cursor:pointer;z-index:3}
+.nav-arrow:hover{background:#d8ad65;color:#101713}
+.nav-arrow.prev{left:12px}
+.nav-arrow.next{right:12px}
+.variants-heading{display:flex;align-items:center;justify-content:space-between;margin:21px 2px 12px;gap:12px}
+.variants-heading strong{font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:var(--gold)}
+.variants-heading span{font-size:11px;color:var(--muted)}
+.thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.thumb{padding:9px 7px 11px;text-align:center;background:#15231d;border:1px solid #ffffff2d;border-radius:8px;color:#cbd2c8;cursor:pointer;transition:border-color .18s,background .18s}
+.thumb[aria-pressed="true"]{background:#2d3025;border-color:var(--gold);box-shadow:0 0 0 1px #d8ad653a inset}
+.thumb:hover{border-color:#d8ad65b0}
+.thumb img{display:block;width:100%;height:100px;object-fit:contain;object-position:center;margin-bottom:7px;pointer-events:none}
+.thumb .number{font-size:10px;color:#b9b5a9;font-variant-numeric:tabular-nums}
+.thumb .name{display:block;margin-top:4px;color:#ede3d0;font-size:11px;line-height:1.3;min-height:28px}
+.info{position:relative;padding:clamp(23px,3vw,44px);border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,#172720,#101b17);min-width:0}
+.info::before{content:"";position:absolute;left:25px;right:25px;top:0;height:1px;background:linear-gradient(90deg,transparent,#d8ad6580,transparent)}
+.info .small-title{font:600 11px 'DM Sans',sans-serif;letter-spacing:.2em;color:#d8ad65;text-transform:uppercase}
+.info h2{font:700 clamp(29px,3.3vw,41px)/1.18 Cinzel,Georgia,serif;margin:15px 0 10px}
+.role{font-size:13px;color:#d8ad65}
+.rule{margin:28px 0;border:0;border-top:1px solid #c6ac7840}
+.quote{border-left:2px solid var(--gold);padding-left:19px;margin:0 0 23px;font:500 17px/1.65 Cinzel,Georgia,serif;color:#ede3cf}
+.description{font-size:14px;color:#bfc9bd;line-height:1.85;margin:0}
+.pose-details{margin-top:28px;padding:21px 0;border-top:1px solid #ffffff20;border-bottom:1px solid #ffffff20}
+.pose-details .tag{font-size:10px;letter-spacing:.16em;color:var(--gold);text-transform:uppercase}
+.pose-details h3{font:600 20px Cinzel,Georgia,serif;margin:9px 0 8px}
+.pose-details p{font-size:13px;line-height:1.7;color:#b3c2b6;margin:0;min-height:44px}
+.traits{font-size:11px;color:#d8ad65;letter-spacing:.1em;line-height:1.9;margin:22px 0 0}
+.guideline{margin-top:24px;padding:17px 19px;border:1px solid #c7a96b29;background:#0d1814;border-radius:9px}
+.guideline strong{font-size:11px;color:#e3c693;letter-spacing:.11em;text-transform:uppercase}
+.guideline p{font-size:12px;color:#9caa9f;line-height:1.7;margin:7px 0 0}
+footer{padding:44px 0 32px}
+.foot{border-top:1px solid #ffffff20;padding-top:18px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#7d8f82;font-size:11px}
+@media(max-width:920px){
+  .gallery-layout{grid-template-columns:minmax(0,1fr)}
+  .stage{height:660px;min-height:0}
+  .info{padding:28px}
+  .info h2{font-size:35px}
+}
+@media(max-width:620px){
+  .nav{min-height:66px}.brand{font-size:21px}.return{font-size:11px}
+  .prelude{padding-top:28px}
+  .heading{margin-bottom:20px}.heading-submark{display:none}
+  .heading h1{font-size:clamp(30px,9vw,43px)}
+  .stage{height:min(117vw,510px);min-height:360px;border-radius:11px}
+  .stage img{padding:50px 32px 28px}
+  .nav-arrow{width:34px;height:48px;font-size:27px}
+  .nav-arrow.prev{left:5px}.nav-arrow.next{right:5px}
+  .stage-top{top:18px;left:18px;right:18px}.stage-footer{bottom:14px;left:18px;right:18px}
+  .stage-footer .canon{font-size:9px}.stage-footer .label{font-size:10px}
+  .thumbs{gap:6px}.thumb{padding:7px 4px 9px}.thumb img{height:69px}.thumb .name{font-size:9px;min-height:34px}.thumb .number{font-size:9px}
+  .info{padding:23px}.info h2{font-size:30px}
+  .quote{font-size:15px}.variants-heading{margin-top:18px}
+}
+@media(max-width:380px){.stage{height:370px}.stage img{padding:45px 28px 20px}.thumb img{height:62px}.thumb .name{font-size:9px}.return{max-width:145px;text-align:right}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="brand" href="index.html" aria-label="RAIKA homepage">RAI<span>K</span>A</a>
+  <a class="return" href="index.html#world-characters"><span aria-hidden="true">←</span> Back to world characters</a>
+</div></header>
+<main class="wrap" id="gallery">
+  <div class="prelude"><span class="eyebrow">The Legacy of Reishin / Character Archive</span><span class="preview-note">Design review · Kenkyosha only</span></div>
+  <div class="heading"><div><h1>KENKYOSHA</h1><p>A unified character-gallery standard. One stage for every character, preserving canonical art and every complete pose.</p></div><div class="heading-submark">RAIKA / 001</div></div>
+  <div class="gallery-layout">
+    <section class="visual" aria-label="Kenkyosha pose gallery">
+      <div class="stage" id="stage">
+        <img id="main-pose" src="world-characters/kenkyosha/pose-1.webp" width="850" height="1200" fetchpriority="high" alt="Kenkyosha examining a glowing green syringe and a small vial">
+        <div class="stage-top"><span class="stage-kicker">Approved canonical artwork</span><span class="counter" id="stage-counter" aria-live="polite">01 / 04</span></div>
+        <button class="nav-arrow prev" id="prev" type="button" aria-label="Previous pose">‹</button>
+        <button class="nav-arrow next" id="next" type="button" aria-label="Next pose">›</button>
+        <div class="stage-footer"><span class="canon">Original artwork preserved</span><span class="label" id="stage-label">The Scientist</span></div>
+      </div>
+      <div class="variants-heading"><strong>Explore poses</strong><span>4 approved versions</span></div>
+      <div class="thumbs" role="group" aria-label="Select character pose">
+        <button class="thumb" type="button" data-pose="0" aria-pressed="true" aria-label="Show pose 1: The Scientist"><img src="world-characters/kenkyosha/pose-1.webp" loading="lazy" alt=""><span class="number">01</span><span class="name">The Scientist</span></button>
+        <button class="thumb" type="button" data-pose="1" aria-pressed="false" aria-label="Show pose 2: The Investigator"><img src="world-characters/kenkyosha/pose-2.webp" loading="lazy" alt=""><span class="number">02</span><span class="name">The Investigator</span></button>
+        <button class="thumb" type="button" data-pose="2" aria-pressed="false" aria-label="Show pose 3: Alchemical Attack"><img src="world-characters/kenkyosha/pose-3.webp" loading="lazy" alt=""><span class="number">03</span><span class="name">Alchemical Attack</span></button>
+        <button class="thumb" type="button" data-pose="3" aria-pressed="false" aria-label="Show pose 4: Quill Defense"><img src="world-characters/kenkyosha/pose-4.webp" loading="lazy" alt=""><span class="number">04</span><span class="name">Quill Defense</span></button>
+      </div>
+    </section>
+    <aside class="info" aria-labelledby="character-name">
+      <div class="small-title">Lions Kingdom / Character Profile</div>
+      <h2 id="character-name">Kenkyosha</h2>
+      <div class="role">Royal Investigator · Alchemist</div>
+      <hr class="rule">
+      <blockquote class="quote">“Every observation reveals something.”</blockquote>
+      <p class="description">A calculating hedgehog investigator with a mechanical monocle, a leather-bound notebook and an array of alchemical vials. Kenkyosha approaches his work methodically and relies on his elaborate quills as a defensive shield.</p>
+      <div class="pose-details" aria-live="polite"><div class="tag">Selected pose</div><h3 id="pose-name">The Scientist</h3><p id="pose-description">Kenkyosha studies a glowing green serum through his mechanical monocle.</p></div>
+      <p class="traits">Observation · Alchemy · Calculation · Defense</p>
+      <div class="guideline"><strong>Gallery standard · v1</strong><p>Uniform stage and thumbnail sizes, full-image containment, calm studio backdrop, intuitive arrows, keyboard and swipe navigation. No re-creation or alteration of canonical character artwork.</p></div>
+    </aside>
+  </div>
+</main>
+<footer><div class="wrap foot"><span>© 2026 RAIKA — The Legacy of Reishin</span><span>Preview for design approval · All other characters remain unchanged</span></div></footer>
+<script>
+(function(){
+"use strict";
+const poses=[["The Scientist","Kenkyosha studies a glowing green serum through his mechanical monocle.","world-characters/kenkyosha/pose-1.webp","Kenkyosha holding an illuminated alchemical syringe and a small vial"],["The Investigator","A calculating investigator records findings in his leather-bound notebook.","world-characters/kenkyosha/pose-2.webp","Kenkyosha writing in his leather notebook, leaning forward"],["Alchemical Attack","A fast lateral strike sends a luminous green vial away from the thrower.","world-characters/kenkyosha/pose-3.webp","Kenkyosha lunging and throwing a distant glowing green potion"],["Quill Defense","His natural quills form a broad protective barrier against an incoming strike.","world-characters/kenkyosha/pose-4.webp","Kenkyosha braced in a defensive stance with raised quills"]];
+const img=document.getElementById("main-pose");
+const buttons=Array.from(document.querySelectorAll(".thumb"));
+const counter=document.getElementById("stage-counter");
+const label=document.getElementById("stage-label");
+const heading=document.getElementById("pose-name");
+const description=document.getElementById("pose-description");
+let selected=0;
+let startX=null;
+function showPose(index){
+ selected=(index+poses.length)%poses.length;
+ const p=poses[selected];
+ img.alt=p[3];
+ if(img.getAttribute("src")!==p[2]){img.classList.add("is-changing");img.src=p[2];}
+ label.textContent=p[0];
+ heading.textContent=p[0];
+ description.textContent=p[1];
+ counter.textContent=String(selected+1).padStart(2,"0")+" / 04";
+ buttons.forEach((button,i)=>button.setAttribute("aria-pressed",String(i===selected)));
+}
+img.addEventListener("load",()=>img.classList.remove("is-changing"));
+img.addEventListener("error",()=>img.classList.remove("is-changing"));
+buttons.forEach((b,i)=>b.addEventListener("click",()=>showPose(i)));
+document.getElementById("prev").addEventListener("click",()=>showPose(selected-1));
+document.getElementById("next").addEventListener("click",()=>showPose(selected+1));
+document.addEventListener("keydown",function(e){
+ if(e.altKey||e.ctrlKey||e.metaKey||["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName))return;
+ if(e.key==="ArrowLeft"){showPose(selected-1);e.preventDefault();}
+ if(e.key==="ArrowRight"){showPose(selected+1);e.preventDefault();}
+});
+const stage=document.getElementById("stage");
+stage.addEventListener("touchstart",e=>{if(e.touches.length===1)startX=e.touches[0].clientX},{passive:true});
+stage.addEventListener("touchend",e=>{if(startX===null||!e.changedTouches.length)return;const d=e.changedTouches[0].clientX-startX;startX=null;if(Math.abs(d)>42)showPose(selected+(d<0?1:-1));},{passive:true});
+})();
+</script>
+</body>
+</html>
