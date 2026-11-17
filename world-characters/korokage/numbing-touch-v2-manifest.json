@@ -1,0 +1,14 @@
+{
+  "name": "Korokage Numbing Touch",
+  "artlistGenerationId": "01a1e87d-729b-7a16-83b9-4711d6fd2c57",
+  "approved": true,
+  "source": "world-characters/korokage/numbing-touch-v2-artlist-approved.png",
+  "display": "world-characters/korokage/numbing-touch-v2-cutout.webp",
+  "dimensions": [
+    2752,
+    1536
+  ],
+  "sourceBytes": 5594121,
+  "displayBytes": 1627360,
+  "transparentFraction": 0.685
+}
