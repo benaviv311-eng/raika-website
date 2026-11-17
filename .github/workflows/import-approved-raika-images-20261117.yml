@@ -1,0 +1,34 @@
+name: Import approved Raika canon images
+on:
+  push:
+    paths:
+      - .github/workflows/import-approved-raika-images-20261117.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import-canon-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download approved original image files byte-for-byte
+        run: |
+          set -euo pipefail
+          mkdir -p symbols world-characters/portraits
+          curl --fail --location --retry 3 --silent --show-error -o symbols/okana-house-tilted-scales-canonical.png 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/eb1441c3-1e17-4fbd-b3a6-e2e0e330e2db.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNGZhN2U3YzJjMzAzYzZkNSIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTAxNTEwNn0.WurPuHNcpUcBryKnlU8aMbEpNrn7w69PrOK2GJ8tK88'
+          curl --fail --location --retry 3 --silent --show-error -o world-characters/portraits/okana-father-small-crest-canonical.png 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/9d2d5955-4ebf-4ac2-9f09-ae83140f8a81.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiODNiNWY0NGIwZjVhZTg1NyIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTAxOTg1MX0.jbedr60ACb-oJPYp1NXFA2KzCpDe7vP-GFDBM9EmQi4'
+          test "$(wc -c < symbols/okana-house-tilted-scales-canonical.png)" -gt 100000
+          test "$(wc -c < world-characters/portraits/okana-father-small-crest-canonical.png)" -gt 100000
+          file symbols/okana-house-tilted-scales-canonical.png
+          file world-characters/portraits/okana-father-small-crest-canonical.png
+      - name: Commit source images to website
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add symbols/okana-house-tilted-scales-canonical.png world-characters/portraits/okana-father-small-crest-canonical.png
+          if ! git diff --cached --quiet; then
+            git commit -m "Add approved crest and Sakura village head portrait [skip ci]"
+            git push
+          fi
