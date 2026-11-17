@@ -44,6 +44,24 @@
 .profile-dialog[data-character="sairan"] .profile-layout{grid-template-columns:minmax(0,54%) minmax(0,1fr)}
 .profile-dialog[data-character="sairan"] .profile-art{padding:6px}
 @media(max-width:640px){.profile-dialog[data-character="sairan"] .profile-layout{grid-template-columns:1fr}.profile-dialog[data-character="sairan"] .profile-art{height:340px}.profile-dialog[data-character="sairan"] .profile-art img{max-height:320px}}
+/* Sairan: landscape cutouts in a tall portrait slot. Keep original artwork untouched. */
+.profile-dialog[data-character="sairan"] #profile-image[src*="hammer-kick-clean.webp"],
+.profile-dialog[data-character="sairan"] #profile-image[src*="lightning-summon-clean.webp"]{
+  width:100%;height:500px;max-height:500px;object-fit:cover;object-position:center center;
+}
+.profile-dialog[data-character="sairan"] #profile-image[src*="lightning-defense-clean.webp"]{
+  transform:scale(1.22);transform-origin:center center;
+}
+/* The approved source ends its summoned lightning at its top edge.
+   Soften that edge visually instead of cropping the figure or editing the file. */
+.profile-dialog[data-character="sairan"] #profile-image[src*="lightning-summon-clean.webp"]{
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0%,rgba(0,0,0,.6) 6%,#000 15%);
+  mask-image:linear-gradient(to bottom, transparent 0%,rgba(0,0,0,.6) 6%,#000 15%);
+}
+@media(max-width:640px){
+  .profile-dialog[data-character="sairan"] #profile-image[src*="hammer-kick-clean.webp"],
+  .profile-dialog[data-character="sairan"] #profile-image[src*="lightning-summon-clean.webp"]{height:320px;max-height:320px}
+}
 .profile-art img[src="hikari-transparent-gold-20261107.webp"]{transform:scale(.94);transform-origin:center bottom}
 .profile-copy{display:flex;flex-direction:column;justify-content:center;padding:46px 42px 40px}
 .profile-copy h2{margin:10px 0 6px;font-size:clamp(30px,4vw,47px)}
