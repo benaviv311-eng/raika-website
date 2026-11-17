@@ -1,0 +1,94 @@
+[
+  {
+    "pose": "quiet-palm",
+    "originalSize": [
+      1086,
+      1448
+    ],
+    "alphaBounds": [
+      79,
+      8,
+      1004,
+      1441
+    ],
+    "crop": [
+      29,
+      0,
+      1054,
+      1448
+    ],
+    "framedSize": [
+      1025,
+      1448
+    ]
+  },
+  {
+    "pose": "hammer-kick",
+    "originalSize": [
+      2752,
+      1536
+    ],
+    "alphaBounds": [
+      958,
+      79,
+      1929,
+      1491
+    ],
+    "crop": [
+      909,
+      30,
+      1978,
+      1536
+    ],
+    "framedSize": [
+      1069,
+      1506
+    ]
+  },
+  {
+    "pose": "lightning-summon",
+    "originalSize": [
+      2752,
+      1536
+    ],
+    "alphaBounds": [
+      988,
+      25,
+      1772,
+      1529
+    ],
+    "crop": [
+      935,
+      0,
+      1825,
+      1536
+    ],
+    "framedSize": [
+      890,
+      1536
+    ]
+  },
+  {
+    "pose": "lightning-defense",
+    "originalSize": [
+      2752,
+      1536
+    ],
+    "alphaBounds": [
+      704,
+      39,
+      2065,
+      1524
+    ],
+    "crop": [
+      652,
+      0,
+      2117,
+      1536
+    ],
+    "framedSize": [
+      1465,
+      1536
+    ]
+  }
+]
