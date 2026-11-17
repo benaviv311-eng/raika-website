@@ -1,0 +1,262 @@
+[
+  {
+    "number": 1,
+    "pose": "base",
+    "status": "CANONICAL SOURCE",
+    "source": "world-characters/korokage/base.png",
+    "width": 1024,
+    "height": 1536
+  },
+  {
+    "number": 2,
+    "pose": "base",
+    "status": "OLD CUTOUT",
+    "source": "world-characters/korokage/base-cutout.webp",
+    "width": 1024,
+    "height": 1536
+  },
+  {
+    "number": 3,
+    "pose": "base",
+    "status": "REPLACED V2",
+    "source": "world-characters/review-v2/korokage/base-clean.webp",
+    "width": 1024,
+    "height": 1536
+  },
+  {
+    "number": 4,
+    "pose": "base",
+    "status": "CURRENT WEBSITE",
+    "source": "world-characters/review-v3/korokage/base-clean.webp",
+    "width": 1024,
+    "height": 1536
+  },
+  {
+    "number": 5,
+    "pose": "base",
+    "status": "REJECTED NEW BASE",
+    "source": {
+      "external": "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__8/image-7bd6cb11-b255-4ebf-bb60-39474bf8f5a7.png?Expires=2110269435&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=E-JLePNAz58Jez9ASZR71t9q1XsrPCrIMK-IxLiKlEj3kDth-W6BqstVvhCTjsANsh1Gpwf5CQ0kl0UCU9JSbhMJ9CA99JLvABWlcTFBiuljXThJC1i-fUyJ98pWpoS4gLzcTHXIaFn8MTFE-mB4usGnhCg9GbEV-4n3yZNRLZHbPhVDQIq-KXB96oxlvaV9-Yf2kbiWg7E-rt39~G4VM7RHgOc5nEv2RlWIqwx-NK3YF5l17oX1RT4bAaLo1G3i4aa-nxByec3-svrMszWC-D7kuBJ8-YM~473F~y4~HmWYXgW18~RYO-DDi7KwKRApV8vomnmxQeu5JPPl-oCxOg__"
+    },
+    "width": 2752,
+    "height": 1536
+  },
+  {
+    "number": 6,
+    "pose": "barrage",
+    "status": "ORIGINAL ARTLIST",
+    "source": "world-characters/korokage/steel-feather-barrage.png",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 7,
+    "pose": "barrage",
+    "status": "EARLIER CUTOUT",
+    "source": "world-characters/korokage/steel-feather-barrage-cutout.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 8,
+    "pose": "barrage",
+    "status": "REPLACED V2",
+    "source": "world-characters/review-v2/korokage/steel-feather-barrage-clean.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 9,
+    "pose": "barrage",
+    "status": "CURRENT WEBSITE",
+    "source": "world-characters/review-v3/korokage/steel-feather-barrage-clean.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 12,
+    "pose": "kunai",
+    "status": "ORIGINAL ARTLIST",
+    "source": "world-characters/korokage/twin-steel-feather-kunai.png",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 13,
+    "pose": "kunai",
+    "status": "EARLIER CUTOUT",
+    "source": "world-characters/korokage/twin-steel-feather-kunai-cutout.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 14,
+    "pose": "kunai",
+    "status": "REPLACED V2",
+    "source": "world-characters/review-v2/korokage/twin-steel-feather-kunai-clean.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 15,
+    "pose": "kunai",
+    "status": "CURRENT WEBSITE",
+    "source": "world-characters/review-v3/korokage/twin-steel-feather-kunai-clean.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 17,
+    "pose": "armor",
+    "status": "ORIGINAL ARTLIST",
+    "source": "world-characters/korokage/steel-wing-armor.png",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 18,
+    "pose": "armor",
+    "status": "EARLIER CUTOUT",
+    "source": "world-characters/korokage/steel-wing-armor-cutout.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 19,
+    "pose": "armor",
+    "status": "REPLACED V2",
+    "source": "world-characters/review-v2/korokage/steel-wing-armor-clean.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 20,
+    "pose": "armor",
+    "status": "REPLACED V3",
+    "source": "world-characters/review-v3/korokage/steel-wing-armor-clean.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 21,
+    "pose": "armor",
+    "status": "APPROVED NEW SOURCE",
+    "source": "world-characters/korokage/steel-wing-armor-v2-artlist-approved.png",
+    "width": 2752,
+    "height": 1536
+  },
+  {
+    "number": 22,
+    "pose": "armor",
+    "status": "CURRENT WEBSITE",
+    "source": "world-characters/korokage/steel-wing-armor-v2-cutout.webp",
+    "width": 2752,
+    "height": 1536
+  },
+  {
+    "number": 23,
+    "pose": "numbing",
+    "status": "ORIGINAL ARTLIST",
+    "source": "world-characters/korokage/numbing-touch.png",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 24,
+    "pose": "numbing",
+    "status": "EARLIER CUTOUT",
+    "source": "world-characters/korokage/numbing-touch-cutout.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 25,
+    "pose": "numbing",
+    "status": "REPLACED V2",
+    "source": "world-characters/review-v2/korokage/numbing-touch-clean.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 26,
+    "pose": "numbing",
+    "status": "REPLACED V3",
+    "source": "world-characters/review-v3/korokage/numbing-touch-clean.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 27,
+    "pose": "numbing",
+    "status": "APPROVED NEW SOURCE",
+    "source": "world-characters/korokage/numbing-touch-v2-artlist-approved.png",
+    "width": 2752,
+    "height": 1536
+  },
+  {
+    "number": 28,
+    "pose": "numbing",
+    "status": "CURRENT WEBSITE",
+    "source": "world-characters/korokage/numbing-touch-v2-cutout.webp",
+    "width": 2752,
+    "height": 1536
+  },
+  {
+    "number": 29,
+    "pose": "shadow",
+    "status": "ORIGINAL ARTLIST",
+    "source": "world-characters/korokage/shadow-mist.png",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 30,
+    "pose": "shadow",
+    "status": "EARLIER CUTOUT",
+    "source": "world-characters/korokage/shadow-mist-cutout.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 31,
+    "pose": "shadow",
+    "status": "REPLACED V2",
+    "source": "world-characters/review-v2/korokage/shadow-mist-clean.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 32,
+    "pose": "shadow",
+    "status": "CURRENT WEBSITE",
+    "source": "world-characters/review-v3/korokage/shadow-mist-clean.webp",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "number": 33,
+    "pose": "shadow",
+    "status": "EARLIER ARTLIST V2",
+    "source": "world-characters/korokage/shadow-mist-v2-artlist-approved.png",
+    "width": 2752,
+    "height": 1536
+  },
+  {
+    "number": 34,
+    "pose": "shadow",
+    "status": "SOFT EDGE V2",
+    "source": "world-characters/korokage/shadow-mist-v2-smoke-preserved.webp",
+    "width": 2752,
+    "height": 1536
+  },
+  {
+    "number": 35,
+    "pose": "shadow",
+    "status": "UNAPPROVED SMOKE ATTACK",
+    "source": {
+      "external": "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__4/image-e45e323f-0736-4bae-94d0-80ead6e2f04a.png?Expires=2110269435&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=jr2QQJxpzzgCBSSywSFneOnjm124JgoTqbWgnsOKLhgYqQzMq8VVNtrzfMKARf1Ep6DPuxyO9s75uQistat30yM2uOQsfJ2qKH0mBmUYhtESbsZxv4MI1BD~CR~4KzSFCEn6zntSQQ9rIY1BH0txVHAoBEsmnghm7G8lyhAExLyFdWaEP3tKAGDk404KNQK0BYB~7S1KAyUTyHqSgLIKw1ENw99w-SV0klqzC3mNaXs-IIAMaXjUGqKMoSgNeROO4T-u101PyZ574NeAPcWxBRxdr0zmY1sGf44ugpKclaBbeyUn-KZv8RIyaGtBUbL~Xh4yLvhCZvnmvTQTbz46Lg__"
+    },
+    "width": 2752,
+    "height": 1536
+  }
+]
