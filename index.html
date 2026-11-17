@@ -947,4 +947,164 @@
   showComicPage(1);
 
 })();
-</script></body></html>
+</script>
+<script>
+/* RAIKA ANALYTICS — GA4 conversion funnel
+   To activate: replace the empty MEASUREMENT_ID below with a GA4 Web stream ID.
+   No Google requests or analytics cookies are created until visitors opt in.
+   A click on Ko-fi is NOT a confirmed purchase.
+*/
+(function(){
+  "use strict";
+  var MEASUREMENT_ID = "";
+  if(!/^G-[A-Z0-9]{6,}$/.test(MEASUREMENT_ID)) return;
+
+  var CONSENT_KEY = "raika_ga4_consent_v1";
+  var enabled = false, banner = null, previewStarted = false;
+  var lastComicPage = 0, lastPageReached = false;
+
+  function getConsent(){
+    try{return localStorage.getItem(CONSENT_KEY);}catch(e){return null;}
+  }
+  function setConsent(value){
+    try{localStorage.setItem(CONSENT_KEY,value);}catch(e){}
+  }
+  function send(eventName, parameters){
+    if(enabled && typeof window.gtag === "function"){
+      window.gtag("event", eventName, parameters || {});
+    }
+  }
+  function currentComicPage(){
+    var label = document.getElementById("comic-page-label");
+    var match = label && label.textContent.match(/PAGE\s+(\d+)\s+OF\s+(\d+)/i);
+    return match ? Number(match[1]) : 1;
+  }
+  function recordComicPage(){
+    if(!previewStarted) return;
+    var page = currentComicPage();
+    if(page !== lastComicPage){
+      lastComicPage = page;
+      send("comic_page_view",{comic_page:page,comic_total_pages:6});
+      if(page === 6 && !lastPageReached){
+        lastPageReached = true;
+        send("comic_last_page_reached",{comic_total_pages:6});
+      }
+    }
+  }
+  function beginPreview(){
+    if(previewStarted) return;
+    previewStarted = true;
+    send("comic_preview_start",{comic_total_pages:6});
+    recordComicPage();
+  }
+  function initializeReaderTracking(){
+    var reader = document.getElementById("comic-reader");
+    if(!reader) return;
+    if("IntersectionObserver" in window){
+      var observer = new IntersectionObserver(function(entries){
+        if(entries.some(function(entry){return entry.isIntersecting;})){
+          beginPreview();
+          observer.disconnect();
+        }
+      },{threshold:0.25});
+      observer.observe(reader);
+    } else if(window.location.hash === "#comic"){
+      beginPreview();
+    }
+  }
+  function recordLinkClick(link){
+    var url;
+    try{url = new URL(link.href,window.location.href);}catch(e){return;}
+    if(url.hash === "#comic" && url.pathname === window.location.pathname){
+      send("comic_preview_cta_click",{cta_position:link.closest(".hero") ? "hero" : "navigation"});
+    }
+    if(url.hostname === "ko-fi.com" || url.hostname === "www.ko-fi.com"){
+      if(url.pathname.startsWith("/s/f037b4cede")){
+        var placement = link.closest(".hero") ? "hero" :
+          link.closest("#comic") ? "comic_reader" : "other";
+        send("prologue_purchase_click",{cta_position:placement,product_name:"RAIKA Prologue"});
+      } else {
+        send("support_kofi_click",{cta_position:"support"});
+      }
+    }
+    if(url.hostname === "drive.google.com" && url.pathname === "/uc"){
+      send("free_pdf_download_click",{document_name:"RAIKA free preview"});
+    }
+  }
+  function initializeInteractions(){
+    document.addEventListener("click",function(e){
+      var link = e.target.closest("a[href]");
+      if(link) recordLinkClick(link);
+      if(e.target.closest(".reader-navigation,.reader-pages,.comic-arrow")){
+        window.setTimeout(recordComicPage,0);
+      }
+    });
+    var stage = document.getElementById("comic-reader-stage");
+    if(stage){
+      stage.addEventListener("keyup",function(e){
+        if(e.key === "ArrowRight" || e.key === "ArrowLeft"){
+          window.setTimeout(recordComicPage,0);
+        }
+      });
+    }
+  }
+  function activate(){
+    if(enabled) return;
+    enabled = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
+    window.gtag("js",new Date());
+    window.gtag("config",MEASUREMENT_ID,{
+      allow_google_signals:false,
+      allow_ad_personalization_signals:false
+    });
+    var script = document.createElement("script");
+    script.async = true;
+    script.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(MEASUREMENT_ID);
+    document.head.appendChild(script);
+    initializeInteractions();
+    initializeReaderTracking();
+  }
+  function choice(value){
+    setConsent(value);
+    if(banner){banner.remove();banner=null;}
+    if(value === "accepted") activate();
+    else if(enabled) window.location.reload();
+  }
+  function showConsent(){
+    if(banner) return;
+    banner = document.createElement("div");
+    banner.setAttribute("role","region");
+    banner.setAttribute("aria-label","Analytics consent");
+    banner.style.cssText = "position:fixed;z-index:99999;bottom:16px;left:16px;right:16px;max-width:540px;margin:0 auto;background:#12221b;color:#f4f0e7;border:1px solid #d8ad65;border-radius:10px;padding:18px;box-shadow:0 8px 35px #000b;font:14px/1.5 Arial,sans-serif";
+    var explanation = document.createElement("p");
+    explanation.style.cssText = "margin:0 0 12px;color:inherit";
+    explanation.textContent = "Help us understand how readers explore RAIKA. With your permission, we use Google Analytics to measure visits and clicks. We do not collect purchase details on this site.";
+    var controls = document.createElement("div");
+    controls.style.cssText = "display:flex;flex-wrap:wrap;gap:10px";
+    [["Accept analytics","accepted"],["Decline","declined"]].forEach(function(item){
+      var button = document.createElement("button");
+      button.type = "button";
+      button.textContent = item[0];
+      button.style.cssText = "background:" + (item[1] === "accepted" ? "#d8ad65" : "transparent") + ";color:" + (item[1] === "accepted" ? "#101713" : "#f4f0e7") + ";border:1px solid #d8ad65;border-radius:4px;padding:9px 15px;cursor:pointer";
+      button.addEventListener("click",function(){choice(item[1]);});
+      controls.appendChild(button);
+    });
+    banner.appendChild(explanation);
+    banner.appendChild(controls);
+    document.body.appendChild(banner);
+  }
+  var footer = document.querySelector("footer .wrap");
+  if(footer){
+    var settings = document.createElement("button");
+    settings.type = "button";
+    settings.textContent = "Analytics preferences";
+    settings.style.cssText = "border:0;background:transparent;color:#d8ad65;cursor:pointer;font:inherit;text-decoration:underline";
+    settings.addEventListener("click",showConsent);
+    footer.appendChild(settings);
+  }
+  if(getConsent() === "accepted") activate();
+  else if(getConsent() !== "declined") showConsent();
+})();
+</script>
+</body></html>
