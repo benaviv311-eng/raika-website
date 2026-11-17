@@ -60,6 +60,7 @@ jobs:
               buf=io.BytesIO()
               sheet.save(buf,'JPEG',quality=78,optimize=True,subsampling=0)
               (dest/(g+'-numbered.jpg.base64.txt')).write_text(base64.b64encode(buf.getvalue()).decode('ascii'))
+              (dest/(g+'-numbered.jpg')).write_bytes(buf.getvalue())
               print(g,'images',len(images),'reviewBytes',len(buf.getvalue()))
           (dest/'manifest.json').write_text(json.dumps(full,ensure_ascii=False,indent=2))
           PY
