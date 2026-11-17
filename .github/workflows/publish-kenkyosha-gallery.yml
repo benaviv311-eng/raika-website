@@ -1,0 +1,43 @@
+name: Publish Kenkyosha approved character gallery
+on:
+  push:
+    paths:
+      - 'deployment-assets/raika-kenkyosha-site-ready.zip'
+      - '.github/workflows/publish-kenkyosha-gallery.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout raika-website
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install approved transparent character poses
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/kenkyosha"
+          unzip -oq deployment-assets/raika-kenkyosha-site-ready.zip -d "$RUNNER_TEMP/kenkyosha"
+          mkdir -p world-characters/kenkyosha
+          cp "$RUNNER_TEMP/kenkyosha/world-characters/kenkyosha"/pose-[1-4].webp world-characters/kenkyosha/
+          cp "$RUNNER_TEMP/kenkyosha/patch_kenkyosha_site.py" ./patch_kenkyosha_site.py
+          python3 patch_kenkyosha_site.py
+          for i in 1 2 3 4; do
+            test -s "world-characters/kenkyosha/pose-$i.webp"
+            grep -q "world-characters/kenkyosha/pose-$i.webp" index.html
+          done
+          grep -q 'data-character="kenkyosha"' index.html
+      - name: Publish updated character carousel
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html world-characters/kenkyosha/pose-[1-4].webp
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish Kenkyosha approved four-pose profile"
+            git push
+          fi
