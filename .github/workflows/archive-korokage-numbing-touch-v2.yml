@@ -1,0 +1,91 @@
+name: Archive approved Korokage numbing touch v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/archive-korokage-numbing-touch-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install transparent background tools
+        run: python -m pip install "rembg[cpu]>=2.0.60" "Pillow>=11" numpy scipy
+      - name: Archive exact approved Artlist image, generate alpha cutout and QA preview
+        env:
+          APPROVED_ARTLIST_URL: "https://cms-toolkit-artifacts.artlist.io/content/-e-x-t-e-r-n-a-l_-i-m-a-g-e_-t-o_-i-m-a-g-e-v1/media__9/image-8e67b3a4-c8b5-4833-ab8a-de7187e68628.png?Expires=2110261972&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=exJdX79-9fkwx52im2yHy98wvmPw5nXaiz48N3utSWhwp5RzR05YbrEiXE79ZI4SbgbmCBKiTI1HLNK8oj8AZQE9U1xLvIzJ7KhxNxZRkpi~Qrv5mgF6fFMl-F9RaQ7rwqsilbLYVeGp-OrHG7-fdRcJLztgnjs-IMeyXpat4~Qfb19jDHcePKgvaThHzhGwoNHKLsUA0eKh~9Eqg8DeYrzePaR824FAbMAcKjT2X8Dz1IHf9ZzYNtI3IuBpun6DVT3R18G3k2pfoiHzx0vTIvxWif2VPVqc-jvK5-zclUValszjy2-i2TEdjyKycmNAonIPolesq3LgSZ1N2W0nIQ__"
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import urllib.request,os,io,base64,json
+          import numpy as np
+          from PIL import Image,ImageDraw
+          from rembg import remove,new_session
+          url=os.environ['APPROVED_ARTLIST_URL']
+          request=urllib.request.Request(url,headers={'User-Agent':'RAIKA-artwork-archive/1.0'})
+          with urllib.request.urlopen(request,timeout=80) as response:
+              content=response.read(18000000)
+          if not content.startswith(b'\x89PNG\r\n\x1a\n') or len(content)<100000: raise RuntimeError('Artlist approved PNG is unavailable')
+          dest=Path('world-characters/korokage')
+          dest.mkdir(parents=True,exist_ok=True)
+          original=dest/'numbing-touch-v2-artlist-approved.png'
+          original.write_bytes(content)
+          source=Image.open(io.BytesIO(content)).convert('RGBA')
+          if min(source.size)<850: raise RuntimeError('Unexpected dimensions for approved artwork')
+          rgb=Image.new('RGB',source.size,(43,44,51))
+          rgb.paste(source,(0,0),source.getchannel('A'))
+          cut=remove(rgb,session=new_session('isnet-general-use'),post_process_mask=True,alpha_matting=False).convert('RGBA')
+          old=np.array(source,dtype=np.uint8,copy=True)
+          mask=np.asarray(cut.getchannel('A'),dtype=np.uint8)
+          if (old[:,:,3]<20).mean()>.1:
+              mask=np.minimum(mask,old[:,:,3])
+          if float((mask<20).mean())<.12 or float((mask>210).mean())<.06:
+              raise RuntimeError('Alpha cutout not reliable')
+          old[:,:,3]=mask
+          old[mask==0,:3]=0
+          portrait=Image.fromarray(old,'RGBA')
+          output=dest/'numbing-touch-v2-cutout.webp'
+          portrait.save(output,'WEBP',lossless=True,method=6)
+          # Visual QA comparing original and transparent final on the exact dark website tone.
+          w,h=560,370
+          qa=Image.new('RGB',(w*2,h),(12,19,18))
+          pencil=ImageDraw.Draw(qa)
+          for idx,(label,im) in enumerate((('ORIGINAL APPROVED',source),('TRANSPARENT ON SITE',portrait))):
+              resized=im.copy()
+              resized.thumbnail((w-20,h-40),Image.Resampling.LANCZOS)
+              bg=Image.new('RGBA',resized.size,(12,19,18,255))
+              bg.alpha_composite(resized)
+              qa.paste(bg.convert('RGB'),(idx*w+(w-resized.width)//2,4+(h-40-resized.height)//2))
+              pencil.text((idx*w+18,h-26),label,fill=(237,213,176))
+          out=io.BytesIO()
+          qa.save(out,'JPEG',quality=87,optimize=True)
+          (dest/'numbing-touch-v2-review.jpg.base64.txt').write_text(base64.b64encode(out.getvalue()).decode('ascii'))
+          manifest={'name':'Korokage Numbing Touch','artlistGenerationId':'01a1e87d-729b-7a16-83b9-4711d6fd2c57',
+              'approved':True,'source':str(original),'display':str(output),
+              'dimensions':list(source.size),'sourceBytes':len(content),'displayBytes':output.stat().st_size,
+              'transparentFraction':round(float((mask<20).mean()),3)}
+          (dest/'numbing-touch-v2-manifest.json').write_text(json.dumps(manifest,indent=2))
+          print(json.dumps(manifest))
+          PY
+      - name: Commit only new artwork and previews (originals preserved)
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add world-characters/korokage/numbing-touch-v2-*
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Archive Korokage approved Numbing Touch v2 with cutout QA'
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
