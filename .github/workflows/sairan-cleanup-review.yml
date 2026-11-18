@@ -1,0 +1,94 @@
+name: Sairan cleanup previews (NOT site publication)
+on:
+  push:
+    branches: [review/sairan-cleanup-20261118]
+    paths: [.github/workflows/sairan-cleanup-review.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: review/sairan-cleanup-20261118
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install image cleaning packages
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "rembg[cpu]==2.0.67" "Pillow>=10,<12" "numpy<3"
+      - name: Clean and prepare approved source poses
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps, ImageFilter, ImageDraw, ImageFont
+          import numpy as np, json, io
+          from rembg import new_session, remove
+          root=Path('world-characters/review-v2/sairan')
+          dest=Path('world-characters/review-preview/sairan-20261118')
+          dest.mkdir(parents=True,exist_ok=True)
+          session=new_session('u2net')
+          names=['quiet-palm','hammer-kick','lightning-summon','lightning-defense']
+          rows=[]
+          for name in names:
+              original=Image.open(root/(name+'-clean.webp')).convert('RGBA')
+              W,H=original.size
+              resize=min(1.0,1180/max(W,H))
+              sm=original.resize((round(W*resize),round(H*resize)),Image.Resampling.LANCZOS)
+              # Model sees the actual approved artwork against the same dark tone
+              # used by the site, not its isolated, colored artifact matte.
+              dark=Image.new('RGBA',sm.size,(16,26,22,255))
+              dark.alpha_composite(sm)
+              mask=remove(dark.convert('RGB'),session=session,only_mask=True,post_process_mask=True)
+              if mask.mode!='L':mask=mask.convert('L')
+              mask=mask.resize((W,H),Image.Resampling.LANCZOS)
+              # Preserve original transparency; never create pixels outside source.
+              source_alpha=original.getchannel('A')
+              from PIL import ImageChops
+              new_alpha=ImageChops.multiply(source_alpha,mask)
+              # Remove isolated tiny flecks away from the character, but do not
+              # morph or repaint ears, hands, clothing or existing lightning.
+              clean=original.copy()
+              clean.putalpha(new_alpha)
+              # Extract actual foreground, not the original widescreen canvas.
+              bbox=new_alpha.point(lambda v:255 if v>16 else 0).getbbox()
+              if bbox is None: raise RuntimeError(name+': segmentation empty')
+              x0,y0,x1,y1=bbox
+              pad=max(35,round(max(x1-x0,y1-y0)*0.055))
+              bbox=(max(0,x0-pad),max(0,y0-pad),min(W,x1+pad),min(H,y1+pad))
+              cropped=clean.crop(bbox)
+              cropped.save(dest/(name+'-clean-preview.png'),optimize=True)
+              # Approved source pixels are untouched in RGB; only alpha was cleaned.
+              rows.append({'pose':name,'size':original.size,'mask_bbox':bbox,
+                           'preview_size':cropped.size})
+          (dest/'report.json').write_text(json.dumps(rows,indent=2))
+          # Uniform 4-up contact sheet, dark consistent backgrounds; consistent
+          # logical scale of body per frame, but full pose and effects within.
+          tile_w,tile_h=540,700
+          bg=(16,26,22,255)
+          sheet=Image.new('RGBA',(tile_w*4,tile_h),bg)
+          dr=ImageDraw.Draw(sheet)
+          for i,name in enumerate(names):
+              art=Image.open(dest/(name+'-clean-preview.png')).convert('RGBA')
+              aw,ah=art.size
+              factor=min((tile_w-32)/aw,(tile_h-98)/ah)
+              tw,th=int(aw*factor),int(ah*factor)
+              art=art.resize((tw,th),Image.Resampling.LANCZOS)
+              x=i*tile_w+(tile_w-tw)//2
+              y=40+(tile_h-120-th)//2
+              sheet.alpha_composite(art,(x,y))
+              dr.text((i*tile_w+16,tile_h-60),f'{i+1}. {name}',fill=(244,234,211,255))
+          sheet.convert('RGB').save(dest/'sairan-four-poses-review.jpg',quality=91,optimize=True)
+          print(rows)
+          PY
+      - name: Commit previews to non-published review branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/review-preview/sairan-20261118
+          git diff --cached --quiet && exit 0
+          git commit -m "Create cleanup previews for approval; no website changes"
+          git push origin HEAD:review/sairan-cleanup-20261118
