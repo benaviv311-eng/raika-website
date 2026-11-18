@@ -49,6 +49,15 @@ jobs:
               source_alpha=original.getchannel('A')
               from PIL import ImageChops
               new_alpha=ImageChops.multiply(source_alpha,mask)
+              if name == 'lightning-summon':
+                  # The source's bolt is severed by the original top edge.
+                  # Fade only its last upper 11%, preserving the raised fist.
+                  aa=np.asarray(new_alpha,dtype=np.float32).copy()
+                  cutoff=int(H*0.11)
+                  t=np.clip(np.arange(cutoff,dtype=np.float32)/cutoff,0,1)
+                  smooth=t*t*(3-2*t)
+                  aa[:cutoff]*=smooth[:,None]
+                  new_alpha=Image.fromarray(aa.clip(0,255).astype(np.uint8),'L')
               # Remove isolated tiny flecks away from the character, but do not
               # morph or repaint ears, hands, clothing or existing lightning.
               clean=original.copy()
