@@ -1,0 +1,38 @@
+name: Verify Okana five transparent presentations
+on:
+  push:
+    paths:
+      - .github/workflows/okana-visual-quality-check.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render consistent complete image previews for visual QA
+        run: |
+          set -euo pipefail
+          python -m pip install --quiet Pillow
+          python - <<'PY'
+          from PIL import Image,ImageDraw
+          from pathlib import Path
+          P=Path('world-characters/okana')
+          N=['portrait','pose-1-noble','pose-2-cutting-remark','pose-3-inazuma-punch','pose-4-mother-memory']
+          W=370;H=490
+          sheet=Image.new('RGB',(W*len(N),H),(15,24,22))
+          for j,name in enumerate(N):
+           im=Image.open(P/(name+'-display.png')).convert('RGBA')
+           im.thumbnail((W-18,H-55),Image.Resampling.LANCZOS)
+           px=(W-im.width)//2+j*W
+           py=(H-45-im.height)//2+30
+           sheet.paste(im,(px,py),im.getchannel('A'))
+           ImageDraw.Draw(sheet).text((j*W+12,H-28),name,fill=(224,202,159))
+          sheet.save(P/'QA-5-view.jpg',quality=78,optimize=True)
+          print('QA sheet generated', (P/'QA-5-view.jpg').stat().st_size)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add world-characters/okana/QA-5-view.jpg
+          if ! git diff --cached --quiet; then git commit -m 'Temporary Okana visual QA contact sheet';git push;fi
