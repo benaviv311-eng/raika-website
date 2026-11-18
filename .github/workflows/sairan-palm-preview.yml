@@ -37,9 +37,9 @@ jobs:
           pad=round(max(bbox[2]-bbox[0],bbox[3]-bbox[1])*0.035)
           crop=(max(0,bbox[0]-pad),max(0,bbox[1]-pad),min(w,bbox[2]+pad),min(h,bbox[3]+pad))
           candidate=image.crop(crop)
-          # A lossless, nondestructive cutout; no generation, recoloring, retouching.
-          candidate.save(output/'palm-source-framed.webp',format='WEBP',lossless=True,method=6)
-          check=Image.open(output/'palm-source-framed.webp').convert('RGBA')
+          # PNG cutout: exact original RGBA pixels, no generation, recoloring, retouching.
+          candidate.save(output/'palm-source-framed.png',format='PNG',optimize=True)
+          check=Image.open(output/'palm-source-framed.png').convert('RGBA')
           assert candidate.tobytes()==check.tobytes(),'Lossless encoding changed pixel values'
           # Primary large single-image preview with equal layout sizing to other characters.
           canvas=Image.new('RGBA',(760,900),(16,26,23,255))
