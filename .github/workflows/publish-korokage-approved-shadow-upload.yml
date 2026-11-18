@@ -1,0 +1,68 @@
+name: Publish approved Korokage Shadow Mist after PNG upload
+on:
+  push:
+    branches: [main]
+    paths:
+      - "world-characters/korokage/shadow-mist-approved-upload.png"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install image tools
+        run: python -m pip install "Pillow>=11"
+      - name: Verify exact approved picture and create transparent website WebP
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import hashlib, numpy as np
+          original=Path('world-characters/korokage/shadow-mist-approved-upload.png')
+          expected='d939107ac7e02a3fe993299768f8ab87664826abb0090f765b194e11c5f849eb'
+          if not original.exists(): raise RuntimeError('Approved PNG not yet uploaded to repository')
+          actual=hashlib.sha256(original.read_bytes()).hexdigest()
+          if actual!=expected:
+              raise RuntimeError('Wrong image: expected exact user-approved PNG, got SHA-256 '+actual)
+          im=Image.open(original).convert('RGBA')
+          if im.size!=(1672,941):
+              raise RuntimeError('Unexpected source image dimensions')
+          a=np.asarray(im.getchannel('A'))
+          if not ((a==0).any() and (a==255).any() and ((a>0)&(a<255)).any()):
+              raise RuntimeError('Missing transparent and semitransparent smoke')
+          output=Path('world-characters/korokage/shadow-mist-20261118-approved-transparent.webp')
+          im.save(output,format='WEBP',lossless=True,method=6,exact=True)
+          out=Image.open(output).convert('RGBA')
+          if out.size!=im.size or not np.array_equal(np.asarray(out),np.asarray(im)):
+              raise RuntimeError('Lossless WebP failed bit-exact pixel comparison')
+          print('Verified exact approved PNG, preserved alpha smoke and character; WebP bytes',output.stat().st_size)
+          PY
+      - name: Change only Shadow Mist gallery reference, preserving original artwork
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          text=p.read_text()
+          old='label: "Shadow Mist", image: "world-characters/korokage/shadow-mist.png?v=20261118-original-smoke", alt: "Korokage in his original smoke technique with his raven wings and dense smoke intact"'
+          new='label: "Shadow Mist", image: "world-characters/korokage/shadow-mist-20261118-approved-transparent.webp?v=20261118-transparent-final", alt: "Korokage in the user-approved Shadow Mist pose with his full wings and softly layered smoke on transparent background"'
+          if text.count(old)!=1: raise RuntimeError('Site Shadow Mist entry changed since upload was prepared; no overwrite')
+          p.write_text(text.replace(old,new))
+          PY
+      - name: Commit verified approved version and update live reference
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html world-characters/korokage/shadow-mist-20261118-approved-transparent.webp
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Publish user-approved Korokage Shadow Mist with preserved transparent smoke"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
