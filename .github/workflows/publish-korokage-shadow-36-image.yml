@@ -1,0 +1,58 @@
+name: Publish selected Korokage Shadow Mist exact approved image from encoded transfer
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Only publish after every 8 transfer parts are present"
+        required: true
+        type: boolean
+        default: true
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image tools
+        run: python -m pip install 'Pillow>=11' pillow-avif-plugin
+      - name: Reassemble selected source image; verify transfer; preserve alpha
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import pillow_avif, base64, hashlib, io
+          p=Path('world-characters/korokage/transfer-36')
+          chunks=[(p/f'part-{i:02d}.txt').read_text().strip() for i in range(1,9)]
+          raw=base64.b64decode(''.join(chunks),validate=True)
+          sha=hashlib.sha256(raw).hexdigest()
+          expected='66618d9bdb42107876382100c538189ce2abab0575e9ce46f3e013d73a5f0f7b'
+          if sha!=expected: raise RuntimeError(f'Transferred bytes failed SHA-256: {sha}')
+          src=Image.open(io.BytesIO(raw)).convert('RGBA')
+          if src.size!=(1200,675): raise RuntimeError('Source dimensions incorrect')
+          if src.getchannel('A').getextrema()!=(0,255): raise RuntimeError('Transparency was lost')
+          avif=Path('world-characters/korokage/shadow-mist-20261118-approved-source.avif')
+          avif.write_bytes(raw)
+          out=Path('world-characters/korokage/shadow-mist-20261118-approved-transparent.webp')
+          src.save(out,'WEBP',quality=96,method=6,exact=True)
+          target=Image.open(out)
+          if target.size!=(1200,675) or target.getchannel('A').getextrema()!=(0,255):
+              raise RuntimeError('WebP transparency output failed')
+          print(f'Success: {out}, bytes={out.stat().st_size}, 1200x675 RGBA, source sha256={sha}')
+          PY
+      - name: Commit prepared image without overwriting any original artwork
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/korokage/shadow-mist-20261118-approved-source.avif world-characters/korokage/shadow-mist-20261118-approved-transparent.webp
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Archive and prepare user-approved Korokage smoke illustration with transparent background"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
