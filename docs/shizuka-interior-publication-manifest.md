@@ -21,3 +21,13 @@ Inspected actual current container filesystem, Google Drive searches, GitHub sit
 2. Generate INT-03 and INT-04 by exact pixel crop if needed and verify full array equality against recovered INT-01.
 3. Maintain owner-approved INT-02 as-is, disclosing the standing stair-grade QA caveat; do not silently change or replace it.
 4. Publish the four verified exact-image files as webp assets, append **INTERIOR** views to existing `#shizuka-house` gallery, preserve the two exterior entries, and verify the repository and website.
+
+## Extended recovery audit — 2026-11-18
+- Re-examined the current active filesystem, including /mnt/data and accessible workspace/temp locations. **None** of the four exact original PNG files is present by filename.
+- Searched current Google Drive by 'shizuka', 'shizuka_int', and 'kaminari_original_composite': no matching original image asset.
+- Queried Library and conversation file inventories, including date-filtered 2026-11-15 and 2026-11-16 images. Found `shizuka_interior_review_board.jpg` (1600x1040), which embeds DOWN-SAMPLED previews of the full room, memorial and tea-table views, and `חדר טטאמי יפני באור שקיעה.png`, a DIFFERENT earlier generated candidate with noncanonical cushions/portrait. These files cannot be substituted for original creator-approved high-resolution full-room and crop images.
+- Found `shizuka_int02_shoji_closed_alt_v2_16x9.png` (1672x941), a **separately unapproved alteration**. Do not upload it as approved INT-02. Also found a separate earlier reverse-view generated still `שקיעה בבית שיזוקה: אל שביל הכפר.png` which is not the exact approved INT-02 and cannot substitute.
+- Attempted authorized Library raw file materialization for the review board and old tatami candidate, but no raw-byte path was authorized. Visual preview read only. No exact image bytes recovered from Library.
+- Searched GitHub site main, branches `artlist-medoshi-costume-transfer-20261114` and `artlist-sairan-reference-20261114`, plus repository commit search. No matching original image assets; prior commits contain descriptive canon logs, not the four missing PNGs.
+- Recovered prior-conversation context of approvals and file names, but no source asset bytes or durable image-file IDs. This investigation is **BLOCKED on exact originals**. Preserve approval status, do not regenerate, and do not publish inaccurate substitutes.
+- Website's four previously published Sakura Path / Shizuka exterior assets remain intact. Interior section has not been uploaded; no website changes made during this audit.
