@@ -46,6 +46,26 @@
 .profile-quote{font-family:Cinzel,Georgia,serif;font-size:19px;color:#f0e4ce;line-height:1.55;margin:23px 0 14px;border-left:2px solid #d8ad65;padding-left:16px}
 .profile-description{font-size:14px;line-height:1.75;color:#bdc3ba}
 .profile-traits{font-size:11px;color:#d8ad65;text-transform:uppercase;letter-spacing:.14em;margin-top:20px}
+.profile-flipbook {
+  margin: 24px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid #ffffff20;
+}
+.profile-flipbook figcaption {
+  margin-bottom: 10px;
+  color: #d8ad65;
+  font-size: 13px;
+  font-weight: 700;
+}
+.profile-flipbook video {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  border: 1px solid #d8ad6570;
+  border-radius: 6px;
+  background: #0c1312;
+}
 .profile-close{position:absolute;top:12px;right:14px;width:38px;height:38px;border:1px solid #d8ad6580;border-radius:50%;color:#f4f0e7;background:#101a17e8;cursor:pointer;font-size:26px;line-height:1;z-index:2}
 @media(max-width:950px){.character-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.character--hikari{grid-column:1/-1;width:calc((100% - 20px)/2);justify-self:center}}
 @media(max-width:640px){.character-gallery{grid-template-columns:1fr}.character--hikari{width:100%;grid-column:auto}.character-media{height:365px}.character-media img{height:348px}.character--hikari .character-media img{height:336px}.profile-layout{grid-template-columns:1fr}.profile-art{min-height:0;height:295px}.profile-art img{max-height:275px}.profile-dialog[data-character="raika"] .profile-art{height:315px}.profile-gallery{padding:0 14px 12px}.profile-gallery-option img{height:60px}.profile-copy{padding:24px 24px 32px}.profile-dialog{max-height:92vh}.profile-quote{font-size:17px;margin-top:18px}}
@@ -417,6 +437,14 @@
       <p class="profile-quote" id="profile-quote">“To fight you need strength; to protect you need wisdom.”</p>
       <p class="profile-description" id="profile-description">A seasoned warrior and devoted father. Rai believes true mastery is shown not only in battle, but in the choices made to protect others.</p>
       <div class="profile-traits" id="profile-traits">Strength · Wisdom · Compassion</div>
+      <figure class="profile-flipbook" id="raika-flipbook" hidden>
+        <figcaption id="raika-flipbook-caption">Pencil flipbook · Raika’s first training step</figcaption>
+        <video controls playsinline preload="none" width="600" height="800"
+          aria-labelledby="raika-flipbook-caption" poster="assets/videos/raika-pencil-flipbook.webp">
+          <source src="assets/videos/raika-pencil-flipbook.mp4" type="video/mp4">
+          <a href="assets/videos/raika-pencil-flipbook.mp4">Watch the pencil flipbook</a>
+        </video>
+      </figure>
     </div>
   </div>
 </dialog><section class="section feature" id="comic"><div class="wrap"><div class="eyebrow">Read the free preview</div><h2>Enter the story.</h2><p>Read RAIKA — The Legacy of Reishin right here on the website. Turn through all six pages, jump to any page, and use the viewer controls to zoom or expand your reading space. No payment required.</p><div class="comic-reader" id="comic-reader"><div class="comic-reader-head"><div><div class="eyebrow">The Legacy of Reishin</div><div class="comic-reader-title">Free Comic Preview</div></div><span class="reader-page-label" id="comic-page-label" aria-live="polite">PAGE 1 OF 6</span></div><div class="comic-reader-stage" id="comic-reader-stage" tabindex="0" aria-label="Comic reader. Use the arrows to turn pages."><img id="comic-page-image" class="comic-page-image" src="comic-pages/page-1.webp" alt="RAIKA comic page 1 of 6" fetchpriority="high" decoding="async"><button class="comic-arrow comic-arrow-prev" type="button" id="comic-arrow-prev" aria-label="Previous comic page" title="Previous page">‹</button><button class="comic-arrow comic-arrow-next" type="button" id="comic-arrow-next" aria-label="Next comic page" title="Next page">›</button></div><div class="comic-reader-controls"><div class="reader-navigation"><button class="reader-btn" type="button" id="comic-prev" aria-label="Previous page">← Previous</button><button class="reader-btn primary" type="button" id="comic-next" aria-label="Next page">Next →</button></div><div class="reader-pages" role="group" aria-label="Choose comic page"><button class="reader-page-btn" type="button" data-comic-page="1" aria-current="page">01</button><button class="reader-page-btn" type="button" data-comic-page="2">02</button><button class="reader-page-btn" type="button" data-comic-page="3">03</button><button class="reader-page-btn" type="button" data-comic-page="4">04</button><button class="reader-page-btn" type="button" data-comic-page="5">05</button><button class="reader-page-btn" type="button" data-comic-page="6">06</button></div><div class="reader-tools"><button class="reader-btn" type="button" id="comic-zoom-out" aria-label="Zoom out">−</button><button class="reader-btn" type="button" id="comic-zoom-in" aria-label="Zoom in">+</button><button class="reader-btn" type="button" id="comic-fullscreen">Fullscreen ⛶</button></div></div></div><div class="comic-download"><span>Prefer to keep a copy?</span><a href="https://drive.google.com/uc?export=download&id=1P5WU3eBgS8wy1W-t47UcNedQyRoGCSBA" target="_blank" rel="noopener">Download the original PDF ↗</a></div><div class="buttons"><a class="btn primary" href="https://ko-fi.com/s/f037b4cede" target="_blank" rel="noopener noreferrer">Buy the Prologue – $4.99 ↗</a></div></div></section><section class="section support" id="support"><div class="wrap"><div class="eyebrow">Help write the next chapter</div><h2>Become part of the legend.</h2><p>RAIKA is an independent creative project. Your support helps bring new comic chapters, illustrations, and stories to life.</p><a class="btn primary" href="https://ko-fi.com/raikathelegacyofreishin" target="_blank" rel="noopener">Support on Ko-fi ↗</a></div></section></main><footer class="footer"><div class="wrap"><span>© 2026 RAIKA — The Legacy of Reishin.</span><a href="locations.html">Canon Locations</a><a href="https://www.instagram.com/raika.samurairabbit/">Instagram</a></div></footer><script>
@@ -682,6 +710,8 @@
   const galleryCounter = document.getElementById("profile-variant-counter");
   const variantPrev = document.getElementById("profile-variant-prev");
   const variantNext = document.getElementById("profile-variant-next");
+  const flipbook = document.getElementById("raika-flipbook");
+  const flipbookVideo = flipbook.querySelector("video");
   let activeVariants = [];
   let activeVariantIndex = 0;
   let lastTrigger = null;
@@ -727,7 +757,7 @@
   variantPrev.addEventListener("click", function(){showProfileVariant(activeVariantIndex - 1);});
   variantNext.addEventListener("click", function(){showProfileVariant(activeVariantIndex + 1);});
   dialog.addEventListener("keydown", function(event){
-    if(!activeVariants.length) return;
+    if(!activeVariants.length || event.target === flipbookVideo) return;
     if(event.key === "ArrowLeft"){event.preventDefault();showProfileVariant(activeVariantIndex - 1);}
     if(event.key === "ArrowRight"){event.preventDefault();showProfileVariant(activeVariantIndex + 1);}
   });
@@ -743,6 +773,7 @@
       document.getElementById("profile-description").textContent = info.description;
       document.getElementById("profile-traits").textContent = info.traits;
       dialog.dataset.character = button.dataset.character;
+      flipbook.hidden = dialog.dataset.character !== "raika";
       showProfileGallery(info);
       if (typeof dialog.showModal === "function") dialog.showModal();
       else dialog.setAttribute("open", "");
@@ -751,7 +782,10 @@
   });
   closeButton.addEventListener("click", function(){dialog.close();});
   dialog.addEventListener("click", function(event){if(event.target === dialog) dialog.close();});
-  dialog.addEventListener("close", function(){if(lastTrigger) lastTrigger.focus();});
+  dialog.addEventListener("close", function(){
+    flipbookVideo.pause();
+    if(lastTrigger) lastTrigger.focus();
+  });
 
   /* Original character card design; display one card at a time. */
   const familyCarousel = document.getElementById("family-carousel");
