@@ -315,21 +315,61 @@
   #character-profile.gallery-standard .profile-art #profile-image{transition:none}
 }
 
-/* Sairan lightning summon: the original Artlist-approved composition,
-   transparently cleaned but NOT cropped to the framed derivative.
-   The original 2752x1536 art has empty side margins; cover trims
-   those transparent margins only, keeping the full body and lightning. */
+/* Full-content guarantee for Sairan's lightning scene.
+   Never zoom/crop the lightning or the character; use the same fit policy as all other poses. */
 #character-profile.gallery-standard[data-character="sairan"] .profile-art #profile-image[src*="sairan-lightning-summon-exact-20261118.png"]{
-  object-fit:cover;
+  object-fit:contain;
   object-position:center center;
-  padding:24px 23px 22px;
+  padding:38px 35px 29px;
 }
 #character-profile.gallery-standard[data-character="sairan"] .profile-gallery-option img[src*="sairan-lightning-summon-exact-20261118.png"]{
-  object-fit:cover;
+  object-fit:contain;
   object-position:center center;
 }
 @media(max-width:620px){
   #character-profile.gallery-standard[data-character="sairan"] .profile-art #profile-image[src*="sairan-lightning-summon-exact-20261118.png"]{
-    padding:26px 22px 19px;
+    padding:44px 35px 25px;
   }
+}
+
+/* No-crop rendering contract: all character galleries show original image bounds.
+   The stage can be framed, but image content is always scaled down within safe padding. */
+#family-slides .character-media img,
+#guard-slides .character-media img,
+#world-slides .character-media img{
+  box-sizing:border-box;
+  width:100%;
+  height:100%;
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  object-position:center center;
+  clip-path:none;
+  -webkit-mask-image:none;
+  mask-image:none;
+  transform:none;
+}
+#character-profile.gallery-standard .profile-art #profile-image{
+  box-sizing:border-box;
+  display:block;
+  width:100%;
+  height:100%;
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  object-position:center center;
+  clip-path:none;
+  -webkit-mask-image:none;
+  mask-image:none;
+  transform:none;
+}
+#character-profile.gallery-standard .profile-gallery-option img{
+  box-sizing:border-box;
+  width:100%;
+  max-width:100%;
+  object-fit:contain;
+  object-position:center center;
+  clip-path:none;
+  -webkit-mask-image:none;
+  mask-image:none;
 }
