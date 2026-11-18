@@ -265,7 +265,7 @@
 .profile-dialog[data-character="shi-sosakusha"] .profile-gallery-options{grid-template-columns:repeat(4,minmax(0,1fr))}
 .profile-dialog[data-character="shi-sosakusha"] .profile-gallery-option img{filter:none;mix-blend-mode:normal;mask-image:none;-webkit-mask-image:none}
 @media(max-width:640px){.character--bard .character-media img{height:348px}.profile-dialog[data-character="shi-sosakusha"] .profile-art{height:295px;min-height:0}.profile-dialog[data-character="shi-sosakusha"] .profile-art img{max-height:275px}.profile-dialog[data-character="shi-sosakusha"] .profile-gallery-options{grid-template-columns:repeat(2,minmax(0,1fr))}}
-</style></head><body><header><div class="wrap nav"><a class="brand" href="#top">RAI<span>K</span>A</a><nav><a href="#story">The Story</a><a href="#characters">Characters</a><a href="locations.html">Locations</a><a href="symbols.html">Symbols</a><a href="#comic">Read</a><a href="#support">Support</a><a href="https://www.instagram.com/raika.samurairabbit/" target="_blank" rel="noopener">Instagram ↗</a></nav></div></header><main><section class="hero" id="top"><img class="hero-art" src="raika-hero-blue-2026.svg" alt="Raika, white rabbit samurai in blue training robes with golden lightning emblem"><div class="wrap"><div class="hero-inner"><div class="eyebrow">An original samurai fantasy</div><h1>RAIKA<small>The Legacy of Reishin</small></h1><p>Strength to fight. Wisdom to protect. Enter a world of ancient traditions, impossible choices, and a young warrior finding her path.</p><div class="buttons"><a class="btn primary" href="#comic">Read the free comic</a><a class="btn" href="https://ko-fi.com/s/f037b4cede" target="_blank" rel="noopener noreferrer">Buy the Prologue – $4.99 ↗</a><a class="btn" href="#support">Support the journey</a></div></div></div></section><section class="section" id="story"><div class="wrap"><div class="eyebrow">The world of Raika</div><h2>A legend begins with a choice.</h2><p>Beyond the mountain paths, clans and warriors carry stories of honor, loyalty, and sacrifice. Raika's journey is only beginning.</p><div class="cards"><div class="card"><strong>01</strong><h3>The Warrior</h3><p>Meet Raika: a young rabbit samurai learning that courage is more than strength.</p></div><div class="card"><strong>02</strong><h3>The Legacy</h3><p>Training, family, and ancient teachings shape the path ahead.</p></div><div class="card"><strong>03</strong><h3>The Journey</h3><p>Discover an original fantasy universe through illustrated comic storytelling.</p></div></div><div class="buttons"><a class="btn" href="locations.html">Explore canon locations</a></div></div></section><section class="section" id="characters"><div class="wrap"><div class="eyebrow">The family behind the legend</div><h2>HOUSE OF RAI</h2><p>Family · Strength · Wisdom · Legacy</p><div class="family-carousel" id="family-carousel" role="region" aria-roledescription="carousel" aria-label="Rai's family">
+</style><link rel="stylesheet" href="character-gallery-standard.css?v=20261118-1"></head><body><header><div class="wrap nav"><a class="brand" href="#top">RAI<span>K</span>A</a><nav><a href="#story">The Story</a><a href="#characters">Characters</a><a href="locations.html">Locations</a><a href="symbols.html">Symbols</a><a href="#comic">Read</a><a href="#support">Support</a><a href="https://www.instagram.com/raika.samurairabbit/" target="_blank" rel="noopener">Instagram ↗</a></nav></div></header><main><section class="hero" id="top"><img class="hero-art" src="raika-hero-blue-2026.svg" alt="Raika, white rabbit samurai in blue training robes with golden lightning emblem"><div class="wrap"><div class="hero-inner"><div class="eyebrow">An original samurai fantasy</div><h1>RAIKA<small>The Legacy of Reishin</small></h1><p>Strength to fight. Wisdom to protect. Enter a world of ancient traditions, impossible choices, and a young warrior finding her path.</p><div class="buttons"><a class="btn primary" href="#comic">Read the free comic</a><a class="btn" href="https://ko-fi.com/s/f037b4cede" target="_blank" rel="noopener noreferrer">Buy the Prologue – $4.99 ↗</a><a class="btn" href="#support">Support the journey</a></div></div></div></section><section class="section" id="story"><div class="wrap"><div class="eyebrow">The world of Raika</div><h2>A legend begins with a choice.</h2><p>Beyond the mountain paths, clans and warriors carry stories of honor, loyalty, and sacrifice. Raika's journey is only beginning.</p><div class="cards"><div class="card"><strong>01</strong><h3>The Warrior</h3><p>Meet Raika: a young rabbit samurai learning that courage is more than strength.</p></div><div class="card"><strong>02</strong><h3>The Legacy</h3><p>Training, family, and ancient teachings shape the path ahead.</p></div><div class="card"><strong>03</strong><h3>The Journey</h3><p>Discover an original fantasy universe through illustrated comic storytelling.</p></div></div><div class="buttons"><a class="btn" href="locations.html">Explore canon locations</a></div></div></section><section class="section" id="characters"><div class="wrap"><div class="eyebrow">The family behind the legend</div><h2>HOUSE OF RAI</h2><p>Family · Strength · Wisdom · Legacy</p><div class="family-carousel" id="family-carousel" role="region" aria-roledescription="carousel" aria-label="Rai's family">
 <div class="family-carousel-shell">
 <button class="family-arrow family-arrow-prev" type="button" id="family-prev" aria-label="Previous family member" title="Previous family member">‹</button>
 <div class="character-gallery family-slides" id="family-slides">
@@ -416,17 +416,19 @@
   </div>
 </section>
 
-<dialog class="profile-dialog" id="character-profile" aria-labelledby="profile-heading" aria-describedby="profile-description">
+<dialog class="profile-dialog gallery-standard" id="character-profile" aria-labelledby="profile-heading" aria-describedby="profile-description">
   <button class="profile-close" type="button" aria-label="Close character profile">×</button>
   <div class="profile-layout">
     <div class="profile-visual">
       <div class="profile-art">
         <img id="profile-image" src="rai-from-reference-transparent-gold-20261107.webp" alt="Sensei Rai portrait">
+        <div class="gallery-stage-top" aria-hidden="true"><span>Approved canonical artwork</span><span id="gallery-stage-counter">01 / 01</span></div>
+        <div class="gallery-stage-footer" aria-hidden="true"><span>Original artwork preserved</span><span id="gallery-stage-label">Portrait</span></div>
         <button class="profile-variant-arrow prev" id="profile-variant-prev" type="button" aria-label="Previous character variant" hidden>‹</button>
         <button class="profile-variant-arrow next" id="profile-variant-next" type="button" aria-label="Next character variant" hidden>›</button>
       </div>
       <div class="profile-gallery" id="profile-gallery" hidden>
-        <div class="profile-gallery-header"><span>Combat Variants</span><span id="profile-variant-counter" aria-live="polite"></span></div>
+        <div class="profile-gallery-header"><span>Explore Poses</span><span id="profile-variant-counter" aria-live="polite"></span></div>
         <div class="profile-gallery-options" id="profile-gallery-options" role="group" aria-label="Select character variant"></div>
       </div>
     </div>
@@ -712,42 +714,53 @@
   const variantNext = document.getElementById("profile-variant-next");
   const flipbook = document.getElementById("raika-flipbook");
   const flipbookVideo = flipbook.querySelector("video");
+  const galleryStage = dialog.querySelector(".profile-art");
+  const stageCounter = document.getElementById("gallery-stage-counter");
+  const stageLabel = document.getElementById("gallery-stage-label");
   let activeVariants = [];
   let activeVariantIndex = 0;
   let lastTrigger = null;
+  portrait.addEventListener("load", function(){portrait.classList.remove("is-changing");});
+  portrait.addEventListener("error", function(){portrait.classList.remove("is-changing");});
   function showProfileVariant(index){
     if(!activeVariants.length) return;
     activeVariantIndex = (index + activeVariants.length) % activeVariants.length;
     const variant = activeVariants[activeVariantIndex];
-    portrait.src = variant.image;
-    portrait.alt = variant.alt;
-    galleryCounter.textContent = (activeVariantIndex + 1) + " / " + activeVariants.length;
+    if(portrait.getAttribute("src") !== variant.image){
+      portrait.classList.add("is-changing");
+      portrait.src = variant.image;
+    }
+    portrait.alt = variant.alt || "Approved character artwork";
+    const countLabel = String(activeVariantIndex + 1).padStart(2,"0") + " / " + String(activeVariants.length).padStart(2,"0");
+    galleryCounter.textContent = countLabel;
+    stageCounter.textContent = countLabel;
+    stageLabel.textContent = variant.label || "Portrait";
     galleryOptions.querySelectorAll("button").forEach(function(option, i){
       option.setAttribute("aria-pressed", String(i === activeVariantIndex));
     });
   }
   function showProfileGallery(info){
-    activeVariants = info.variants || [];
-    gallery.hidden = activeVariants.length === 0;
+    /* Show exactly the approved variants available. For portrait-only characters,
+       display one portrait and never fabricate missing poses. */
+    activeVariants = Array.isArray(info.variants) && info.variants.length
+      ? info.variants
+      : [{label:"Portrait",image:info.image,alt:info.alt}];
+    gallery.hidden = false;
+    galleryOptions.dataset.count = String(activeVariants.length);
     variantPrev.hidden = activeVariants.length < 2;
     variantNext.hidden = activeVariants.length < 2;
     galleryOptions.replaceChildren();
-    if(!activeVariants.length){
-      portrait.src = info.image;
-      portrait.alt = info.alt;
-      return;
-    }
     activeVariants.forEach(function(variant, index){
       const option = document.createElement("button");
       option.type = "button";
       option.className = "profile-gallery-option";
-      option.setAttribute("aria-label", "Show " + variant.label + " variant");
+      option.setAttribute("aria-label", "Show " + (variant.label || "Portrait") + " variant");
       const thumb = document.createElement("img");
       thumb.src = variant.image;
       thumb.alt = "";
       thumb.loading = "lazy";
       const caption = document.createElement("span");
-      caption.textContent = variant.label;
+      caption.textContent = variant.label || "Portrait";
       option.append(thumb, caption);
       option.addEventListener("click", function(){showProfileVariant(index);});
       galleryOptions.append(option);
@@ -756,6 +769,19 @@
   }
   variantPrev.addEventListener("click", function(){showProfileVariant(activeVariantIndex - 1);});
   variantNext.addEventListener("click", function(){showProfileVariant(activeVariantIndex + 1);});
+  /* Same swipe behavior as the approved Kenkyosha preview, for every character. */
+  let galleryTouchStart = null;
+  galleryStage.addEventListener("touchstart", function(event){
+    if(event.touches.length === 1) galleryTouchStart = event.touches[0].clientX;
+  }, {passive:true});
+  galleryStage.addEventListener("touchend", function(event){
+    if(galleryTouchStart === null || activeVariants.length < 2) return;
+    if(event.changedTouches.length){
+      const distance = event.changedTouches[0].clientX - galleryTouchStart;
+      if(Math.abs(distance) > 42) showProfileVariant(activeVariantIndex + (distance < 0 ? 1 : -1));
+    }
+    galleryTouchStart = null;
+  }, {passive:true});
   dialog.addEventListener("keydown", function(event){
     if(!activeVariants.length || event.target === flipbookVideo) return;
     if(event.key === "ArrowLeft"){event.preventDefault();showProfileVariant(activeVariantIndex - 1);}
