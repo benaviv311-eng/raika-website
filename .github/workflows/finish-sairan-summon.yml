@@ -1,0 +1,53 @@
+name: Complete exact Sairan summon replacement
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/finish-sairan-summon.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  install-summon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Install approved asset directly into same Sairan gallery path
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.request import urlopen,Request
+          import hashlib,json,re,struct
+          # Read the temporary image transport URL from the earlier transfer step.
+          instructions=Path('.github/workflows/replace-sairan-summon-20261118.yml').read_text()
+          match=re.search(r'^\s*SOURCE_IMAGE_URL:\s*(.+)$',instructions,re.M)
+          assert match,'Image transfer source missing'
+          url=json.loads(match.group(1))
+          with urlopen(Request(url,headers={'User-Agent':'Raika-Website-Asset-Importer'}),timeout=60) as response:
+              data=response.read()
+          digest=hashlib.sha256(data).hexdigest()
+          assert digest=='f403b07af2c604a5cb4bfa969140f9259c15f8cce0c96c7d5d05d6d2d338a763','Source PNG checksum mismatch'
+          assert data[:8]==bytes([137,80,78,71,13,10,26,10]),'Not PNG'
+          w,h=struct.unpack('>II',data[16:24])
+          assert (w,h)==(1360,1490),f'Wrong dimensions: {w}x{h}'
+          target=Path('world-characters/sairan-lightning-summon-exact-20261118.png')
+          assert target.is_file()
+          target.write_bytes(data)
+          index=Path('index.html')
+          html=index.read_text()
+          old='world-characters/sairan-lightning-summon-exact-20261118.png?v=20261118-exact-upload'
+          new='world-characters/sairan-lightning-summon-exact-20261118.png?v=20261118-ears-restored'
+          assert html.count(old)==1, 'Expected one summon variant reference'
+          index.write_text(html.replace(old,new))
+          print(f'Checked and installed exact PNG {w}x{h} sha256={digest}')
+          PY
+      - name: Commit only artwork replacement and Sairan cache key
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html world-characters/sairan-lightning-summon-exact-20261118.png
+          git diff --cached --check
+          git commit -m "Replace Sairan Summon Lightning image with approved restored-ears artwork"
+          git pull --rebase origin main
+          git push origin HEAD:main
