@@ -1,0 +1,71 @@
+name: Sairan pose 1 canonical preview (review only)
+on:
+  push:
+    branches: [review/sairan-cleanup-20261118]
+    paths: [.github/workflows/sairan-palm-preview.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: review/sairan-cleanup-20261118
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow
+        run: python -m pip install 'Pillow>=10,<14'
+      - name: Prepare pose one from the approved Artlist PNG exactly
+        run: |
+          python - <<'PY'
+          from PIL import Image, ImageDraw
+          from pathlib import Path
+          import io,base64,json,hashlib
+          original_path=Path('world-characters/sairan-palm-strike-approved.png')
+          output=Path('world-characters/review-preview/sairan-pose1-canonical')
+          output.mkdir(parents=True,exist_ok=True)
+          image=Image.open(original_path).convert('RGBA')
+          assert image.size==(1086,1448),f'Unexpected source dimensions: {image.size}'
+          alpha=image.getchannel('A')
+          bbox=alpha.point(lambda v:255 if v>=12 else 0).getbbox()
+          assert bbox
+          w,h=image.size
+          # Padding only outside character's alpha bounds, never trim actual pixels.
+          pad=round(max(bbox[2]-bbox[0],bbox[3]-bbox[1])*0.035)
+          crop=(max(0,bbox[0]-pad),max(0,bbox[1]-pad),min(w,bbox[2]+pad),min(h,bbox[3]+pad))
+          candidate=image.crop(crop)
+          # A lossless, nondestructive cutout; no generation, recoloring, retouching.
+          candidate.save(output/'palm-source-framed.webp',format='WEBP',lossless=True,method=6)
+          check=Image.open(output/'palm-source-framed.webp').convert('RGBA')
+          assert candidate.tobytes()==check.tobytes(),'Lossless encoding changed pixel values'
+          # Primary large single-image preview with equal layout sizing to other characters.
+          canvas=Image.new('RGBA',(760,900),(16,26,23,255))
+          view=candidate.copy()
+          view.thumbnail((710,800),Image.Resampling.LANCZOS)
+          canvas.alpha_composite(view,((760-view.width)//2,39+(800-view.height)//2))
+          dr=ImageDraw.Draw(canvas)
+          dr.text((26,857),'SAIRAN  |  1. PALM STRIKE  |  CANONICAL SOURCE',fill=(232,211,170,255))
+          dr.text((26,875),'FULL FIGURE - NO BACKGROUND - NO CROPPED BODY',fill=(184,197,191,255))
+          canvas.convert('RGB').save(output/'palm-pose1-preview.jpg',quality=94,optimize=True)
+          # Small text-encoded JPG for audit in connector tools.
+          mini=canvas.convert('RGB')
+          buf=io.BytesIO();mini.save(buf,format='JPEG',quality=84,optimize=True)
+          (output/'palm-pose1-preview.jpg.base64.txt').write_text(base64.b64encode(buf.getvalue()).decode('ascii'))
+          report={'source':str(original_path),'source_size':list(image.size),'foreground_bounds':list(bbox),
+                  'crop_bounds':list(crop),'prepared_size':list(candidate.size),
+                  'original_bytes_sha256':hashlib.sha256(original_path.read_bytes()).hexdigest(),
+                  'no_pixel_changes':True,'site_published':False}
+          (output/'report.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report))
+          PY
+      - name: Commit review preview to review branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add world-characters/review-preview/sairan-pose1-canonical/
+          git diff --cached --quiet && exit 0
+          git commit -m 'Prepare exact canonical Sairan palm source for visual approval'
+          git push origin HEAD:review/sairan-cleanup-20261118
