@@ -1,5 +1,0 @@
-portrait	size:(646, 1575)	main: 494454	islands:2	removed:[1]	retained:0.9999980	output:(742, 1671)
-pose-1-noble	size:(707, 1574)	main: 519144	islands:7	removed:[1, 1, 1, 1, 2, 1]	retained:0.9999865	output:(803, 1670)
-pose-2-cutting-remark	size:(991, 1618)	main: 617427	islands:3	removed:[36, 3]	retained:0.9999368	output:(1087, 1714)
-pose-3-inazuma-punch	size:(1036, 1607)	main: 467603	islands:2	removed:[5]	retained:0.9999893	output:(1132, 1703)
-pose-4-mother-memory	size:(1133, 1445)	main: 559229	islands:1	removed:[]	retained:1.0000000	output:(1229, 1541)
