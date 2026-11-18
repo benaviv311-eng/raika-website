@@ -319,17 +319,17 @@
    transparently cleaned but NOT cropped to the framed derivative.
    The original 2752x1536 art has empty side margins; cover trims
    those transparent margins only, keeping the full body and lightning. */
-#character-profile.gallery-standard[data-character="sairan"] .profile-art #profile-image[src*="lightning-summon-clean.webp"]{
+#character-profile.gallery-standard[data-character="sairan"] .profile-art #profile-image[src*="sairan-lightning-summon-exact-20261118.png"]{
   object-fit:cover;
   object-position:center center;
   padding:24px 23px 22px;
 }
-#character-profile.gallery-standard[data-character="sairan"] .profile-gallery-option img[src*="lightning-summon-clean.webp"]{
+#character-profile.gallery-standard[data-character="sairan"] .profile-gallery-option img[src*="sairan-lightning-summon-exact-20261118.png"]{
   object-fit:cover;
   object-position:center center;
 }
 @media(max-width:620px){
-  #character-profile.gallery-standard[data-character="sairan"] .profile-art #profile-image[src*="lightning-summon-clean.webp"]{
+  #character-profile.gallery-standard[data-character="sairan"] .profile-art #profile-image[src*="sairan-lightning-summon-exact-20261118.png"]{
     padding:26px 22px 19px;
   }
 }
