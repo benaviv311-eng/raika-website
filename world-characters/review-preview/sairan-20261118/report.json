@@ -1,0 +1,70 @@
+[
+  {
+    "pose": "quiet-palm",
+    "size": [
+      1086,
+      1448
+    ],
+    "mask_bbox": [
+      1,
+      0,
+      1081,
+      1448
+    ],
+    "preview_size": [
+      1080,
+      1448
+    ]
+  },
+  {
+    "pose": "hammer-kick",
+    "size": [
+      2752,
+      1536
+    ],
+    "mask_bbox": [
+      881,
+      2,
+      2006,
+      1536
+    ],
+    "preview_size": [
+      1125,
+      1534
+    ]
+  },
+  {
+    "pose": "lightning-summon",
+    "size": [
+      2752,
+      1536
+    ],
+    "mask_bbox": [
+      904,
+      0,
+      1856,
+      1536
+    ],
+    "preview_size": [
+      952,
+      1536
+    ]
+  },
+  {
+    "pose": "lightning-defense",
+    "size": [
+      2752,
+      1536
+    ],
+    "mask_bbox": [
+      622,
+      0,
+      2145,
+      1536
+    ],
+    "preview_size": [
+      1523,
+      1536
+    ]
+  }
+]
