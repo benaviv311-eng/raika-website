@@ -1,0 +1,56 @@
+name: Replace existing Sairan lightning summon pose with approved restored-ears art
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/replace-sairan-summon-20261118.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  replace-pose-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Transfer approved PNG to original gallery asset path
+        env:
+          SOURCE_IMAGE_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/87a530de-8277-430b-8948-c3049e833c56.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiN2ViYzVhNTFjYTExNDU2MCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTEwMTkwNX0.uT3RsUloyvTaCzKwEtwOxbOvZnX_9B0yigrbHBBe_H8"
+        run: |
+          set -euo pipefail
+          curl --silent --show-error --fail --location --retry 3 --max-time 90 "$SOURCE_IMAGE_URL" -o /tmp/sairan-new.png
+          echo 'f403b07af2c604a5cb4bfa969140f9259c15f8cce0c96c7d5d05d6d2d338a763  /tmp/sairan-new.png' | sha256sum -c -
+          python - <<'PY'
+          from PIL import Image
+          import hashlib
+          img=Image.open('/tmp/sairan-new.png')
+          assert img.size == (1360, 1490),f"Incorrect size {img.size}"
+          assert img.mode == "RGBA",f"Incorrect mode {img.mode}"
+          assert img.getchannel('A').getpixel((0,0)) == 0,"Not transparent"
+          print("Verified approved restored-ear transparent image",img.size,img.getchannel('A').getbbox())
+          PY
+          mv /tmp/sairan-new.png world-characters/sairan-lightning-summon-exact-20261118.png
+      - name: Invalidate cache only for Sairan summon pose
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          text=p.read_text()
+          old='world-characters/sairan-lightning-summon-exact-20261118.png?v=20261118-exact-upload'
+          new='world-characters/sairan-lightning-summon-exact-20261118.png?v=20261118-restored-ears'
+          assert text.count(old)==1,"Unexpected Sairan reference count"
+          p.write_text(text.replace(old,new))
+          PY
+      - name: Commit original asset replacement, preserving all other poses
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html world-characters/sairan-lightning-summon-exact-20261118.png
+          git diff --cached --check
+          git commit -m 'Replace only Sairan lightning summon gallery image with restored-ears art'
+          git pull --rebase origin main
+          git push origin HEAD:main
