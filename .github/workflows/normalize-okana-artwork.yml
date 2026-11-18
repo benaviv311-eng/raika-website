@@ -1,0 +1,52 @@
+name: Normalize approved Okana transparent cutouts
+on:
+  push:
+    paths:
+      - .github/workflows/normalize-okana-artwork.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preserve originals and create padded transparent presentation files
+        run: |
+          set -euo pipefail
+          python -m pip install --quiet Pillow
+          curl -fL --retry 3 --retry-delay 2 --silent --show-error -o "world-characters/okana/pose-2-cutting-remark-cutout.png" 'https://dnznrvs05pmza.cloudfront.net/sam3_image_segmentation/7408521d-7ab8-496f-a604-f00f064ab232/7df65b15-0d08-4757-8955-2faf1506a9bf.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYmIyZDg1NmQwZTQ1ZTU4NyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTE2MTA2OX0.l3gE6wnm34HtV0GiE0MsObqwpUHYKQisOXWAhGsJF0E'
+          test "$(wc -c < world-characters/okana/pose-2-cutting-remark-cutout.png)" -gt 50000
+          curl -fL --retry 3 --retry-delay 2 --silent --show-error -o "world-characters/okana/pose-3-inazuma-punch-cutout.png" 'https://dnznrvs05pmza.cloudfront.net/sam3_image_segmentation/bb39b9be-d38f-4dbb-b0a0-68fbe910c4e7/99327b47-dab8-4e39-802d-0f9905f79225.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNTBmNTA3MjJiYTk2MTZjNCIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTE2MDIyNn0.2JDZ8LmWU_OL4eUq0bxaO0LWzYfC7dk0zad2aUTE0xY'
+          test "$(wc -c < world-characters/okana/pose-3-inazuma-punch-cutout.png)" -gt 50000
+          curl -fL --retry 3 --retry-delay 2 --silent --show-error -o "world-characters/okana/pose-4-mother-memory-cutout.png" 'https://dnznrvs05pmza.cloudfront.net/sam3_image_segmentation/a050ed58-5ea9-451e-a1b6-36e19d3e5865/09c679ea-20fd-42f4-98d1-8d9e77be3de4.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYzU5NzE5ZTgzNWM4N2NiMCIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTE1MTcyMH0.p2_tFhsOVbCXSSD9Mr9UaCBqQAYPyWtqo35gDjeLhow'
+          test "$(wc -c < world-characters/okana/pose-4-mother-memory-cutout.png)" -gt 50000
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          folder=Path("world-characters/okana")
+          names=["portrait","pose-1-noble","pose-2-cutting-remark-cutout","pose-3-inazuma-punch-cutout","pose-4-mother-memory-cutout"]
+          for name in names:
+            src=folder/(name+".png")
+            im=Image.open(src).convert("RGBA")
+            alpha=im.getchannel("A")
+            if alpha.getextrema()[0]>12 or alpha.getextrema()[1]<200:
+              raise RuntimeError(f"{src}: does not contain a transparent character with opaque subject (range {alpha.getextrema()})")
+            visible=alpha.point(lambda v:255 if v>18 else 0).getbbox()
+            if not visible:
+              raise RuntimeError(f"{src}: no visible figure")
+            subject=im.crop(visible)
+            padx=max(24,round(subject.width*.055))
+            pady=max(24,round(subject.height*.045))
+            out=Image.new("RGBA",(subject.width+padx*2,subject.height+pady*2),(0,0,0,0))
+            out.paste(subject,(padx,pady))
+            destination=folder/(name.replace("-cutout","")+"-display.png")
+            out.save(destination,optimize=True)
+            count=sum(1 for v in out.getchannel("A").getdata() if v>20)
+            print(f"VERIFIED: {destination}, {out.width}x{out.height}, content-pixels={count}, alpha-bbox={out.getchannel('A').getbbox()}")
+            if count<40000: raise RuntimeError(f"Missing full character: {destination}")
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add world-characters/okana/*-display.png
+          if ! git diff --cached --quiet; then git commit -m 'Publish background-free Okana character images for uniform gallery'; git push; fi
