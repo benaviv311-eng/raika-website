@@ -300,17 +300,20 @@
   mix-blend-mode:normal;
   filter:drop-shadow(0 0 19px rgba(245,205,146,.32)) drop-shadow(0 0 44px rgba(219,145,79,.16));
 }
+.profile-dialog[data-character="okana"] .profile-layout{
+  grid-template-columns:minmax(0,56%) minmax(0,1fr);
+}
 .profile-dialog[data-character="okana"] .profile-art{
   background:transparent;
-  padding:18px;
-  min-height:530px;
+  padding:16px;
+  min-height:560px;
   overflow:visible;
 }
 .profile-dialog[data-character="okana"] .profile-art img{
   display:block;
   width:auto;
   height:auto;
-  max-height:510px;
+  max-height:540px;
   max-width:100%;
   object-fit:contain;
   object-position:center center;
@@ -341,6 +344,9 @@
     height:370px;
     max-height:100%;
     max-width:100%;
+  }
+  .profile-dialog[data-character="okana"] .profile-layout{
+    grid-template-columns:1fr;
   }
   .profile-dialog[data-character="okana"] .profile-art{
     min-height:0;
@@ -501,7 +507,7 @@
       </div>
     </article>
     <article class="character world-character-card character--okana" id="okana" hidden>
-      <div class="character-media"><img loading="lazy" src="world-characters/okana/portrait-display.png" alt="Okana, the elegant cream-furred rabbit noblewoman with emerald eyes, dark auburn updo and a richly embroidered burgundy-and-gold kimono"></div>
+      <div class="character-media"><img loading="lazy" src="world-characters/okana/portrait-clean-v3.png?v=20261118-clean3" alt="Okana, the elegant cream-furred rabbit noblewoman with emerald eyes, dark auburn updo and a richly embroidered burgundy-and-gold kimono"></div>
       <div class="character-body">
         <div class="character-role">Village Noblewoman · Daughter of the Village Head</div>
         <h3>Okana</h3>
@@ -559,14 +565,14 @@
       quote: "Some things cannot be bought.",
       description: "Okana is the exquisitely mannered, eloquent and piercingly witty daughter of Sakura Village's wealthy head. Since losing her mother as a child, she has lived surrounded by every material comfort but very little affection. Her father retreats into endless administrative work because she reminds him of his late wife. Behind Okana's polished arrogance and cutting remarks lies envy of Raika's close, loving family. Her mother's gold sakura hairpin is a precious heirloom; eventually Okana takes the difficult step of learning to fight at Inazuma Dojo.",
       traits: "Elegance · Wit · Status · Hidden Loneliness · Resolve",
-      image: "world-characters/okana/portrait-display.png",
+      image: "world-characters/okana/portrait-clean-v3.png?v=20261118-clean3",
       alt: "Okana in her original approved burgundy-and-gold kimono with a fan and gold sakura hairpin",
       variants: [
-        {label: "Original Portrait", image: "world-characters/okana/portrait-display.png", alt: "Okana, daughter of Sakura Village's head, posing in her aristocratic burgundy and gold kimono with a folding fan"},
-        {label: "The Noblewoman", image: "world-characters/okana/pose-1-noble-display.png", alt: "Okana holds open her silk fan in an elegant pose of social superiority"},
-        {label: "The Cutting Remark", image: "world-characters/okana/pose-2-cutting-remark-display.png", alt: "Okana turns back with a sharp half-smile, pointing her closed fan in a witty, dismissive gesture"},
-        {label: "Inazuma Dojo Punch", image: "world-characters/okana/pose-3-inazuma-punch-display.png", alt: "Okana with an auburn training ponytail, practicing a forward punch in white and forest-green Inazuma Dojo uniform with the yellow lightning insignia"},
-        {label: "Mother's Memory", image: "world-characters/okana/pose-4-mother-memory-display.png", alt: "Okana sits alone with her fan beside her, touching the inherited gold flower hairpin and missing her mother"}
+        {label: "Original Portrait", image: "world-characters/okana/portrait-clean-v3.png?v=20261118-clean3", alt: "Okana, daughter of Sakura Village's head, posing in her aristocratic burgundy and gold kimono with a folding fan"},
+        {label: "The Noblewoman", image: "world-characters/okana/pose-1-noble-clean-v3.png?v=20261118-clean3", alt: "Okana holds open her silk fan in an elegant pose of social superiority"},
+        {label: "The Cutting Remark", image: "world-characters/okana/pose-2-cutting-remark-clean-v3.png?v=20261118-clean3", alt: "Okana turns back with a sharp half-smile, pointing her closed fan in a witty, dismissive gesture"},
+        {label: "Inazuma Dojo Punch", image: "world-characters/okana/pose-3-inazuma-punch-clean-v3.png?v=20261118-clean3", alt: "Okana with an auburn training ponytail, practicing a forward punch in white and forest-green Inazuma Dojo uniform with the yellow lightning insignia"},
+        {label: "Mother's Memory", image: "world-characters/okana/pose-4-mother-memory-clean-v3.png?v=20261118-clean3", alt: "Okana sits alone with her fan beside her, touching the inherited gold flower hairpin and missing her mother"}
       ]
     },
     "okana-father": {
