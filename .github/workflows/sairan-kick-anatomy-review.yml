@@ -1,0 +1,64 @@
+name: Review Sairan original raised kick anatomy (no publishing)
+on:
+  push:
+    branches: [review/sairan-cleanup-20261118]
+    paths: [.github/workflows/sairan-kick-anatomy-review.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: review/sairan-cleanup-20261118
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install Pillow
+      - name: Crop actual approved original and rejected version for close comparison
+        run: |
+          python - <<'PY'
+          import io,base64,json
+          from pathlib import Path
+          from PIL import Image,ImageDraw
+          out=Path('world-characters/review-preview/sairan-pose2-anatomy')
+          out.mkdir(parents=True,exist_ok=True)
+          source=Image.open('world-characters/sairan-hammer-kick-approved.png').convert('RGBA')
+          candidate=Image.open('world-characters/review-preview/sairan-pose2-artlist/hammer-kick-cutout-CANDIDATE.png').convert('RGBA')
+          # The candidate crop offset was verified in the review report.
+          candidate_origin=(894,15)
+          assert source.size==(2752,1536) and candidate.size==(1111,1521)
+          # Raise foot, shin, apparent rear limb, arm and connecting torso, incl effects.
+          zoom=(1200,0,1970,980)
+          labels=['ARTLIST ORIGINAL | NO MODIFICATION','REJECTED CUTOUT | SAME SOURCE PIXELS']
+          W,H=860,1120
+          sheet=Image.new('RGB',(W*2,H),(16,26,23))
+          draw=ImageDraw.Draw(sheet)
+          for i,img in enumerate([source,candidate]):
+              if i==0: region=img.crop(zoom)
+              else: region=img.crop((zoom[0]-candidate_origin[0],zoom[1]-candidate_origin[1],
+                                    zoom[2]-candidate_origin[0],zoom[3]-candidate_origin[1]))
+              region.thumbnail((W-32,H-108),Image.Resampling.LANCZOS)
+              mat=Image.new('RGBA',region.size,(16,26,23,255))
+              mat.alpha_composite(region)
+              x=i*W+(W-region.width)//2;y=47+(H-128-region.height)//2
+              sheet.paste(mat.convert('RGB'),(x,y))
+              draw.text((i*W+20,20),labels[i],fill=(239,218,174))
+              draw.text((i*W+20,H-45),'SOURCE REGION x1200-1970 y0-980',fill=(211,215,210))
+          sheet.save(out/'raised-leg-source-versus-cutout.jpg',quality=93,optimize=True)
+          # Additional full-color source closeup for subtle anatomy review.
+          source.crop((1200,0,1970,980)).save(out/'original-closeup.jpg',quality=95,optimize=True)
+          buff=io.BytesIO();sheet.save(buff,'JPEG',quality=84,optimize=True)
+          (out/'raised-leg-source-versus-cutout.jpg.base64.txt').write_text(base64.b64encode(buff.getvalue()).decode())
+          print(json.dumps({'source_size':source.size,'candidate_size':candidate.size,'zoom':zoom,'no_source_mutation':True}))
+          PY
+      - name: Save preview only to isolated review branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add world-characters/review-preview/sairan-pose2-anatomy/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Compare Sairan approved original raised leg with rejected cutout'
+          git push origin HEAD:review/sairan-cleanup-20261118
