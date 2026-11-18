@@ -1,0 +1,26 @@
+{
+  "source": "world-characters/sairan-palm-strike-approved.png",
+  "source_size": [
+    1086,
+    1448
+  ],
+  "foreground_bounds": [
+    79,
+    7,
+    1003,
+    1441
+  ],
+  "crop_bounds": [
+    29,
+    0,
+    1053,
+    1448
+  ],
+  "prepared_size": [
+    1024,
+    1448
+  ],
+  "original_bytes_sha256": "1179e3aad029897df940517d0867f424205615773a61a15db4d20226584c5e61",
+  "no_pixel_changes": true,
+  "site_published": false
+}
