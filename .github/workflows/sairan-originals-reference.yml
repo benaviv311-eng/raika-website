@@ -46,7 +46,7 @@ jobs:
             rec={'pose':label,'filename':filename,'size':[W,H],'alpha_0_fraction':round(float((a==0).mean()),3),'alpha_255_fraction':round(float((a==255).mean()),3),'zoom':zoom}
             records.append(rec)
             for row in range(2):
-              area=im if row==0 or zoom is None else im.crop((min(zoom[0],W),min(zoom[1],H),min(zoom[2],W),min(zoom[3],H)))
+              area=im.copy() if row==0 or zoom is None else im.crop((min(zoom[0],W),min(zoom[1],H),min(zoom[2],W),min(zoom[3],H)))
               area.thumbnail((cw-30,ch-77),Image.Resampling.LANCZOS)
               px=i*cw+(cw-area.width)//2;py=row*ch+31+(ch-90-area.height)//2
               # Matte the transparent original solely for preview; no source pixel edits
