@@ -1,0 +1,61 @@
+[
+  {
+    "pose": "1. PALM STRIKE",
+    "filename": "sairan-palm-strike-approved.png",
+    "size": [
+      1086,
+      1448
+    ],
+    "alpha_0_fraction": 0.646,
+    "alpha_255_fraction": 0.0,
+    "zoom": null
+  },
+  {
+    "pose": "2. LIGHTNING HAMMER KICK",
+    "filename": "sairan-hammer-kick-approved.png",
+    "size": [
+      2752,
+      1536
+    ],
+    "alpha_0_fraction": 0.0,
+    "alpha_255_fraction": 1.0,
+    "zoom": [
+      800,
+      0,
+      2110,
+      1536
+    ]
+  },
+  {
+    "pose": "3. SUMMON LIGHTNING",
+    "filename": "sairan-lightning-summon-approved.png",
+    "size": [
+      2752,
+      1536
+    ],
+    "alpha_0_fraction": 0.0,
+    "alpha_255_fraction": 1.0,
+    "zoom": [
+      825,
+      0,
+      1960,
+      1536
+    ]
+  },
+  {
+    "pose": "4. LIGHTNING DEFENSE",
+    "filename": "sairan-lightning-defense-approved.png",
+    "size": [
+      2752,
+      1536
+    ],
+    "alpha_0_fraction": 0.0,
+    "alpha_255_fraction": 1.0,
+    "zoom": [
+      480,
+      0,
+      2270,
+      1536
+    ]
+  }
+]
