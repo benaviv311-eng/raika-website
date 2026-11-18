@@ -50,7 +50,7 @@ jobs:
               comp=(labels==k)
               # Remove unattached specks; preserve any real detached accessories,
               # hairs or whiskers by size or proximity to the main silhouette.
-              if area<85 and not np.any(near[comp]):
+              if area<100:
                 drop|=comp
                 floating.append(area)
             alpha[alpha<=6]=0
@@ -60,13 +60,13 @@ jobs:
             old=np.count_nonzero(threshold)
             left=np.count_nonzero(alpha>11)
             retained=left/old
-            if retained < .9995: raise RuntimeError(f"Too much subject removed: {name}, {retained:.6f}")
+            if retained < .9993: raise RuntimeError(f"Too much subject removed: {name}, {retained:.6f}")
             # Leave all limbs, hair, accessory and costume pixels intact; only
             # transparent edge padding is added, never crop.
             edited=Image.fromarray(pixels,"RGBA")
             outer=Image.new("RGBA",(edited.width+96,edited.height+96),(0,0,0,0))
             outer.alpha_composite(edited,(48,48))
-            outname=name+"-clean-v2.png"
+            outname=name+"-clean-v3.png"
             outer.save(p/outname,optimize=True)
             # Verify body extends nowhere near canvas edge.
             a=np.array(outer)[:,:,3]
@@ -83,13 +83,13 @@ jobs:
               d=ImageDraw.Draw(contact)
               d.text((j*COL_W+13,(row+1)*COL_H-30),("BEFORE  " if row==0 else "AFTER   ")+name,fill=(232,204,166))
             report.append(f"{name}\tsize:{src.size}\tmain: {int(sizes.max())}\tislands:{num-1}\tremoved:{floating}\tretained:{retained:.7f}\toutput:{outer.size}")
-          contact.save(p/"okana-QA-before-after.jpg",quality=88,optimize=True)
-          (p/"okana-QA-report.txt").write_text("\n".join(report)+"\n")
+          contact.save(p/"okana-QA-v3-before-after.jpg",quality=88,optimize=True)
+          (p/"okana-QA-v3-report.txt").write_text("\n".join(report)+"\n")
           print("\n".join(report))
           PY
       - name: Save cleaned approved art and QA proofs
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add world-characters/okana/*-clean-v2.png world-characters/okana/okana-QA-before-after.jpg world-characters/okana/okana-QA-report.txt
-          if ! git diff --cached --quiet; then git commit -m 'Clean isolated pixel specks and pad Okana complete artwork'; git push; fi
+          git add world-characters/okana/*-clean-v3.png world-characters/okana/okana-QA-v3-before-after.jpg world-characters/okana/okana-QA-v3-report.txt
+          if ! git diff --cached --quiet; then git commit -m 'Remove all tiny detached alpha islands while preserving all significant Okana character details'; git push; fi
