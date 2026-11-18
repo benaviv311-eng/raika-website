@@ -31,3 +31,10 @@ Inspected actual current container filesystem, Google Drive searches, GitHub sit
 - Searched GitHub site main, branches `artlist-medoshi-costume-transfer-20261114` and `artlist-sairan-reference-20261114`, plus repository commit search. No matching original image assets; prior commits contain descriptive canon logs, not the four missing PNGs.
 - Recovered prior-conversation context of approvals and file names, but no source asset bytes or durable image-file IDs. This investigation is **BLOCKED on exact originals**. Preserve approval status, do not regenerate, and do not publish inaccurate substitutes.
 - Website's four previously published Sakura Path / Shizuka exterior assets remain intact. Interior section has not been uploaded; no website changes made during this audit.
+
+## Search continuation — approved source bytes (2026-11-18 afternoon)
+- Attempted history recovery and personal-context lookup of both exact approved originals, no durable source path or byte-backed media ID found.
+- Rechecked mounted current conversation directory and nested paths by filename, no source INT-01/02/03/04 file.
+- Searched additional GitHub branches and historical commits. No exact interior image stored in main/history or checked side branches.
+- Queried Artlist history: one earlier **unapproved** trial render `01a1de88-6b8a-7953-bc85-135e2c846022` (2026-11-15) was found; it is distinct from creator-approved **ChatGPT imagegen** reverse-view `f5215633-f0f3-4ddb-a781-37aa600c80fa`. Do not publish the Artlist image as INT-02.
+- No approved original bytes recovered. Last verified publication remains two approved exterior views only. Preserve original approvals and leave INT-01 through INT-04 unpublished pending exact source recovery.
