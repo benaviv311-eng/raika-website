@@ -1007,7 +1007,9 @@
     dialog.addEventListener("close",startWorldRotation);
     document.querySelectorAll("#world-slides .profile-trigger").forEach(function(button){button.addEventListener("click",stopWorldRotation);});
     if(prefersLessMotion.addEventListener) prefersLessMotion.addEventListener("change",startWorldRotation);
-    showWorldCard(["#korokage","#shi-sosakusha","#komugi"].includes(window.location.hash) ? Math.max(0,worldCards.findIndex(function(card){return "#"+card.id === window.location.hash;})) : 0,false);
+    const linkedWorldIndex = worldCards.findIndex(function(card){return "#"+card.id === window.location.hash;});
+    showWorldCard(linkedWorldIndex >= 0 ? linkedWorldIndex : 0,false);
+    if(linkedWorldIndex >= 0){document.getElementById("world-characters").scrollIntoView({block:"start"});}
     startWorldRotation();
   }
 
