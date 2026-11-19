@@ -1,0 +1,309 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "device": "desktop",
+      "name": "medoshi",
+      "worldProfile": true,
+      "imageLoaded": true,
+      "objectFit": "contain",
+      "clipping": "none",
+      "mask": "none",
+      "imageWidth": 1536,
+      "imageHeight": 857,
+      "stageHeight": 540,
+      "stageBackground": "rgba(0, 0, 0, 0)",
+      "columns": "676.797px 451.188px",
+      "thumbnails": 5,
+      "arrowsVisible": true,
+      "cards": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        }
+      ]
+    },
+    {
+      "device": "desktop",
+      "name": "sairan",
+      "worldProfile": true,
+      "imageLoaded": true,
+      "objectFit": "contain",
+      "clipping": "none",
+      "mask": "none",
+      "imageWidth": 1025,
+      "imageHeight": 1448,
+      "stageHeight": 540,
+      "stageBackground": "rgba(0, 0, 0, 0)",
+      "columns": "676.797px 451.188px",
+      "thumbnails": 4,
+      "arrowsVisible": true,
+      "cards": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        }
+      ]
+    },
+    {
+      "device": "desktop",
+      "name": "korokage",
+      "worldProfile": true,
+      "imageLoaded": true,
+      "objectFit": "contain",
+      "clipping": "none",
+      "mask": "none",
+      "imageWidth": 1536,
+      "imageHeight": 1024,
+      "stageHeight": 540,
+      "stageBackground": "rgba(0, 0, 0, 0)",
+      "columns": "676.797px 451.188px",
+      "thumbnails": 6,
+      "arrowsVisible": true,
+      "cards": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        }
+      ]
+    },
+    {
+      "device": "desktop",
+      "name": "kenkyosha",
+      "worldProfile": true,
+      "imageLoaded": true,
+      "objectFit": "contain",
+      "clipping": "none",
+      "mask": "none",
+      "imageWidth": 480,
+      "imageHeight": 720,
+      "stageHeight": 540,
+      "stageBackground": "rgba(0, 0, 0, 0)",
+      "columns": "676.797px 451.188px",
+      "thumbnails": 4,
+      "arrowsVisible": true,
+      "cards": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "470px"
+        }
+      ]
+    },
+    {
+      "device": "mobile",
+      "name": "medoshi",
+      "worldProfile": true,
+      "imageLoaded": true,
+      "objectFit": "contain",
+      "clipping": "none",
+      "mask": "none",
+      "imageWidth": 1536,
+      "imageHeight": 857,
+      "stageHeight": 437,
+      "stageBackground": "rgba(0, 0, 0, 0)",
+      "columns": "350px",
+      "thumbnails": 5,
+      "arrowsVisible": true,
+      "cards": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        }
+      ]
+    },
+    {
+      "device": "mobile",
+      "name": "sairan",
+      "worldProfile": true,
+      "imageLoaded": true,
+      "objectFit": "contain",
+      "clipping": "none",
+      "mask": "none",
+      "imageWidth": 1025,
+      "imageHeight": 1448,
+      "stageHeight": 437,
+      "stageBackground": "rgba(0, 0, 0, 0)",
+      "columns": "350px",
+      "thumbnails": 4,
+      "arrowsVisible": true,
+      "cards": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        }
+      ]
+    },
+    {
+      "device": "mobile",
+      "name": "korokage",
+      "worldProfile": true,
+      "imageLoaded": true,
+      "objectFit": "contain",
+      "clipping": "none",
+      "mask": "none",
+      "imageWidth": 1536,
+      "imageHeight": 1024,
+      "stageHeight": 437,
+      "stageBackground": "rgba(0, 0, 0, 0)",
+      "columns": "350px",
+      "thumbnails": 6,
+      "arrowsVisible": true,
+      "cards": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        }
+      ]
+    },
+    {
+      "device": "mobile",
+      "name": "kenkyosha",
+      "worldProfile": true,
+      "imageLoaded": true,
+      "objectFit": "contain",
+      "clipping": "none",
+      "mask": "none",
+      "imageWidth": 480,
+      "imageHeight": 720,
+      "stageHeight": 437,
+      "stageBackground": "rgba(0, 0, 0, 0)",
+      "columns": "350px",
+      "thumbnails": 4,
+      "arrowsVisible": true,
+      "cards": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "fit": "contain",
+          "stageHeight": "380px"
+        }
+      ]
+    }
+  ]
+}
