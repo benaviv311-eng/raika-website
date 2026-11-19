@@ -1,0 +1,127 @@
+name: Validate Other Characters uniform presentation
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/qa-other-characters-uniform.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Browser and image QA tools
+        run: |
+          npm install --no-save --no-package-lock playwright@1.57.0
+          npx playwright install --with-deps chromium
+          python -m pip install "Pillow>=11"
+      - name: Inspect each world-character desktop/mobile profile, retaining original artwork
+        run: |
+          mkdir -p /tmp/raika-world-shots
+          python -m http.server 8787 --bind 127.0.0.1 >/tmp/raika-http.log 2>&1 &
+          node <<'JS'
+          const { chromium } = require('playwright');
+          const fs = require('fs');
+          const path = require('path');
+          (async () => {
+            const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+            const report=[];
+            try {
+              for(const device of [{key:'desktop',width:1440,height:900},{key:'mobile',width:390,height:844}]){
+                const page=await browser.newPage({viewport:{width:device.width,height:device.height},deviceScaleFactor:1,reducedMotion:'reduce'});
+                await page.goto('http://127.0.0.1:8787/',{waitUntil:'domcontentloaded',timeout:40000});
+                for(const name of ['medoshi','sairan','korokage','kenkyosha']){
+                  await page.evaluate(name=>{
+                    const btn=document.querySelector('#world-slides .profile-trigger[data-character="'+name+'"]');
+                    if(!btn) throw new Error('Missing profile trigger for '+name);
+                    btn.click();
+                  },name);
+                  await page.waitForSelector('#character-profile[open]',{timeout:10000});
+                  await page.waitForFunction(()=>document.querySelector('#profile-image')?.complete && document.querySelector('#profile-image')?.naturalWidth>0,{timeout:20000});
+                  const check=await page.evaluate(()=>{
+                    const dialog=document.querySelector('#character-profile');
+                    const art=dialog.querySelector('.profile-art');
+                    const img=dialog.querySelector('#profile-image');
+                    const style=getComputedStyle(img);
+                    const layout=getComputedStyle(dialog.querySelector('.profile-layout'));
+                    const stage=getComputedStyle(art);
+                    const thumbs=dialog.querySelectorAll('.profile-gallery-option');
+                    const worldCards=[...document.querySelectorAll('#world-slides > .world-character-card')];
+                    const cardStyles=worldCards.map(c=>({
+                      background:getComputedStyle(c.querySelector('.character-media')).backgroundColor,
+                      fit:getComputedStyle(c.querySelector('.character-media img')).objectFit,
+                      stageHeight:Math.round(c.querySelector('.character-media').getBoundingClientRect().height)
+                    }));
+                    return {
+                      name:dialog.dataset.character,worldProfile:dialog.classList.contains('world-profile'),
+                      imageLoaded:img.naturalWidth>0,objectFit:style.objectFit,
+                      clipping:style.clipPath,mask:style.maskImage,
+                      imageWidth:img.naturalWidth,imageHeight:img.naturalHeight,
+                      stageHeight:Math.round(art.getBoundingClientRect().height),
+                      stageBackground:stage.backgroundColor,
+                      columns:layout.gridTemplateColumns,
+                      thumbnails:thumbs.length,
+                      arrowsVisible:!dialog.querySelector('#profile-variant-next').hidden,
+                      cards:cardStyles
+                    };
+                  });
+                  if(check.name!==name||!check.worldProfile||!check.imageLoaded)throw Error('Profile failed '+device.key+' '+name);
+                  if(check.objectFit!=='contain'||check.clipping!=='none'||check.mask!=='none')throw Error('Cropping policy broken '+device.key+' '+name);
+                  if(check.cards.length!==4||check.cards.some(c=>c.fit!=='contain'))throw Error('Inconsistent cards '+device.key+' '+name);
+                  if(check.cards.some(c=>c.stageHeight!==check.cards[0].stageHeight))throw Error('Mismatched card stages '+device.key+' '+name);
+                  if(check.thumbnails<4||!check.arrowsVisible)throw Error('Gallery missing controls '+device.key+' '+name);
+                  if(device.key==='mobile'&&check.columns.trim().split(/\s+/).length!==1)throw Error('Mobile layout not stacked '+name);
+                  if(device.key==='desktop'&&check.columns.trim().split(/\s+/).length!==2)throw Error('Desktop layout not split '+name);
+                  const shot='/tmp/raika-world-shots/'+device.key+'-'+name+'.png';
+                  await page.screenshot({path:shot});
+                  report.push({device:device.key,...check});
+                  await page.evaluate(()=>document.querySelector('#character-profile').close());
+                }
+                await page.close();
+              }
+              fs.mkdirSync('world-characters/qa-uniform-world',{recursive:true});
+              fs.writeFileSync('world-characters/qa-uniform-world/checks.json',JSON.stringify({passed:true,checks:report},null,2));
+              console.log(JSON.stringify({passed:true,profileChecks:report.length,profiles:report.map(x=>x.device+':'+x.name)}));
+            } finally {await browser.close();}
+          })().catch(e=>{console.error(e);process.exit(1);});
+          JS
+      - name: Build desktop/mobile visual proof sheets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image,ImageDraw
+          dest=Path('world-characters/qa-uniform-world')
+          for device in ['desktop','mobile']:
+              names=['medoshi','sairan','korokage','kenkyosha']
+              width,height=(640,440) if device=='desktop' else (340,560)
+              sheet=Image.new('RGB',(width*4,height),(15,23,20))
+              draw=ImageDraw.Draw(sheet)
+              for i,name in enumerate(names):
+                  shot=Image.open('/tmp/raika-world-shots/'+device+'-'+name+'.png').convert('RGB')
+                  shot.thumbnail((width-12,height-35),Image.Resampling.LANCZOS)
+                  x=i*width+(width-shot.width)//2
+                  sheet.paste(shot,(x,8))
+                  draw.text((i*width+15,height-23),name,fill=(245,221,178))
+              sheet.save(dest/(device+'-all-four.jpg'),'JPEG',quality=78,optimize=True)
+              print(device,'visualQABytes',(dest/(device+'-all-four.jpg')).stat().st_size)
+          PY
+      - name: Store visual audit for follow-up inspection
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/qa-uniform-world/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Save verified desktop/mobile gallery uniformity audit for all four world characters"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
