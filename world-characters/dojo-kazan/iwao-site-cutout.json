@@ -1,0 +1,12 @@
+{
+  "original": "world-characters/dojo-kazan/iwao.webp",
+  "display": "world-characters/dojo-kazan/iwao-site-cutout.webp",
+  "pixels": [
+    1024,
+    1536
+  ],
+  "approvedArtworkSha256": "80073d12c5e0cb7a0b55e008da1338c5101630d9abdd0e97033e948c8fdd331f",
+  "preservedCanonicalColor": true,
+  "alphaTransparentFraction": 0.609,
+  "outputBytes": 805524
+}
