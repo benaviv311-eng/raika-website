@@ -1,0 +1,72 @@
+name: Install user-approved Sairan summon lightning artwork
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/install-approved-sairan-lightning-20261119.yml'
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow
+        run: python -m pip install 'Pillow>=11'
+      - name: Archive approved transparent original and produce exact lossless WebP
+        env:
+          SOURCE_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/e4274161-de3d-4f6e-998b-cf6ac72f5d15.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNTVkYjhhZDczOWM1NDE5MSIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTIwOTY4N30.6DDJ1nTa10ML2OIlEZecccs-znzqsgnCQbZbXRKZ2GI"
+        run: |
+          python - <<'PY'
+          import os,io,hashlib,urllib.request
+          from pathlib import Path
+          from PIL import Image,ImageChops
+          req=urllib.request.Request(os.environ['SOURCE_URL'],headers={'User-Agent':'RAIKA-approved-Sairan-import/1.0'})
+          with urllib.request.urlopen(req,timeout=100) as r:
+              data=r.read(10000000)
+          digest=hashlib.sha256(data).hexdigest()
+          if digest!='da0b0858cf7a04f8d312e5d8f2cf74f3885b9bdd858afc12f4b675b34fcc76ae': raise RuntimeError('Wrong approved source SHA256: '+digest)
+          if not data.startswith(b'\x89PNG\r\n\x1a\n'): raise RuntimeError('Not PNG')
+          im=Image.open(io.BytesIO(data)).convert('RGBA')
+          if im.size!=(1672,941): raise RuntimeError('Wrong approved source image dimensions')
+          alpha=im.getchannel('A')
+          histogram=alpha.histogram()
+          if histogram[0]<1000 or histogram[255]<1000 or sum(histogram[1:255])<1000:
+              raise RuntimeError('Expected actual transparent and semi-transparent lightning')
+          folder=Path('world-characters')
+          source=folder/'sairan-lightning-summon-20261119-approved-source.png'
+          source.write_bytes(data)
+          result=folder/'sairan-lightning-summon-20261119-transparent.webp'
+          im.save(result,'WEBP',lossless=True,method=6,exact=True)
+          output=Image.open(result).convert('RGBA')
+          if output.size!=im.size or ImageChops.difference(output,im).getbbox():
+              raise RuntimeError('Lossless WebP pixel check failed')
+          print('Verified approved Sairan original, preserved transparent lightning. PNG bytes',len(data),'WebP bytes',result.stat().st_size)
+          PY
+      - name: Replace only Sairan Summon Lightning variant
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          file=Path('index.html')
+          html=file.read_text(encoding='utf-8')
+          before='world-characters/sairan-lightning-summon-exact-20261118.png?v=20261118-ears-restored'
+          after='world-characters/sairan-lightning-summon-20261119-transparent.webp?v=20261119-approved-new'
+          if html.count(before)!=1: raise RuntimeError('Sairan Summon Lightning entry not exactly once; abort without modifying')
+          file.write_text(html.replace(before,after),encoding='utf-8')
+          PY
+      - name: Save exact approved art and updated site without overwriting other poses
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html world-characters/sairan-lightning-summon-20261119-approved-source.png world-characters/sairan-lightning-summon-20261119-transparent.webp
+          git rm .github/workflows/install-approved-sairan-lightning-20261119.yml
+          git commit -m 'Publish approved transparent Sairan lightning summon pose on website'
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
