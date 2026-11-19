@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install Pillow for alpha integrity check
+        run: python -m pip install 'Pillow>=11'
       - name: Download exact user-approved image and check integrity
         env:
           ASSET_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/f301ceaf-57f6-4a08-b025-d540dfc8eedf.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNmQ4OWI2NDdlYzkyMjFiZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTIzMjgzOX0.LJcIUctirtFm4uVoFGl8h2_eI6bhS6h68LfZZ_val3E"
