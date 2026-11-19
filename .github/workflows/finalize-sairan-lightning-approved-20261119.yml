@@ -1,0 +1,66 @@
+name: Finalize exact user-approved Sairan lightning image
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/finalize-sairan-lightning-approved-20261119.yml'
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install image handling
+        run: python -m pip install "Pillow>=11"
+      - name: Download approved file, preserve alpha exactly, replace only lightning pose
+        run: |
+          python - <<'PY'
+          import re,json,io,urllib.request,hashlib
+          from pathlib import Path
+          from PIL import Image,ImageChops
+          wf=Path('.github/workflows/install-approved-sairan-lightning-20261119.yml').read_text()
+          match=re.search(r'^[ ]+SOURCE_URL:\s*(".*")\s*$',wf,re.MULTILINE)
+          if not match: raise RuntimeError('Original verified transfer is unavailable')
+          url=json.loads(match.group(1))
+          request=urllib.request.Request(url,headers={'User-Agent':'RAIKA-approved-Sairan-import/1.0'})
+          with urllib.request.urlopen(request,timeout=100) as r: data=r.read(10000000)
+          digest=hashlib.sha256(data).hexdigest()
+          if digest!='da0b0858cf7a04f8d312e5d8f2cf74f3885b9bdd858afc12f4b675b34fcc76ae':
+              raise RuntimeError('Wrong approved image digest: '+digest)
+          im=Image.open(io.BytesIO(data)).convert('RGBA')
+          if im.size!=(1672,941): raise RuntimeError('Image size not approved')
+          hist=im.getchannel('A').histogram()
+          if hist[0]<1000 or hist[255]<10 or sum(hist[1:255])<1000:
+              raise RuntimeError('Source transparency does not meet the approved format')
+          base=Path('world-characters')
+          (base/'sairan-lightning-summon-20261119-approved-source.png').write_bytes(data)
+          dest=base/'sairan-lightning-summon-20261119-transparent.webp'
+          im.save(dest,'WEBP',lossless=True,method=6,exact=True)
+          check=Image.open(dest).convert('RGBA')
+          if check.size!=im.size or ImageChops.difference(check,im).getbbox():
+              raise RuntimeError('WebP not pixel-identical to original')
+          site=Path('index.html')
+          html=site.read_text()
+          old='world-characters/sairan-lightning-summon-exact-20261118.png?v=20261118-ears-restored'
+          new='world-characters/sairan-lightning-summon-20261119-transparent.webp?v=20261119-approved-new'
+          if html.count(old)!=1: raise RuntimeError('Cannot find unique approved Sairan pose reference')
+          site.write_text(html.replace(old,new))
+          print('Sairan approved lightning verified',len(data),'PNG bytes,',dest.stat().st_size,'WebP bytes, original+alpha preserved')
+          PY
+      - name: Commit and publish once with old images preserved
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html world-characters/sairan-lightning-summon-20261119-approved-source.png world-characters/sairan-lightning-summon-20261119-transparent.webp
+          git rm .github/workflows/install-approved-sairan-lightning-20261119.yml .github/workflows/finalize-sairan-lightning-approved-20261119.yml
+          git commit -m "Publish new approved Sairan Summon Lightning transparent pose"
+          for i in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
