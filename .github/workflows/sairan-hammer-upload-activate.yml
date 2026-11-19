@@ -1,0 +1,51 @@
+name: Activate uploaded Sairan hammer-kick replacement
+on:
+  push:
+    branches: [main]
+    paths:
+      - world-characters/sairan-hammer-kick-canonical-20261119.png
+
+permissions:
+  contents: write
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Validate exact image and replace only Sairan's kick pose reference
+        run: |
+          python3 - <<'PY'
+          import hashlib, struct
+          from pathlib import Path
+          asset=Path('world-characters/sairan-hammer-kick-canonical-20261119.png')
+          data=asset.read_bytes()
+          assert hashlib.sha256(data).hexdigest() == 'a144fd94ec5906e1d99749de89e96917d22bf506dd107f8a3e05f143898d29bb', 'Uploaded image does not match approved PNG'
+          assert data[:8] == bytes([137,80,78,71,13,10,26,10]), 'PNG required'
+          width,height=struct.unpack('>II',data[16:24])
+          assert (width,height) == (1199,1312), 'PNG size mismatch'
+          assert data[25] == 6, 'RGBA PNG required'
+          index=Path('index.html')
+          html=index.read_text()
+          old='world-characters/display-v1/sairan/hammer-kick-framed.webp?v=20261117-framed'
+          new='world-characters/sairan-hammer-kick-canonical-20261119.png?v=20261119-new-kick'
+          assert html.count(new)==0 or html.count(new)==1
+          if old in html:
+              assert html.count(old)==1
+              html=html.replace(old,new)
+              index.write_text(html)
+          assert index.read_text().count(new)==1
+          assert index.read_text().count('label: "Lightning Hammer Kick"')==1
+          print('Approved kick artwork validated; existing Sairan gallery pose updated.')
+          PY
+      - name: Commit the single gallery pointer change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Show uploaded Sairan hammer-kick art in existing gallery slot"
+          git pull --rebase origin main
+          git push origin HEAD:main
