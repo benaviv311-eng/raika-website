@@ -10,7 +10,8 @@
 /* Equal-sized, framed stage on every carousel; no artwork cropping. */
 #family-slides .character-media,
 #guard-slides .character-media,
-#world-slides .character-media{
+#world-slides .character-media,
+#citizens-slides .character-media{
   position:relative;
   box-sizing:border-box;
   width:100%;
@@ -27,7 +28,8 @@
 }
 #family-slides .character-media img,
 #guard-slides .character-media img,
-#world-slides .character-media img{
+#world-slides .character-media img,
+#citizens-slides .character-media img{
   display:block;
   position:relative;
   width:100%;
@@ -49,34 +51,38 @@
 #family-slides .character--raiko .character-media img{height:61%}
 /* Bard artwork was approved with an opaque original background.
    Match its paper tone until a transparent canonical export is approved. */
-#world-slides .character--bard .character-media{background:#edddca}
-#world-slides .character--bard .character-media img{
+#citizens-slides .character--bard .character-media{background:#edddca}
+#citizens-slides .character--bard .character-media img{
   filter:none;
   object-fit:contain;
   opacity:1;
 }
-/* Consistent typography and action placement across the three carousels. */
+/* Consistent typography and action placement across the four carousels. */
 #family-slides .character-body,
 #guard-slides .character-body,
-#world-slides .character-body{
+#world-slides .character-body,
+#citizens-slides .character-body{
   padding:20px 15px 12px;
   align-items:center;
   text-align:center;
 }
 #family-slides .character-body h3,
 #guard-slides .character-body h3,
-#world-slides .character-body h3{
+#world-slides .character-body h3,
+#citizens-slides .character-body h3{
   font-size:21px;
   line-height:1.3;
 }
 #family-slides .character-body p,
 #guard-slides .character-body p,
-#world-slides .character-body p{
+#world-slides .character-body p,
+#citizens-slides .character-body p{
   margin-inline:auto;
 }
 #family-slides .profile-trigger,
 #guard-slides .profile-trigger,
-#world-slides .profile-trigger{
+#world-slides .profile-trigger,
+#citizens-slides .profile-trigger{
   margin-top:15px;
 }
 /* Approved Kenkyosha proof-of-concept applied to every character dialog. */
@@ -283,7 +289,8 @@
 @media(max-width:620px){
   #family-slides .character-media,
   #guard-slides .character-media,
-  #world-slides .character-media{
+  #world-slides .character-media,
+#citizens-slides .character-media{
     height:380px;
     padding:12px;
   }
@@ -336,7 +343,8 @@
    The stage can be framed, but image content is always scaled down within safe padding. */
 #family-slides .character-media img,
 #guard-slides .character-media img,
-#world-slides .character-media img{
+#world-slides .character-media img,
+#citizens-slides .character-media img{
   box-sizing:border-box;
   width:100%;
   height:100%;
@@ -372,4 +380,104 @@
   clip-path:none;
   -webkit-mask-image:none;
   mask-image:none;
+}
+
+
+/* RAIKA FULL-FIGURE REVIEW 20261119
+   Artwork is always fitted inside its original bounds: no clipping, zoom, masks
+   or rewriting canonical pixels. The review dialog prioritises the whole figure.
+   The optional focus view uses the same gallery with a larger artwork stage. */
+#character-profile.gallery-standard{
+  width:min(1380px,calc(100vw - 18px));
+  max-height:96dvh;
+}
+#character-profile.gallery-standard .profile-layout{
+  grid-template-columns:minmax(0,1.3fr) minmax(290px,.7fr);
+  align-items:start;
+}
+#character-profile.gallery-standard .profile-visual{
+  padding:15px 18px 24px;
+}
+#character-profile.gallery-standard .profile-art{
+  height:min(76dvh,850px);
+  min-height:0;
+  overflow:hidden;
+}
+#character-profile.gallery-standard .profile-art #profile-image{
+  width:100%;
+  height:100%;
+  max-width:100%;
+  max-height:100%;
+  padding:49px 19px 41px;
+  object-fit:contain;
+  object-position:center center;
+  transform:none;
+  clip-path:none;
+  -webkit-mask-image:none;
+  mask-image:none;
+}
+#character-profile.gallery-standard .profile-full-figure-toggle{
+  position:absolute;
+  left:16px;
+  bottom:53px;
+  z-index:6;
+  padding:9px 12px;
+  background:rgba(12,23,19,.93);
+  border:1px solid rgba(216,173,101,.75);
+  border-radius:7px;
+  color:#f4deb0;
+  font:600 12px/1.2 'DM Sans',sans-serif;
+  letter-spacing:0;
+  cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.3);
+}
+#character-profile.gallery-standard .profile-full-figure-toggle:hover,
+#character-profile.gallery-standard .profile-full-figure-toggle:focus-visible{
+  border-color:#f6d29a;
+  background:#d8ad65;
+  color:#101713;
+}
+#character-profile.gallery-standard .profile-full-figure-toggle:focus-visible{
+  outline:2px solid #f7dfb6;
+  outline-offset:3px;
+}
+/* In focus mode, remove the copy and thumbnail rail while retaining pose
+   navigation, accessible labels, and a visible way back to the profile. */
+#character-profile.gallery-standard.profile-full-figure{
+  width:min(1500px,calc(100vw - 12px));
+  max-height:98dvh;
+}
+#character-profile.gallery-standard.profile-full-figure .profile-layout{
+  grid-template-columns:minmax(0,1fr);
+}
+#character-profile.gallery-standard.profile-full-figure .profile-copy,
+#character-profile.gallery-standard.profile-full-figure .profile-gallery{
+  display:none!important;
+}
+#character-profile.gallery-standard.profile-full-figure .profile-visual{
+  padding:10px;
+}
+#character-profile.gallery-standard.profile-full-figure .profile-art{
+  height:min(91dvh,1050px);
+  min-height:0;
+}
+#character-profile.gallery-standard.profile-full-figure .profile-art #profile-image{
+  padding:46px 20px 44px;
+  object-fit:contain;
+  object-position:center center;
+}
+@media(max-width:880px){
+  #character-profile.gallery-standard .profile-layout{grid-template-columns:1fr}
+  #character-profile.gallery-standard .profile-visual{padding:13px}
+  #character-profile.gallery-standard .profile-art{height:min(73dvh,740px);min-height:0}
+}
+@media(max-width:620px){
+  #character-profile.gallery-standard{width:calc(100vw - 12px);max-height:97dvh}
+  #character-profile.gallery-standard .profile-visual{padding:9px}
+  #character-profile.gallery-standard .profile-art{height:min(69dvh,630px);min-height:0}
+  #character-profile.gallery-standard .profile-art #profile-image{padding:41px 9px 35px}
+  #character-profile.gallery-standard .profile-full-figure-toggle{left:8px;bottom:41px;padding:7px 9px;font-size:11px}
+  #character-profile.gallery-standard.profile-full-figure .profile-visual{padding:6px}
+  #character-profile.gallery-standard.profile-full-figure .profile-art{height:min(90dvh,860px);min-height:0}
+  #character-profile.gallery-standard.profile-full-figure .profile-art #profile-image{padding:42px 8px 37px}
 }
