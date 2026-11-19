@@ -54,7 +54,7 @@ jobs:
                     const cardStyles=worldCards.map(c=>({
                       background:getComputedStyle(c.querySelector('.character-media')).backgroundColor,
                       fit:getComputedStyle(c.querySelector('.character-media img')).objectFit,
-                      stageHeight:Math.round(c.querySelector('.character-media').getBoundingClientRect().height)
+                      stageHeight:getComputedStyle(c.querySelector('.character-media')).height
                     }));
                     return {
                       name:dialog.dataset.character,worldProfile:dialog.classList.contains('world-profile'),
