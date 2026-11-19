@@ -1,0 +1,42 @@
+name: Install approved full original Raika pencil flipbook
+on:
+  push:
+    paths:
+      - '.github/workflows/install-original-raika-flipbook-20261119.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  install_original:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Retrieve exact original user video and verify checksum
+        shell: bash
+        env:
+          SOURCE_URL: 'https://static.metricool.com/planner/202611/6948592-file-6466044537188598616.mp4'
+          EXPECTED_SHA256: '2bc78931e3e009842a5adb945816d467270410eaf8de3ae59946825fbd5d2998'
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 4 --retry-all-errors --silent --show-error "$SOURCE_URL" -o /tmp/raika-original.mp4
+          echo "$EXPECTED_SHA256  /tmp/raika-original.mp4" | sha256sum --check -
+          test "$(stat -c%s /tmp/raika-original.mp4)" -eq 586066
+          test -s pencil-sketches.html
+          grep -q 'id="original-flipbook"' pencil-sketches.html
+          grep -q '<source src="assets/videos/raika-pencil-flipbook.mp4"' pencil-sketches.html
+          cp /tmp/raika-original.mp4 assets/videos/raika-pencil-flipbook.mp4
+          sha256sum assets/videos/raika-pencil-flipbook.mp4
+      - name: Publish verified original clip
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/videos/raika-pencil-flipbook.mp4
+          if ! git diff --cached --quiet; then
+            git commit -m "Restore exact original full Raika pencil flipbook"
+            git push origin HEAD:main
+          fi
