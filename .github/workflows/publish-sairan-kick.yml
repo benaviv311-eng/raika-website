@@ -1,0 +1,44 @@
+name: Publish Sairan approved hammer kick
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-sairan-kick.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  copy-art:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Fetch and verify the approved PNG
+        run: |
+          python3 - <<'PY'
+          from urllib.request import urlopen
+          from pathlib import Path
+          import hashlib,struct
+          url='https://d2jqrm6oza8nb6.cloudfront.net/datasets/5805227c-c9d7-4f58-bc67-4b956fce7e15.png'
+          with urlopen(url,timeout=60) as response:
+              blob=response.read()
+          assert hashlib.sha256(blob).hexdigest()=='a144fd94ec5906e1d99749de89e96917d22bf506dd107f8a3e05f143898d29bb', 'Source artwork checksum mismatch'
+          assert blob[:8]==bytes([137,80,78,71,13,10,26,10]),'File must be PNG'
+          assert struct.unpack('>II',blob[16:24])==(1199,1312),'Source image dimensions mismatch'
+          Path('world-characters/sairan-hammer-kick-canonical-20261119.png').write_bytes(blob)
+          doc=Path('index.html')
+          html=doc.read_text()
+          old='world-characters/display-v1/sairan/hammer-kick-framed.webp?v=20261117-framed'
+          new='world-characters/sairan-hammer-kick-canonical-20261119.png?v=20261119-kick-replaced'
+          assert html.count(old)==1
+          doc.write_text(html.replace(old,new))
+          print('Replaced only the Sairan kick gallery entry')
+          PY
+      - name: Commit image and matching gallery pointer
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html world-characters/sairan-hammer-kick-canonical-20261119.png
+          git commit -m 'Publish approved Sairan lightning kick art'
+          git pull --rebase origin main
+          git push origin HEAD:main
