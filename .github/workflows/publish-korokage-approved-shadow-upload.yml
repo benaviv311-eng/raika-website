@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - "world-characters/korokage/shadow-mist-approved-upload.png"
+      - ".github/workflows/publish-korokage-approved-shadow-upload.yml"
   workflow_dispatch:
 permissions:
   contents: write
