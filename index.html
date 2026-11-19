@@ -1169,6 +1169,8 @@
       document.getElementById("profile-description").textContent = info.description;
       document.getElementById("profile-traits").textContent = info.traits;
       dialog.dataset.character = button.dataset.character;
+      // Scope the uniform Korokage-led gallery layout to OTHER CHARACTERS only.
+      dialog.classList.toggle("world-profile", Boolean(button.closest("#world-slides")));
       flipbook.hidden = dialog.dataset.character !== "raika";
       setFullFigureMode(false);
       showProfileGallery(info);
