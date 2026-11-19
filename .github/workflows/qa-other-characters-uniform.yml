@@ -16,17 +16,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
       - name: Browser and image QA tools
         run: |
-          npm install --no-save --no-package-lock playwright@1.57.0
-          python -m pip install "Pillow>=11"
+          npm install --no-save --no-package-lock playwright@1.57.0 sharp@0.33.5 http-server@14.1.1
       - name: Inspect each world-character desktop/mobile profile, retaining original artwork
         run: |
           mkdir -p /tmp/raika-world-shots
-          python -m http.server 8787 --bind 127.0.0.1 >/tmp/raika-http.log 2>&1 &
+          ./node_modules/.bin/http-server . -p 8787 -a 127.0.0.1 -c-1 >/tmp/raika-http.log 2>&1 &
           node <<'JS'
           const { chromium } = require('playwright');
           const fs = require('fs');
@@ -95,24 +91,30 @@ jobs:
           JS
       - name: Build desktop/mobile visual proof sheets
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          from PIL import Image,ImageDraw
-          dest=Path('world-characters/qa-uniform-world')
-          for device in ['desktop','mobile']:
-              names=['medoshi','sairan','korokage','kenkyosha']
-              width,height=(640,440) if device=='desktop' else (340,560)
-              sheet=Image.new('RGB',(width*4,height),(15,23,20))
-              draw=ImageDraw.Draw(sheet)
-              for i,name in enumerate(names):
-                  shot=Image.open('/tmp/raika-world-shots/'+device+'-'+name+'.png').convert('RGB')
-                  shot.thumbnail((width-12,height-35),Image.Resampling.LANCZOS)
-                  x=i*width+(width-shot.width)//2
-                  sheet.paste(shot,(x,8))
-                  draw.text((i*width+15,height-23),name,fill=(245,221,178))
-              sheet.save(dest/(device+'-all-four.jpg'),'JPEG',quality=78,optimize=True)
-              print(device,'visualQABytes',(dest/(device+'-all-four.jpg')).stat().st_size)
-          PY
+          node <<'JS'
+          const sharp=require('sharp');
+          const fs=require('fs');
+          const path=require('path');
+          (async()=>{
+            for(const device of ['desktop','mobile']){
+              const names=['medoshi','sairan','korokage','kenkyosha'];
+              const W=device==='desktop'?640:340,H=device==='desktop'?440:560;
+              const overlays=[];
+              for(let i=0;i<names.length;i++){
+                const shot='/tmp/raika-world-shots/'+device+'-'+names[i]+'.png';
+                const resized=await sharp(shot).resize({width:W-12,height:H-36,fit:'inside'}).png().toBuffer();
+                const m=await sharp(resized).metadata();
+                overlays.push({input:resized,left:i*W+Math.round((W-m.width)/2),top:7});
+                const label=Buffer.from('<svg width="'+W+'" height="30"><text x="18" y="23" font-size="21" fill="#eed6ac" font-family="Arial">'+names[i]+'</text></svg>');
+                overlays.push({input:label,left:i*W,top:H-32});
+              }
+              const dest='world-characters/qa-uniform-world/'+device+'-all-four.jpg';
+              await sharp({create:{width:W*4,height:H,channels:3,background:'#0f1714'}})
+                .composite(overlays).jpeg({quality:80}).toFile(dest);
+              console.log(device,'visualQABytes',fs.statSync(dest).size);
+            }
+          })().catch(e=>{console.error(e);process.exit(1);});
+          JS
       - name: Store visual audit for follow-up inspection
         run: |
           git config user.name "github-actions[bot]"
