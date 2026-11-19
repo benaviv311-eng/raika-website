@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install image tools
-        run: python -m pip install "Pillow>=11"
+        run: python -m pip install "Pillow>=11" numpy
       - name: Verify exact approved picture and create transparent website WebP
         run: |
           python - <<'PY'
