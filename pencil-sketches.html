@@ -11,6 +11,17 @@ header{border-bottom:1px solid #ffffff22;background:#0c1312}.nav{display:flex;al
 .future{border-top:1px solid #ffffff20;padding:36px 0 58px}.future h2{font-size:20px;margin:9px 0}.future p{color:var(--soft);line-height:1.75;font-size:13px;max-width:740px}footer{border-top:1px solid #ffffff25;padding:27px 0;font-size:12px;color:#a7b1a8}.footerline{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
 dialog{border:1px solid #d8ad6570;outline:none;border-radius:6px;padding:18px;background:#0c1312;box-shadow:0 20px 90px #000b;max-width:min(95vw,1000px);max-height:96vh;color:#fff}dialog::backdrop{background:#020503eb}dialog img{display:block;max-width:calc(95vw - 36px);max-height:calc(93vh - 80px);object-fit:contain;background:var(--paper)}.lightbox-close{display:block;margin-left:auto;margin-bottom:9px;font:700 13px "DM Sans",sans-serif;border:1px solid #d8ad65;background:#17231b;color:#f2d4a1;cursor:pointer;padding:6px 12px}
 @media(max-width:740px){.nav{gap:10px;flex-wrap:wrap;padding:14px 0}nav{gap:12px;font-size:11px;flex-wrap:wrap}nav a:not([href="index.html"]):not([href="index.html#characters"]):not([aria-current]){display:none}.hero{padding:55px 0 52px}.sketch-grid{grid-template-columns:1fr}.sketch-copy h2{font-size:24px}.sketch-sheet{padding:12px}.sketch-open img{max-height:600px}}
+
+/* Original Raika pencil flipbook — preserved source video */
+.flipbook-gallery{border-top:1px solid #ffffff20;padding:48px 0 76px}
+.flipbook-gallery .workhead{margin-bottom:25px}
+.flipbook-card{display:grid;grid-template-columns:minmax(0,430px) 1fr;gap:32px;align-items:center;border:1px solid #d8ad6550;background:#14201b;padding:22px}
+.flipbook-frame{background:#f1ece2;padding:12px;border:1px solid #d8ad6545}
+.flipbook-frame video{display:block;width:100%;height:auto;aspect-ratio:3 / 4;object-fit:contain;background:#d7d6d2}
+.flipbook-copy h3{font-family:Cinzel,Georgia,serif;font-size:clamp(23px,3vw,37px);margin:12px 0}
+.flipbook-copy p{color:var(--soft);line-height:1.8;font-size:14px}
+.flipbook-copy .sketch-status{margin-top:12px}
+@media(max-width:740px){.flipbook-card{grid-template-columns:1fr;padding:12px;gap:16px}.flipbook-copy{padding:5px 8px 15px}.flipbook-gallery{padding:42px 0 58px}}
 </style></head>
 <body><header><div class="wrap nav"><a class="brand" href="index.html#top">RAI<span>K</span>A</a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="index.html#characters">Characters</a><a href="locations.html">Locations</a><a href="symbols.html">Symbols</a><a href="pencil-sketches.html" aria-current="page">Pencil Sketches</a></nav></div></header>
 <main><section class="hero"><div class="wrap hero-inner"><div class="eyebrow">RAIKA · ART COLLECTION · VOLUME 01</div><h1>Pencil Sketches</h1><p>Before the movement, before the color — the lines that reveal a character. A growing collection of carefully approved graphite illustrations from the world of RAIKA.</p><div class="line" aria-hidden="true"></div></div></section>
@@ -27,6 +38,26 @@ dialog{border:1px solid #d8ad6570;outline:none;border-radius:6px;padding:18px;ba
     </button><p class="image-error" hidden>Image temporarily unavailable. The approved original is preserved in the Pencil Sketches reference archive.</p></div>
     <div class="sketch-copy"><div class="sketch-num">STUDY 02 <span>·</span> CHARACTER PORTRAIT</div><h2>Raika</h2><p>A study in courage, motion and the path of a young warrior.</p><span class="sketch-status">APPROVED ORIGINAL</span></div>
   </article></div></div></section>
+
+<section class="flipbook-gallery" id="original-flipbook" aria-labelledby="original-flipbook-title">
+  <div class="wrap">
+    <div class="workhead"><div><div class="eyebrow">Collection 02 / Movement studies</div><h2 id="original-flipbook-title">Pencil Flipbook</h2></div><p>ORIGINAL · UNEDITED</p></div>
+    <article class="flipbook-card">
+      <div class="flipbook-frame">
+        <video controls playsinline loop preload="metadata" width="600" height="800" poster="assets/videos/raika-pencil-flipbook.webp" aria-label="Raika original pencil training flipbook">
+          <source src="assets/videos/raika-pencil-flipbook.mp4" type="video/mp4">
+          Your browser does not support video playback. <a href="assets/videos/raika-pencil-flipbook.mp4">Watch the original flipbook</a>.
+        </video>
+      </div>
+      <div class="flipbook-copy">
+        <div class="sketch-num">FLIPBOOK 01 <span>·</span> ORIGINAL ANIMATION</div>
+        <h3>Raika’s First Training Sequence</h3>
+        <p>The original four-second pencil flipbook, presented as it was created — before later color and motion experiments. A study of Raika’s first movement in the sketchbook.</p>
+        <span class="sketch-status">ORIGINAL VERSION</span>
+      </div>
+    </article>
+  </div>
+</section>
 <section class="future"><div class="wrap"><div class="eyebrow">The collection continues</div><h2>A Sketchbook in Progress</h2><p>More approved graphite portraits, movement studies and flipbook frames can join this collection as they are created. Original approved art is preserved without redesign.</p></div></section>
 </main><footer><div class="wrap footerline"><span>© 2026 RAIKA — The Legacy of Reishin</span><span>Original pencil studies · Canon archive</span><a href="index.html">Return to RAIKA home</a></div></footer>
 <dialog id="art-viewer" aria-label="Enlarged pencil sketch"><button class="lightbox-close" type="button" id="close-art">Close ×</button><img id="art-full" src="" alt=""></dialog>
