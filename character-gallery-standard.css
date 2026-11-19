@@ -481,3 +481,218 @@
   #character-profile.gallery-standard.profile-full-figure .profile-art{height:min(90dvh,860px);min-height:0}
   #character-profile.gallery-standard.profile-full-figure .profile-art #profile-image{padding:42px 8px 37px}
 }
+
+/* OTHER CHARACTERS — unified Korokage-led presentation v2, 2026-11-19. */
+/* Scope is the Other Characters carousel and its explicitly identified dialog,
+   not the House of Rai, Guard, Dojo or Village citizen galleries.
+   Preserve original transparent/opaque media, never crop or re-generate characters. */
+#world-characters #world-slides > .world-character-card{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+#world-characters #world-slides .world-character-card .character-media{
+  box-sizing:border-box;
+  display:grid;
+  place-items:center;
+  height:470px;
+  min-height:0;
+  width:100%;
+  padding:16px;
+  overflow:hidden;
+  border:1px solid rgba(216,173,101,.26);
+  border-radius:14px;
+  background:transparent;
+  isolation:isolate;
+}
+/* Explicitly override legacy Korokage-only scale and Sairan studio framing.
+   Every asset gets exactly the same drawing stage, with its native aspect ratio. */
+#world-characters #world-slides .world-character-card .character-media > img{
+  display:block;
+  position:relative;
+  width:100%;
+  height:100%;
+  max-width:100%;
+  max-height:100%;
+  min-width:0;
+  min-height:0;
+  padding:0;
+  margin:0;
+  object-fit:contain;
+  object-position:center center;
+  transform:none;
+  clip-path:none;
+  -webkit-mask-image:none;
+  mask-image:none;
+  mix-blend-mode:normal;
+  filter:drop-shadow(0 15px 26px rgba(0,0,0,.38)) drop-shadow(0 0 22px rgba(124,162,203,.16));
+}
+#world-characters #world-slides .world-character-card .character-body{
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  padding:20px 18px 16px;
+  text-align:center;
+  align-items:center;
+}
+#world-characters #world-slides .world-character-card .character-body h3{
+  margin:0;
+  font-size:21px;
+  line-height:1.3;
+}
+#world-characters #world-slides .world-character-card .character-body .character-role{
+  line-height:1.5;
+}
+#world-characters #world-slides .world-character-card .character-body p{
+  max-width:61ch;
+  margin-inline:auto;
+  line-height:1.7;
+}
+#world-characters #world-slides .world-character-card .profile-trigger{
+  width:100%;
+  align-self:stretch;
+  margin-top:14px;
+}
+
+/* All four profile dialogs use Korokage's generously sized illustration stage.
+   image size/padding is derived from the stage, not pose-specific hardcoded pixels. */
+#character-profile.gallery-standard.world-profile{
+  width:min(1130px,calc(100vw - 24px));
+  max-height:94dvh;
+}
+#character-profile.gallery-standard.world-profile .profile-layout{
+  display:grid;
+  grid-template-columns:minmax(0,60%) minmax(0,40%);
+  align-items:start;
+}
+#character-profile.gallery-standard.world-profile .profile-visual{
+  min-width:0;
+  padding:20px 20px 24px;
+}
+#character-profile.gallery-standard.world-profile .profile-art{
+  box-sizing:border-box;
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:100%;
+  height:clamp(450px,60vh,650px);
+  min-height:0;
+  padding:0;
+  overflow:hidden;
+  border:1px solid rgba(216,173,101,.26);
+  border-radius:13px;
+  background:transparent;
+}
+#character-profile.gallery-standard.world-profile .profile-art #profile-image{
+  display:block;
+  position:relative;
+  box-sizing:border-box;
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  max-width:100%;
+  max-height:100%;
+  padding:48px 42px 34px;
+  margin:0;
+  object-fit:contain;
+  object-position:center center;
+  transform:none;
+  clip-path:none;
+  -webkit-mask-image:none;
+  mask-image:none;
+  mix-blend-mode:normal;
+  filter:drop-shadow(0 16px 28px rgba(0,0,0,.37)) drop-shadow(0 0 20px rgba(124,162,203,.16));
+}
+#character-profile.gallery-standard.world-profile .profile-gallery{
+  min-width:0;
+  margin-top:18px;
+  padding:0;
+}
+#character-profile.gallery-standard.world-profile .profile-gallery-options,
+#character-profile.gallery-standard.world-profile .profile-gallery-options[data-count="5"]{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(96px,1fr));
+  gap:8px;
+}
+#character-profile.gallery-standard.world-profile .profile-gallery-option{
+  min-width:0;
+  max-width:none;
+  min-height:122px;
+  padding:8px 6px 10px;
+  line-height:1.3;
+  overflow-wrap:anywhere;
+}
+#character-profile.gallery-standard.world-profile .profile-gallery-option img{
+  width:100%;
+  max-width:100%;
+  height:85px;
+  padding:0;
+  object-fit:contain;
+  object-position:center center;
+  filter:none;
+}
+#character-profile.gallery-standard.world-profile .profile-copy{
+  min-width:0;
+  padding:clamp(25px,3.2vw,43px);
+}
+#character-profile.gallery-standard.world-profile .profile-variant-arrow{
+  z-index:4;
+}
+@media(max-width:880px){
+  #character-profile.gallery-standard.world-profile .profile-layout{
+    grid-template-columns:minmax(0,1fr);
+  }
+  #character-profile.gallery-standard.world-profile .profile-visual{
+    padding:14px 14px 20px;
+  }
+  #character-profile.gallery-standard.world-profile .profile-art{
+    height:min(105vw,530px);
+    min-height:340px;
+  }
+  #character-profile.gallery-standard.world-profile .profile-copy{
+    padding:24px 26px 32px;
+  }
+}
+@media(max-width:620px){
+  #world-characters #world-slides .world-character-card .character-media{
+    height:380px;
+    padding:11px;
+  }
+  #character-profile.gallery-standard.world-profile{
+    width:calc(100vw - 16px);
+    max-height:95dvh;
+  }
+  #character-profile.gallery-standard.world-profile .profile-visual{
+    padding:10px;
+  }
+  #character-profile.gallery-standard.world-profile .profile-art{
+    height:min(112vw,470px);
+    min-height:318px;
+  }
+  #character-profile.gallery-standard.world-profile .profile-art #profile-image{
+    padding:46px 32px 30px;
+  }
+  #character-profile.gallery-standard.world-profile .profile-gallery-options,
+  #character-profile.gallery-standard.world-profile .profile-gallery-options[data-count="5"]{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+  }
+  #character-profile.gallery-standard.world-profile .profile-gallery-option{
+    min-height:112px;
+    padding:6px 4px 8px;
+    font-size:10px;
+  }
+  #character-profile.gallery-standard.world-profile .profile-gallery-option img{
+    height:73px;
+  }
+}
+@media(max-width:390px){
+  #character-profile.gallery-standard.world-profile .profile-art{
+    min-height:300px;
+  }
+  #character-profile.gallery-standard.world-profile .profile-gallery-options,
+  #character-profile.gallery-standard.world-profile .profile-gallery-options[data-count="5"]{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
