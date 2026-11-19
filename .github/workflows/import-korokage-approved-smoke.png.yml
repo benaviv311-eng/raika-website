@@ -1,0 +1,52 @@
+name: Import user-approved Korokage Shadow Mist art from connected image asset
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-korokage-approved-smoke.png.yml'
+permissions:
+  contents: write
+jobs:
+  import-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download exact user-approved image and check integrity
+        env:
+          ASSET_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/f301ceaf-57f6-4a08-b025-d540dfc8eedf.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNmQ4OWI2NDdlYzkyMjFiZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTIzMjgzOX0.LJcIUctirtFm4uVoFGl8h2_eI6bhS6h68LfZZ_val3E"
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os,urllib.request,hashlib,io
+          from PIL import Image
+          url=os.environ["ASSET_URL"]
+          request=urllib.request.Request(url,headers={'User-Agent':'RAIKA-approved-image-import/1.0'})
+          with urllib.request.urlopen(request,timeout=120) as resp:
+              data=resp.read(6000000)
+          actual=hashlib.sha256(data).hexdigest()
+          if actual!='d939107ac7e02a3fe993299768f8ab87664826abb0090f765b194e11c5f849eb':
+              raise RuntimeError('Approved image hash mismatch: '+actual)
+          im=Image.open(io.BytesIO(data)).convert('RGBA')
+          if im.size!=(1672,941) or im.getchannel('A').getextrema()!=(0,255):
+              raise RuntimeError('Approved image dimensions/transparency invalid')
+          target=Path("world-characters/korokage/shadow-mist-approved-upload.png")
+          target.parent.mkdir(parents=True,exist_ok=True)
+          target.write_bytes(data)
+          print(f'Approved transparent image preserved exactly: {target}, bytes={len(data)}, sha256={actual}')
+          PY
+      - name: Commit approved exact PNG without changing originals
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/korokage/shadow-mist-approved-upload.png
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Import user-approved Korokage Shadow Mist with original transparent smoke"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
