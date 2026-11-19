@@ -9,6 +9,8 @@ permissions:
 jobs:
   qa:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.57.0-noble
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,7 +22,6 @@ jobs:
       - name: Browser and image QA tools
         run: |
           npm install --no-save --no-package-lock playwright@1.57.0
-          npx playwright install --with-deps chromium
           python -m pip install "Pillow>=11"
       - name: Inspect each world-character desktop/mobile profile, retaining original artwork
         run: |
