@@ -1,0 +1,23 @@
+name: Import Okana punch image
+on:
+  push:
+    paths:
+      - .github/workflows/okana-punch-import-20261121.yml
+permissions:
+  contents: write
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Save original approved PNG
+        run: |
+          mkdir -p world-characters/okana
+          curl -fLsS --retry 3 --output "world-characters/okana/pose-3-20261121-approved.png" 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/a46ac8ee-3623-4d2f-9e1f-55a2283d1a70.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYmZjNzA2NWRkNDUyNzdkMSIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTM0NzU0OX0.F0yF2nz0-xT7x0H08JN8bmgxVZqC0Kcn5HCVvHYwL2g'
+          test "$(wc -c < world-characters/okana/pose-3-20261121-approved.png)" -gt 100000
+          echo "cc0a7de24a6fa4b14884e17d1db1eeb62e01d7eb6ec6840b3b7564e1830d0f3d  world-characters/okana/pose-3-20261121-approved.png" | sha256sum -c -
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "world-characters/okana/pose-3-20261121-approved.png"
+          git commit -m "Import approved Okana martial arts pose 3"
+          git push
