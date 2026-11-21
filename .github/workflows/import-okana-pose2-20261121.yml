@@ -1,0 +1,39 @@
+name: Install approved Okana pose 2 replacement
+on:
+  push:
+    paths:
+      - .github/workflows/import-okana-pose2-20261121.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Transfer exact approved image and validate transparent PNG
+        run: |
+          set -euo pipefail
+          mkdir -p world-characters/okana
+          curl --fail --location --retry 4 --silent --show-error -o world-characters/okana/pose-2-fan-approved-20261121.png 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/57460b85-0493-4a9d-9b6c-c6f5dd387842.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMzJmMDFlMTlmNGE0ZDcxNiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTQwNjc0NX0.MvNta_4smpTHxOlR8AFPNJQzxNf-x17CN0oZrtWOEoE'
+          file world-characters/okana/pose-2-fan-approved-20261121.png
+          echo "e48cc6d8630907d7e1aa5a9b5102470f1dcae86b7bde3f3a1a7a496f0b76855e  world-characters/okana/pose-2-fan-approved-20261121.png" | sha256sum -c -
+          python - <<'PY'
+          from PIL import Image
+          path='world-characters/okana/pose-2-fan-approved-20261121.png'
+          im=Image.open(path)
+          assert im.mode == 'RGBA'
+          alpha=im.getchannel('A')
+          assert alpha.getextrema()[0]==0 and alpha.getextrema()[1]>250
+          assert im.size==(1024,1536)
+          print('Transparent full-length original approved pose verified')
+          PY
+      - name: Commit exact approved image only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-characters/okana/pose-2-fan-approved-20261121.png
+          if ! git diff --cached --quiet; then
+            git commit -m "Import user's exact approved Okana fan pose as transparent PNG"
+            git push
+          fi
