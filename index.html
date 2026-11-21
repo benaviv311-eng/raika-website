@@ -1523,8 +1523,11 @@
     if(prefersLessMotion.addEventListener) prefersLessMotion.addEventListener("change",startCitizensRotation);
     const linkedCitizensIndex = citizensCards.findIndex(function(card){return "#"+card.id === window.location.hash;});
     showCitizensCard(linkedCitizensIndex >= 0 ? linkedCitizensIndex : 0,false);
-    if(linkedCitizensIndex >= 0){document.getElementById("village-citizens").scrollIntoView({block:"start"});}
-    startCitizensRotation();
+    if(linkedCitizensIndex >= 0){
+      document.getElementById("village-citizens").scrollIntoView({block:"start"});
+    } else {
+      startCitizensRotation();
+    }
   }
 
   const comicPageImage = document.getElementById("comic-page-image");
