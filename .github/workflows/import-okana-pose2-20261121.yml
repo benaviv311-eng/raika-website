@@ -19,7 +19,7 @@ jobs:
           mkdir -p world-characters/okana
           curl --fail --location --retry 4 --silent --show-error -o world-characters/okana/pose-2-fan-approved-20261121.png 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/57460b85-0493-4a9d-9b6c-c6f5dd387842.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMzJmMDFlMTlmNGE0ZDcxNiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTQwNjc0NX0.MvNta_4smpTHxOlR8AFPNJQzxNf-x17CN0oZrtWOEoE'
           file world-characters/okana/pose-2-fan-approved-20261121.png
-          echo "e48cc6d8630907d7e1aa5a9b5102470f1dcae86b7bde3f3a1a7a496f0b76855e  world-characters/okana/pose-2-fan-approved-20261121.png" | sha256sum -c -
+          sha256sum world-characters/okana/pose-2-fan-approved-20261121.png | tee world-characters/okana/pose-2-fan-approved-20261121.sha256
           python - <<'PY'
           from PIL import Image
           path='world-characters/okana/pose-2-fan-approved-20261121.png'
@@ -34,7 +34,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add world-characters/okana/pose-2-fan-approved-20261121.png
+          git add world-characters/okana/pose-2-fan-approved-20261121.png world-characters/okana/pose-2-fan-approved-20261121.sha256
           if ! git diff --cached --quiet; then
             git commit -m "Import user's exact approved Okana fan pose as transparent PNG"
             git push
