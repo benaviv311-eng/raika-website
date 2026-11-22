@@ -1,0 +1,71 @@
+name: Publish approved bard pose 1 image
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-bard-pose1-from-source.yml'
+      - 'site-assets/bard-pose1-source.txt'
+permissions:
+  contents: write
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Save verified image
+        run: |
+          python - <<'PY'
+          import urllib.request,hashlib,struct
+          from pathlib import Path
+          src=Path('site-assets/bard-pose1-source.txt')
+          if not src.exists():
+              print('Waiting for approved image source')
+              raise SystemExit(0)
+          uri=src.read_text().strip()
+          assert uri.startswith('https://d2jqrm6oza8nb6.cloudfront.net/datasets/'), 'Unsupported source host'
+          request=urllib.request.Request(uri,headers={'User-Agent':'RAIKA-image-archive/1.0'})
+          with urllib.request.urlopen(request,timeout=80) as response:
+              data=response.read(10000000)
+          assert hashlib.sha256(data).hexdigest()=='12401a3cc1b7798126b71c1dfd71f7a3a9b947e7823d7244e0461b1049f6cead', 'Unexpected original file'
+          assert data[:8]==bytes([137,80,78,71,13,10,26,10]), 'Not a PNG'
+          assert struct.unpack('>II',data[16:24])==(1200,1500), 'Unexpected dimensions'
+          path=Path('world-characters/portraits/shi-sosakusha-village-melody-transparent.png')
+          path.parent.mkdir(parents=True,exist_ok=True)
+          path.write_bytes(data)
+          index=Path('index.html')
+          html=index.read_text()
+          slug='world-characters/portraits/shi-sosakusha-village-melody-transparent.png'
+          start=html.index('id="shi-sosakusha"')
+          end=html.index('</article>',start)
+          card=html[start:end]
+          import re
+          old=re.search(r'(?<=src=")https://cms-toolkit-artifacts.artlist.io/[^"]+',card)
+          assert old,'Expected bard character card'
+          html=html[:start]+card.replace(old.group(),slug,1)+html[end:]
+          start=html.index('    "shi-sosakusha": {')
+          end=html.index('    korokage: {',start)
+          block=html[start:end]
+          base=re.search(r'(?m)^\s*image: "https://cms-toolkit-artifacts.artlist.io/[^"]+"',block)
+          first=re.search(r'\{label: "The Village Melody", image: "https://cms-toolkit-artifacts.artlist.io/[^"]+"',block)
+          assert base and first,'Expected approved pose 1 and base'
+          block=block.replace(base.group(),re.sub(r'https://cms-toolkit-artifacts.artlist.io/[^"]+',slug,base.group()),1)
+          block=block.replace(first.group(),re.sub(r'https://cms-toolkit-artifacts.artlist.io/[^"]+',slug,first.group()),1)
+          html=html[:start]+block+html[end:]
+          html=html.replace('character-gallery-standard.css?v=20261118-nocrop-2','character-gallery-standard.css?v=20261122-bard-transparent')
+          index.write_text(html)
+          css=Path('character-gallery-standard.css')
+          css.write_text(css.read_text()+"""
+          /* Archived full-body transparent character asset; avoid beige frame. */
+          #world-slides .character--bard .character-media{background:var(--raika-gallery-studio)}
+          #character-profile.gallery-standard[data-character="shi-sosakusha"] .profile-art:has(#profile-image[src*="shi-sosakusha-village-melody-transparent.png"]){background:var(--raika-gallery-studio)}
+          """)
+          PY
+      - name: Commit verified image and changed gallery
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add world-characters/portraits/shi-sosakusha-village-melody-transparent.png index.html character-gallery-standard.css
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Publish exact user-approved bard pose 1 image'
+          git pull --rebase origin main
+          git push origin HEAD:main
