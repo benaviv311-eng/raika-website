@@ -737,3 +737,7 @@
 }
 /* The character may be taller or wider than the stage; CSS scales down
    the ENTIRE image without ever cropping the ears, feet, or pose effects. */
+
+/* Archived full-body transparent character asset; avoid beige frame. */
+#world-slides .character--bard .character-media{background:var(--raika-gallery-studio)}
+#character-profile.gallery-standard[data-character="shi-sosakusha"] .profile-art:has(#profile-image[src*="shi-sosakusha-village-melody-transparent.png"]){background:var(--raika-gallery-studio)}
