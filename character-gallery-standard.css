@@ -738,6 +738,21 @@
 /* The character may be taller or wider than the stage; CSS scales down
    the ENTIRE image without ever cropping the ears, feet, or pose effects. */
 
-/* Archived full-body transparent character asset; avoid beige frame. */
-#world-slides .character--bard .character-media{background:var(--raika-gallery-studio)}
-#character-profile.gallery-standard[data-character="shi-sosakusha"] .profile-art:has(#profile-image[src*="shi-sosakusha-village-melody-transparent.png"]){background:var(--raika-gallery-studio)}
+/* Shi Sosakusha — match the approved dark olive studio background in the user's
+   reference portrait. Only the transparent, full-body Village Melody pose is affected;
+   the original PNG remains untouched and other poses retain their own backgrounds. */
+:root{
+  --raika-bard-studio:radial-gradient(ellipse 65% 75% at 50% 43%,
+    #746050 0%, #504b3a 22%, #303e30 49%, #1d2d24 72%, #121d17 100%);
+}
+#world-slides #shi-sosakusha .character-media{
+  background:var(--raika-bard-studio);
+}
+#character-profile.gallery-standard[data-character="shi-sosakusha"]
+.profile-art:has(#profile-image[src*="shi-sosakusha-village-melody-transparent.png"]){
+  background:var(--raika-bard-studio);
+}
+#character-profile.gallery-standard[data-character="shi-sosakusha"]
+.profile-gallery-option:has(img[src*="shi-sosakusha-village-melody-transparent.png"]){
+  background:var(--raika-bard-studio);
+}
