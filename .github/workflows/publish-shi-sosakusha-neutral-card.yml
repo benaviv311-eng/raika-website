@@ -1,0 +1,73 @@
+name: Publish RAIKA bard neutral pose before Explore
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-shi-sosakusha-neutral-card.yml'
+      - 'site-assets/bard-neutral-card-source.txt'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Archive verified image; replace card only
+        run: |
+          python - <<'PY'
+          import urllib.request,hashlib,struct,re
+          from pathlib import Path
+          pointer=Path('site-assets/bard-neutral-card-source.txt')
+          if not pointer.exists():
+              print('No source pointer available; image was already archived')
+              raise SystemExit(0)
+          uri=pointer.read_text().strip()
+          assert uri.startswith('https://d2jqrm6oza8nb6.cloudfront.net/datasets/'), 'Unexpected source host'
+          req=urllib.request.Request(uri,headers={'User-Agent':'RAIKA-approved-neutral-character-archiver'})
+          with urllib.request.urlopen(req,timeout=80) as resp:
+              data=resp.read(8_000_000)
+          expected='f5de6799ad49a3be87e3c9d5cd6fb391dadfe397e79b26f6b812ad730f502ff0'
+          assert hashlib.sha256(data).hexdigest()==expected, 'Image SHA mismatch; refusing update'
+          assert data[:8]==bytes((137,80,78,71,13,10,26,10)), 'Not PNG'
+          assert struct.unpack('>II',data[16:24])==(1320,1650), 'Image not safe padded size'
+          assert data[25]==6, 'Missing RGBA transparency'
+          target=Path('world-characters/portraits/shi-sosakusha-neutral-standing.png')
+          target.parent.mkdir(parents=True,exist_ok=True)
+          target.write_bytes(data)
+          index=Path('index.html')
+          html=index.read_text(encoding='utf8')
+          left=html.index('<article class="character world-character-card character--bard" id="shi-sosakusha"')
+          right=html.index('</article>',left)
+          card=html[left:right]
+          marker='<div class="character-media"><img loading="lazy" src="'
+          assert card.count(marker)==1,'Card img changed'
+          match=re.search(r'(<div class="character-media"><img loading="lazy" src=")([^"]+)(" alt=")([^"]+)(")',card)
+          assert match,'Unable to locate card src and alt'
+          current=match.group(2)
+          assert current.endswith('shi-sosakusha-village-melody-transparent.png') or current==target.as_posix(),'Wrong card, refusing'
+          replacement=match.group(1)+target.as_posix()+match.group(3)+'Shi Sōsakusha standing in a neutral pose holding his biwa, full-body transparent approved illustration'+match.group(5)
+          card=card[:match.start()]+replacement+card[match.end():]
+          html=html[:left]+card+html[right:]
+          data_start=html.index('    "shi-sosakusha": {')
+          data_end=html.index('    korokage: {',data_start)
+          profile=html[data_start:data_end]
+          assert profile.count('{label: ')==4,'Unexpected approved profile gallery change'
+          assert '{label: "The Village Melody", image: "world-characters/portraits/shi-sosakusha-village-melody-transparent.png"' in profile, 'Existing Explore poses changed'
+          assert target.as_posix() not in profile, 'Neutral card should not replace Explore gallery image'
+          index.write_text(html,encoding='utf8')
+          print('Archived approved neutral character card',len(data),'SHA256',expected)
+          PY
+      - name: Commit asset and card reference
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add world-characters/portraits/shi-sosakusha-neutral-standing.png index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Display approved bard neutral standing pose before Explore'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
