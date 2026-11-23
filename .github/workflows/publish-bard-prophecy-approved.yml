@@ -1,0 +1,82 @@
+name: Publish approved Shi Sosakusha prophecy pose
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-bard-prophecy-approved.yml'
+      - 'site-assets/bard-prophecy-source.txt'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install exact PNG processing dependency
+        run: python -m pip install "Pillow>=11"
+      - name: Validate original, add transparent safety margins, change only pose 4
+        run: |
+          python - <<'PY'
+          import hashlib, urllib.request, re
+          from pathlib import Path
+          from PIL import Image, ImageChops
+          from io import BytesIO
+          pointer=Path('site-assets/bard-prophecy-source.txt')
+          if not pointer.exists():
+              print('Source pointer already cleaned; no update needed')
+              raise SystemExit(0)
+          url=pointer.read_text().strip()
+          assert url.startswith('https://d2jqrm6oza8nb6.cloudfront.net/datasets/'), 'Unexpected asset origin'
+          req=urllib.request.Request(url,headers={'User-Agent':'RAIKA-Approved-Artwork-Publisher/1.0'})
+          with urllib.request.urlopen(req,timeout=90) as response:
+              content=response.read(9_000_000)
+          sha=hashlib.sha256(content).hexdigest()
+          expected='fd7d7e46eedd42bd7a195ff3d5bfeb439f4947ee68ded2fded68030390ce782e'
+          assert sha==expected, 'Image bytes do not match the approved illustration'
+          assert content[:8]==bytes([137,80,78,71,13,10,26,10]), 'Not a PNG'
+          im=Image.open(BytesIO(content))
+          assert im.size==(1122,1402) and im.mode=='RGBA', 'Wrong RGBA dimensions'
+          original=Path('world-characters/portraits/shi-sosakusha-prophecy-approved-original.png')
+          original.parent.mkdir(parents=True,exist_ok=True)
+          original.write_bytes(content)
+          padded=Image.new('RGBA',(1200,1500),(0,0,0,0))
+          inset=(39,49)
+          padded.paste(im,inset)
+          assert ImageChops.difference(im,padded.crop((39,49,39+1122,49+1402))).getbbox() is None, 'Pixel integrity test failed'
+          dest=Path('world-characters/portraits/shi-sosakusha-prophecy-site.png')
+          padded.save(dest,format='PNG',optimize=True)
+          html_path=Path('index.html')
+          markup=html_path.read_text(encoding='utf-8')
+          start=markup.index('    "shi-sosakusha": {')
+          end=markup.index('    korokage: {',start)
+          profile=markup[start:end]
+          before=list(re.finditer(r'\{label: "([^"]+)", image: "([^"]+)"',profile))
+          assert len(before)==4, 'Expected exactly four poses'
+          assert [m.group(1) for m in before]==['The Village Melody','The Storyteller','The Wandering Bard','Song of Prophecy'], 'Pose order changed'
+          prior=before[3]
+          assert prior.group(2).startswith('https://cms-toolkit-artifacts.artlist.io/') or prior.group(2)==dest.as_posix(), 'Unexpected previously approved pose4 source'
+          new_entry=prior.group(0).replace(prior.group(2),dest.as_posix(),1)
+          profile=profile[:prior.start()]+new_entry+profile[prior.end():]
+          assert profile.count(dest.as_posix())==1, 'Only pose4 should use the new image'
+          markup=markup[:start]+profile+markup[end:]
+          assert '<img loading="lazy" src="world-characters/portraits/shi-sosakusha-neutral-standing.png"' in markup, 'Neutral pre-Explore card should remain unchanged'
+          html_path.write_text(markup,encoding='utf-8')
+          print('Replaced ONLY Song of Prophecy with approved image:',sha,'padded size',padded.size)
+          PY
+      - name: Commit permanent full-artwork source, padded image and one gallery reference
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html world-characters/portraits/shi-sosakusha-prophecy-approved-original.png world-characters/portraits/shi-sosakusha-prophecy-site.png
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Replace bard prophecy pose with approved transparent image'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
