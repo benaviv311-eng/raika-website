@@ -1,0 +1,93 @@
+name: Hibana silver portrait - one time
+on:
+  push:
+    paths:
+      - '.github/workflows/hibana-silver-once.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  recolor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install image dependencies
+        run: python -m pip install --quiet pillow numpy scipy
+      - name: Prepare transparent silver portrait and update references
+        run: |
+          python - <<'PY'
+          from PIL import Image, ImageDraw, ImageFilter
+          import numpy as np
+          from scipy.ndimage import label, distance_transform_edt
+          from pathlib import Path
+          src = Path("world-characters/fireworks-seller/fireworks-portrait.webp")
+          im = Image.open(src).convert("RGBA")
+          w,h = im.size
+          arr = np.array(im, dtype=np.uint8)
+          rgb = arr[:,:,:3].astype(np.float32)
+          a = arr[:,:,3].copy()
+          ident,n=label(a>35,structure=np.ones((3,3)))
+          if n:
+              sizes=np.bincount(ident.ravel());sizes[0]=0
+              keep=np.argmax(sizes)
+              a=np.where((ident==keep)|(a>210),a,0).astype(np.uint8)
+          def poly_mask(polys,blur=1.5):
+              pic=Image.new("L",(w,h),0)
+              dr=ImageDraw.Draw(pic)
+              for pts in polys:
+                  dr.polygon([(round(x*w/1024),round(y*h/1536)) for x,y in pts],fill=255)
+              return pic
+          regions=[
+           [(193,177),(416,163),(466,395),(433,504),(281,453),(193,336)],
+           [(462,361),(529,227),(769,156),(812,244),(754,381),(591,446),(529,457)],
+           [(347,377),(691,368),(702,471),(664,521),(420,533),(352,476)],
+           [(786,417),(1014,396),(1024,592),(915,663),(791,653),(735,572)],
+           [(295,764),(430,765),(448,865),(331,902),(295,844)]
+          ]
+          base=poly_mask(regions)
+          d=ImageDraw.Draw(base)
+          d.polygon([(round(x*w/1024),round(y*h/1536)) for x,y in [(269,240),(333,233),(390,278),(407,387),(357,356),(315,317)]],fill=0)
+          d.polygon([(round(x*w/1024),round(y*h/1536)) for x,y in [(575,336),(616,247),(709,226),(766,250),(719,313),(640,346)]],fill=0)
+          region=np.array(base.filter(ImageFilter.GaussianBlur(radius=max(1,1.6*w/1024))))/255.0
+          hsv=np.array(im.convert("RGB").convert("HSV"))
+          H=hsv[:,:,0].astype(np.float32)*360/255
+          S=hsv[:,:,1].astype(np.float32)/255
+          R,G,B=rgb.transpose(2,0,1)
+          is_fur=((H>=8)&(H<45)&(S>.21)&(R>G*1.12)&(G>B*1.03)&(B/np.maximum(G,1)<.97))
+          mm=np.uint8(is_fur*region*255)
+          mask=np.array(Image.fromarray(mm,"L").filter(ImageFilter.GaussianBlur(radius=max(.65,.9*w/1024))))/255.0
+          l=.2126*R+.7152*G+.0722*B
+          silver=np.stack([.92*l+37,.89*l+34,.87*l+31],axis=2).clip(0,255)
+          recol=rgb*(1-mask[:,:,None])+silver*mask[:,:,None]
+          cheeks=poly_mask([
+           [(312,480),(470,478),(536,580),(472,674),(322,665)],
+           [(621,464),(787,468),(792,632),(691,690),(605,615)]])
+          cr=np.array(cheeks.filter(ImageFilter.GaussianBlur(radius=max(1,2*w/1024))))/255.0
+          cm=((H>9)&(H<43)&(S>.27)&(R>G*1.12)&(G>B*1.02)).astype(float)*cr
+          cm=np.array(Image.fromarray(np.uint8(cm*255),"L").filter(ImageFilter.GaussianBlur(radius=max(.7,.9*w/1024))))/255.0
+          cream=np.stack([.68*l+112,.68*l+99,.68*l+89],axis=2).clip(0,255)
+          recol=recol*(1-cm[:,:,None])+cream*cm[:,:,None]
+          alpha=a.astype(np.float32)/255
+          edge=(distance_transform_edt(a>210)<=3.0)
+          neon=((R>224)&(G>183)&(B<92))|((R>175)&(G<65)&(B<78))
+          alpha=np.where(edge&neon&(a<235),alpha*.1,alpha)
+          out=np.dstack([recol.astype("uint8"),(alpha*255).astype("uint8")])
+          out[out[:,:,3]==0,:3]=0
+          Image.fromarray(out,"RGBA").save(src,"WEBP",lossless=True,method=6)
+          index=Path("index.html")
+          html=index.read_text(encoding="utf-8")
+          old="world-characters/fireworks-seller/fireworks-portrait.webp"
+          new=old+"?v=20261123-silver1"
+          html=html.replace(old,new) if new not in html else html
+          html=html.replace("elderly orange rabbit fireworks seller","elderly silver-gray rabbit fireworks seller")
+          html=html.replace("older orange-furred rabbit is Sakura Village", "older warm silver-gray-furred rabbit is Sakura Village")
+          index.write_text(html,encoding="utf-8")
+          print("Hibana silver portrait prepared:",src, im.size)
+          PY
+      - name: Commit updated portrait to public website
+        run: |
+          git config user.name 'raika-image-update[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add world-characters/fireworks-seller/fireworks-portrait.webp index.html
+          git diff --cached --quiet || git commit -m 'Hibana: warm silver-gray fur, transparent portrait'
+          git push
